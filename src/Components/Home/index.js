@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import service from '../../services/api.js'
+import Tree from '../Tree/index.js';
 
 function Home() {
 
@@ -23,6 +24,7 @@ function Home() {
                 })
                 }
             </div>
+            <Tree structure={data}></Tree>
         </div>
     )
 }
