@@ -1,0 +1,5 @@
+.MuiTreeView-root .MuiTreeItem-label{
+    background-color: aqua;
+    color: red;
+    width: auto;
+}

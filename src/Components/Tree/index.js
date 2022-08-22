@@ -1,7 +1,9 @@
-import TreeView from '@material-ui/lab/TreeView'
-import TreeItem from '@material-ui/lab/TreeItem';
+import TreeView from '@mui/lab/TreeView';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import TreeItem from '@mui/lab/TreeItem';
+import './index.css'
+
 
 
 function Tree({ structure }) {
@@ -36,6 +38,7 @@ function Tree({ structure }) {
                 {GetNode(structure)}
             </TreeView>
             <p>endtree</p>
+   
         </div>
     )
 }

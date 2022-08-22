@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import service from '../../services/api.js'
 import Tree from '../Tree/index.js';
+import { StyledEngineProvider } from '@mui/material/styles';
+
 
 function Home() {
 
@@ -17,14 +19,17 @@ function Home() {
     return (
         <div>
             <div>pawel</div>
+            <div style={{ width: '200px', float: 'left' }}>
+                    <Tree structure={data}></Tree>
+            </div>
             <div>{data && data.id}</div>
             <div>
-                {data  && data.nodes && data.nodes.map(x => {
+                {data && data.nodes && data.nodes.map(x => {
                     return (<p>{x.name}</p>)
                 })
                 }
             </div>
-            <Tree structure={data}></Tree>
+
         </div>
     )
 }
