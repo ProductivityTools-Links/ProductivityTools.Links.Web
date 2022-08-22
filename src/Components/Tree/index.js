@@ -1,16 +1,21 @@
 import TreeView from '@material-ui/lab/TreeView'
 import TreeItem from '@material-ui/lab/TreeItem';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
-function Tree({structure}) {
+
+function Tree({ structure }) {
     console.log('props')
     console.log(structure);
 
     function GetNode(n) {
+        console.log("get node")
+        console.log(n)
         return (
             n && n.nodes && n.nodes.map(x => {
                 return (
-                    <TreeItem label={x.name} >
-                     {GetNode(x)}
+                    <TreeItem nodeId={x.id.toString()} label={x.name} >
+                        {GetNode(x)}
                     </TreeItem>
                 )
             })
@@ -18,10 +23,16 @@ function Tree({structure}) {
         )
     }
 
+
     return (
         <div>
             <p>Tree1</p>
-            <TreeView>
+            <TreeView
+                aria-label="file system navigator"
+                defaultCollapseIcon={<ExpandMoreIcon />}
+                defaultExpandIcon={<ChevronRightIcon />}
+                sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
+            >
                 {GetNode(structure)}
             </TreeView>
             <p>endtree</p>
