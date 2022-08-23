@@ -19,7 +19,7 @@ function Tree({ structure }) {
         return (
             n && n.nodes && n.nodes.map(x => {
                 return (
-                    <TreeItem nodeId={x.id.toString()} label={x.name} >
+                    <TreeItem nodeId={x.id.toString()} contextmenuId={x.id} label={x.name} >
                         {GetNode(x)}
                     </TreeItem>
                 )
@@ -31,7 +31,7 @@ function Tree({ structure }) {
     const menuItems = [
         {
             text: 'Add new tree item',
-            onclick: (e,k) => { console.log(e); console.log(k); }
+            onclick: (e, k) => { console.log(e); console.log(k); }
         },
         {
             text: 'Delete',
@@ -52,7 +52,7 @@ function Tree({ structure }) {
             >
                 {GetNode(structure)}
             </TreeView>
-            {/* <ContextMenu parentRef={containerRef} items={menuItems}></ContextMenu> */}
+            <ContextMenu parentRef={containerRef} items={menuItems}></ContextMenu>
             <p>endtree</p>
 
         </div>
