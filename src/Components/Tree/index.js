@@ -4,14 +4,25 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TreeItem from '@mui/lab/TreeItem';
 import './index.css'
 import ContextMenu from './ContextMenu';
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
+import AddNodeModal from './AddNodeModal';
 
 
 
 function Tree({ structure }) {
     console.log('props')
     console.log(structure);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [selectedNode, setSelectedNode] = useState("1");
+
     const containerRef = useRef(null);
+
+
+    const handleModalClose = () => {
+        setModalOpen(false);
+    }
+    const handleModalOpen = () => { setModalOpen(true); }
+
 
     function GetNode(n) {
         console.log("get node")
@@ -31,7 +42,7 @@ function Tree({ structure }) {
     const menuItems = [
         {
             text: 'Add new tree item',
-            onclick: (e, k) => { console.log(e); console.log(k); }
+            onclick: (id) => { setSelectedNode(id); handleModalOpen(); }
         },
         {
             text: 'Delete',
@@ -53,6 +64,8 @@ function Tree({ structure }) {
                 {GetNode(structure)}
             </TreeView>
             <ContextMenu parentRef={containerRef} items={menuItems}></ContextMenu>
+            <AddNodeModal open={modalOpen} selectedTreeNode={selectedNode} handleModalClose={handleModalClose} />
+
             <p>endtree</p>
 
         </div>
