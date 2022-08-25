@@ -8,8 +8,15 @@ async function getTree() {
     return response.data;
 }
 
-const service={
-    getTree
+async function addNode(parentId, name) {
+    console.log("parentId"); console.log(parentId)
+    const data = { parentId: parentId, name: name }
+    const response = await axios.post(`${config.PATH_BASE}/Tree`, data)
+}
+
+const service = {
+    getTree,
+    addNode
 }
 
 export default service

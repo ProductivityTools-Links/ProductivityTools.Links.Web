@@ -39,6 +39,21 @@ function Tree({ structure }) {
         )
     }
 
+    function GetNode2(n) {
+        console.log("get node")
+        console.log(n)
+        return (
+            n && n.nodes && n.nodes.map(x => {
+                return (<p>
+                    <p>{x.name}</p>
+                    <p>{GetNode2(x)}</p>
+                </p>
+                )
+            })
+
+        )
+    }
+
     const menuItems = [
         {
             text: 'Add new tree item',
@@ -55,6 +70,7 @@ function Tree({ structure }) {
     return (
         <div ref={containerRef}>
             <p>Tree1</p>
+            <p>{selectedNode}</p>
             <TreeView
                 aria-label="file system navigator"
                 defaultCollapseIcon={<ExpandMoreIcon />}
@@ -63,11 +79,12 @@ function Tree({ structure }) {
             >
                 {GetNode(structure)}
             </TreeView>
+            
             <ContextMenu parentRef={containerRef} items={menuItems}></ContextMenu>
-            <AddNodeModal open={modalOpen} selectedTreeNode={selectedNode} handleModalClose={handleModalClose} />
+            <AddNodeModal open={modalOpen} selectedNode={selectedNode} handleModalClose={handleModalClose} />
 
             <p>endtree</p>
-
+            {GetNode2(structure)}
         </div>
     )
 }

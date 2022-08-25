@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
 import Modal from '@mui/material/Modal';
+import service from '../../services/api.js'
 
 export default function AddNodeModal(props) {
 
+    console.log(props);
     const [treeName, setTreeeName] = useState('new');
 
     const addNewItem = function () {
-        //    apiService.addTreeNode(Number(props.selectedTreeNode), treeName);
+        service.addNode(props.selectedNode, treeName)
+        // apiService.addTreeNode(Number(props.selectedTreeNode), treeName);
         props.handleModalClose();
     }
 
@@ -24,6 +27,7 @@ export default function AddNodeModal(props) {
             <input type='text' value={treeName} onChange={handleChange} />
             <button onClick={addNewItem}>Add</button>
             <button onClick={cancel}>Cancel</button>
+            <button onClick={cancel}>{props.selectedNode}</button>
         </div>
     )
     return <Modal
