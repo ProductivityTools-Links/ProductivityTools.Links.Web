@@ -3,3 +3,5 @@ function Links(){
         <div>links</div>
     )
 }
+
+export default Links;

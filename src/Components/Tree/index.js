@@ -84,7 +84,7 @@ function Tree({ structure }) {
             <AddNodeModal open={modalOpen} selectedNode={selectedNode} handleModalClose={handleModalClose} />
 
             <p>endtree</p>
-            {GetNode2(structure)}
+            {/* {GetNode2(structure)} */}
         </div>
     )
 }

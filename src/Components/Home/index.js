@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import service from '../../services/api.js'
 import Tree from '../Tree/index.js';
 import { StyledEngineProvider } from '@mui/material/styles';
+import Links from '../Links'
 
 
 function Home() {
@@ -23,12 +24,7 @@ function Home() {
                     <Tree structure={data}></Tree>
             </div>
             <div>{data && data.id}</div>
-            <div>
-                {data && data.nodes && data.nodes.map(x => {
-                    return (<p>{x.name}</p>)
-                })
-                }
-            </div>
+       <Links></Links>
 
         </div>
     )
