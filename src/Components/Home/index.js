@@ -21,10 +21,12 @@ function Home() {
         <div>
             <div>pawel</div>
             <div style={{ width: '200px', float: 'left' }}>
-                    <Tree structure={data}></Tree>
+                <Tree structure={data}></Tree>
             </div>
-            <div>{data && data.id}</div>
-       <Links></Links>
+            <div style={{ float: 'left' }}>
+                <Links></Links>
+            </div>
+
 
         </div>
     )
