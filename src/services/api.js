@@ -14,9 +14,23 @@ async function addNode(parentId, name) {
     const response = await axios.post(`${config.PATH_BASE}/Tree`, data)
 }
 
+async function getLinks(){
+    console.log("getLinks")
+    const response=await axios.get(`${config.PATH_BASE}/Link`);
+    return response.data;
+}
+
+async function addLink(parentId, name, url, description) {
+    console.log("addLink")
+    const data = { parentId: parentId, name: name, url: url, description: description }
+    const response= await axios.post(`${config.PATH_BASE}/Link`, data)
+}
+
 const service = {
     getTree,
-    addNode
+    addNode,
+    getLinks,
+    addLink
 }
 
 export default service

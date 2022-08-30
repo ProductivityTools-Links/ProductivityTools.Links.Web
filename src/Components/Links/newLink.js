@@ -3,6 +3,10 @@ import { useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
+import service from '../../services/api.js'
+
+
+
 function NewLink(props) {
 
     const [newLink, setNewLink] = useState({ name: '', url: '', description: '' })
@@ -15,7 +19,7 @@ function NewLink(props) {
     }
 
     const createNew = () => {
-
+        service.addLink(5, newLink.name, newLink.url, newLink.description)
     }
 
     return (
