@@ -10,8 +10,8 @@ import AddNodeModal from './AddNodeModal';
 
 
 function Tree({ structure }) {
-    console.log('props')
-    console.log(structure);
+    //console.log('props')
+    //console.log(structure);
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedNode, setSelectedNode] = useState("1");
 
@@ -25,8 +25,8 @@ function Tree({ structure }) {
 
 
     function GetNode(n) {
-        console.log("get node")
-        console.log(n)
+       // console.log("get node")
+      // console.log(n)
         return (
             n && n.nodes && n.nodes.map(x => {
                 return (
@@ -40,8 +40,8 @@ function Tree({ structure }) {
     }
 
     function GetNode2(n) {
-        console.log("get node")
-        console.log(n)
+       // console.log("get node")
+        //console.log(n)
         return (
             n && n.nodes && n.nodes.map(x => {
                 return (<p>
