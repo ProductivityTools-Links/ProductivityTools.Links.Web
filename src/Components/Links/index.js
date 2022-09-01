@@ -5,7 +5,7 @@ import NewLink from './NewLink'
 import service from '../../services/api';
 import LinkItem from './LinkItem';
 
-function Links() {
+function Links({ selectedNode }) {
 
     const [mode, setMode] = useState('list')
     const [links, setLinks] = useState([])
@@ -24,6 +24,7 @@ function Links() {
         return (
 
             <div>
+                <span>Currently selected node: {selectedNode && selectedNode.name}</span>
                 {links && links.map(x => <LinkItem item={x} />)}
                 <Button variant="contained" onClick={() => setMode('new')}>Add New</Button>
                 <span>List of Links</span>

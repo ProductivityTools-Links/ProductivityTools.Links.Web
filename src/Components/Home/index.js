@@ -21,12 +21,12 @@ function Home() {
     return (
         <div>
             <div>pawel</div>
-            <div>selectedNode: {selectedNode}</div>
+            <div>selectedNode: {selectedNode && selectedNode.id}</div>
             <div style={{ width: '200px', float: 'left' }}>
                 <Tree structure={data} setSelectedNode={setSelectedNode} selectedNode={selectedNode}></Tree>
             </div>
             <div style={{ float: 'left' }}>
-                <Links></Links>
+                <Links selectedNode={selectedNode} />
             </div>
 
 

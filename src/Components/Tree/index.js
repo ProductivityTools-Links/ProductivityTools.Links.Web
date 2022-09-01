@@ -54,14 +54,34 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
         )
     }
 
+    const findNode = (nodes, id) => {
+        debugger;
+        for (let i = 0; i < nodes.length; i++) {
+            if (nodes[i].id == id) {
+                return nodes[i];
+            }
+            else {
+                let subresult = findNode(nodes[i].nodes, id)
+                if (subresult != null) {
+                    return subresult;
+                }
+            }
+        }
+    }
+
     const nodeSelect = (e, id) => {
-        setSelectedNode(id);
+        nodeSelectTree(id)
+    }
+
+    const nodeSelectTree = (id) => {
+        let node = findNode(structure.nodes, id)
+        setSelectedNode(node);
     }
 
     const menuItems = [
         {
             text: 'Add new tree item',
-            onclick: (id) => { setSelectedNode(id); handleModalOpen(); }
+            onclick: (id) => { nodeSelectTree(id); handleModalOpen(); }
         },
         {
             text: 'Delete',
@@ -74,7 +94,7 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
     return (
         <div ref={containerRef}>
             <p>Tree1</p>
-            <p>{selectedNode}</p>
+            <p>{selectedNode && selectedNode.id}</p>
             <TreeView
                 aria-label="file system navigator"
                 defaultCollapseIcon={<ExpandMoreIcon />}
