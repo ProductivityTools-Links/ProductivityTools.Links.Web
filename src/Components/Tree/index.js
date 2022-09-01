@@ -9,11 +9,11 @@ import AddNodeModal from './AddNodeModal';
 
 
 
-function Tree({ structure }) {
+function Tree({ structure, setSelectedNode, selectedNode }) {
     //console.log('props')
     //console.log(structure);
     const [modalOpen, setModalOpen] = useState(false);
-    const [selectedNode, setSelectedNode] = useState("1");
+    // const [selectedNode, setSelectedNode] = useState("1");
 
     const containerRef = useRef(null);
 
@@ -25,8 +25,8 @@ function Tree({ structure }) {
 
 
     function GetNode(n) {
-       // console.log("get node")
-      // console.log(n)
+        // console.log("get node")
+        // console.log(n)
         return (
             n && n.nodes && n.nodes.map(x => {
                 return (
@@ -40,7 +40,7 @@ function Tree({ structure }) {
     }
 
     function GetNode2(n) {
-       // console.log("get node")
+        // console.log("get node")
         //console.log(n)
         return (
             n && n.nodes && n.nodes.map(x => {
@@ -52,6 +52,10 @@ function Tree({ structure }) {
             })
 
         )
+    }
+
+    const nodeSelect = (e, id) => {
+        setSelectedNode(id);
     }
 
     const menuItems = [
@@ -75,11 +79,12 @@ function Tree({ structure }) {
                 aria-label="file system navigator"
                 defaultCollapseIcon={<ExpandMoreIcon />}
                 defaultExpandIcon={<ChevronRightIcon />}
+                onNodeSelect={nodeSelect}
             // sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
             >
                 {GetNode(structure)}
             </TreeView>
-            
+
             <ContextMenu parentRef={containerRef} items={menuItems}></ContextMenu>
             <AddNodeModal open={modalOpen} selectedNode={selectedNode} handleModalClose={handleModalClose} />
 

@@ -8,6 +8,7 @@ import Links from '../Links'
 function Home() {
 
     const [data, setData] = useState([])
+    const [selectedNode, setSelectedNode] = useState();
     useEffect(() => {
         const call = async () => {
             let r = await service.getTree();
@@ -20,8 +21,9 @@ function Home() {
     return (
         <div>
             <div>pawel</div>
+            <div>selectedNode: {selectedNode}</div>
             <div style={{ width: '200px', float: 'left' }}>
-                <Tree structure={data}></Tree>
+                <Tree structure={data} setSelectedNode={setSelectedNode} selectedNode={selectedNode}></Tree>
             </div>
             <div style={{ float: 'left' }}>
                 <Links></Links>
