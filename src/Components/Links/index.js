@@ -32,7 +32,7 @@ function Links({ selectedNode }) {
         )
     else {
         return (
-            <NewLink setMode={setMode} />
+            <NewLink setMode={setMode} selectedNode={selectedNode} />
         )
     }
 }
