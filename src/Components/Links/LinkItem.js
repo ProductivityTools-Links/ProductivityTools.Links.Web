@@ -1,11 +1,13 @@
+import Paper from '@mui/material/Paper';
+import Tooltip from '@mui/material/Tooltip';
+
+
 function LinkItem(props) {
     return (
-        <div>
-            <p>LinkItem</p>
-            <p><span>name: </span>{props.item.name}</p>
-            <p><span>url: </span>{props.item.url}</p>
-            <p><span>description: </span>{props.item.description}</p>
-        </div>
+        <Paper>
+            <span><Tooltip title={props.item.url}><a href={props.item.url}>{props.item.name}</a></Tooltip> </span><br/>
+            <span>description: {props.item.description} </span>
+        </Paper>
     )
 }
 

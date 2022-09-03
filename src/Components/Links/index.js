@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField';
 import NewLink from './NewLink'
 import service from '../../services/api';
 import LinkItem from './LinkItem';
+import Stack from '@mui/material/Stack'
 
 function Links({ selectedNode }) {
 
@@ -25,7 +26,9 @@ function Links({ selectedNode }) {
 
             <div>
                 <span>Currently selected node: {selectedNode && selectedNode.name}</span>
-                {links && links.map(x => <LinkItem item={x} />)}
+                <Stack spacing={2}>
+                    {links && links.map(x => <LinkItem item={x} />)}
+                </Stack>
                 <Button variant="contained" onClick={() => setMode('new')}>Add New</Button>
                 <span>List of Links</span>
             </div>
