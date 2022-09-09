@@ -14,9 +14,9 @@ async function addNode(parentId, name) {
     const response = await axios.post(`${config.PATH_BASE}/Tree`, data)
 }
 
-async function getLinks(){
+async function getLinks(selectedNodeId){
     console.log("getLinks")
-    const response=await axios.get(`${config.PATH_BASE}/Link`);
+    const response=await axios.get(`${config.PATH_BASE}/Link/${selectedNodeId}`);
     return response.data;
 }
 

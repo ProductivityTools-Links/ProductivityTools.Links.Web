@@ -55,7 +55,6 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
     }
 
     const findNode = (nodes, id) => {
-        debugger;
         for (let i = 0; i < nodes.length; i++) {
             if (nodes[i].id == id) {
                 return nodes[i];
