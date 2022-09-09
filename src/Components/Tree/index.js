@@ -1,11 +1,12 @@
 import TreeView from '@mui/lab/TreeView';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import TreeItem from '@mui/lab/TreeItem';
+
 import './index.css'
 import ContextMenu from './ContextMenu';
 import { useRef, useState } from 'react'
 import AddNodeModal from './AddNodeModal';
+import StyledTreeItem from './StyledTreeItem.js'
 
 
 
@@ -29,16 +30,17 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
         e.stopPropagation();
     }
 
+
+
     function GetNode(n) {
         // console.log("get node")
         // console.log(n)
         return (
             n && n.nodes && n.nodes.map(x => {
                 return (
-                    <TreeItem nodeId={x.id.toString()} contextmenuId={x.id} label={
-                        <button onClick={(e)=>treeLabelClick(e, x.id)}>{x.name}</button>} >
+                    <StyledTreeItem element={x} treeLabelClick={treeLabelClick}>
                         {GetNode(x)}
-                    </TreeItem >
+                    </StyledTreeItem>
                 )
             })
 
@@ -104,7 +106,7 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
                 aria-label="file system navigator"
                 defaultCollapseIcon={<ExpandMoreIcon />}
                 defaultExpandIcon={<ChevronRightIcon />}
-                // onNodeSelect={nodeSelect}
+            // onNodeSelect={nodeSelect}
             // sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
             >
                 {GetNode(structure)}

@@ -3,6 +3,8 @@ import service from '../../services/api.js'
 import Tree from '../Tree/index.js';
 import { StyledEngineProvider } from '@mui/material/styles';
 import Links from '../Links'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 
 function Home() {
@@ -49,13 +51,15 @@ function Home() {
             <div>pawel</div>
             <input onChange={(e) => filterData(e.target.value)}></input>
             {/* <div>{filter}</div> */}
-            <div>selectedNode: {selectedNode && selectedNode.id}</div>
-            <div style={{ width: '200px', float: 'left' }}>
-                <Tree structure={filteredData} setSelectedNode={setSelectedNode} selectedNode={selectedNode}></Tree>
-            </div>
-            <div style={{ float: 'left' }}>
-                <Links selectedNode={selectedNode} />
-            </div>
+            <DndProvider backend={HTML5Backend}>
+                <div>selectedNode: {selectedNode && selectedNode.id}</div>
+                <div style={{ width: '200px', float: 'left' }}>
+                    <Tree structure={filteredData} setSelectedNode={setSelectedNode} selectedNode={selectedNode}></Tree>
+                </div>
+                <div style={{ float: 'left' }}>
+                    <Links selectedNode={selectedNode} />
+                </div>
+            </DndProvider>
 
 
         </div>
