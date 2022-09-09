@@ -9,6 +9,7 @@ import AddNodeModal from './AddNodeModal';
 
 
 
+
 function Tree({ structure, setSelectedNode, selectedNode }) {
     //console.log('props')
     //console.log(structure);
@@ -23,6 +24,10 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
     }
     const handleModalOpen = () => { setModalOpen(true); }
 
+    const treeLabelClick = (e, id) => {
+        nodeSelectTree(id);
+        e.stopPropagation();
+    }
 
     function GetNode(n) {
         // console.log("get node")
@@ -30,9 +35,10 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
         return (
             n && n.nodes && n.nodes.map(x => {
                 return (
-                    <TreeItem nodeId={x.id.toString()} contextmenuId={x.id} label={x.name} >
+                    <TreeItem nodeId={x.id.toString()} contextmenuId={x.id} label={
+                        <button onClick={(e)=>treeLabelClick(e, x.id)}>{x.name}</button>} >
                         {GetNode(x)}
-                    </TreeItem>
+                    </TreeItem >
                 )
             })
 
@@ -68,9 +74,9 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
         }
     }
 
-    const nodeSelect = (e, id) => {
-        nodeSelectTree(id)
-    }
+    // const nodeSelect = (e, id) => {
+    //     nodeSelectTree(id)
+    // }
 
     const nodeSelectTree = (id) => {
         let node = findNode(structure.nodes, id)
@@ -98,7 +104,7 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
                 aria-label="file system navigator"
                 defaultCollapseIcon={<ExpandMoreIcon />}
                 defaultExpandIcon={<ChevronRightIcon />}
-                onNodeSelect={nodeSelect}
+                // onNodeSelect={nodeSelect}
             // sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
             >
                 {GetNode(structure)}
