@@ -8,13 +8,15 @@ import Links from '../Links'
 function Home() {
 
     const [data, setData] = useState(null)
+    const [filteredData, setFilteredData] = useState(null);
     const [selectedNode, setSelectedNode] = useState();
     // const [filter, setFilter] = useState();
     useEffect(() => {
         const call = async () => {
             let r = await service.getTree();
             console.log(r);
-            setData(r)
+            setData(r);
+            setFilteredData(r);
         }
         call();
     }, [])
@@ -23,9 +25,10 @@ function Home() {
     const getFilteredNodes = (nodes, filter) => {
         let result = [];
         for (var i = 0; i < nodes.length; i += 1) {
-            if (nodes[i].name.indexOf(filter) > -1) {
-                let tempNode = nodes[i];
-                tempNode.nodes = getFilteredNodes(tempNode.nodes, filter);
+            let tempNode = { ...nodes[i] };
+            tempNode.nodes = getFilteredNodes(tempNode.nodes, filter);
+
+            if (nodes[i].name.indexOf(filter) > -1 || tempNode.nodes.length > 0) {
                 result.push(tempNode)
             }
         }
@@ -33,10 +36,12 @@ function Home() {
     }
 
     const filterData = (filter) => {
-        debugger;
-        let copyData = { ...data };
-        copyData.nodes = getFilteredNodes(data.nodes, filter);
-        setData(copyData);
+        setFilteredData(data);
+        if (filter != "") {
+            let copyData = { ...data };
+            copyData.nodes = getFilteredNodes(data.nodes, filter);
+            setFilteredData(copyData);
+        }
     }
 
     return (
@@ -46,7 +51,7 @@ function Home() {
             {/* <div>{filter}</div> */}
             <div>selectedNode: {selectedNode && selectedNode.id}</div>
             <div style={{ width: '200px', float: 'left' }}>
-                <Tree structure={data} setSelectedNode={setSelectedNode} selectedNode={selectedNode}></Tree>
+                <Tree structure={filteredData} setSelectedNode={setSelectedNode} selectedNode={selectedNode}></Tree>
             </div>
             <div style={{ float: 'left' }}>
                 <Links selectedNode={selectedNode} />
