@@ -27,7 +27,7 @@ function Links({ selectedNode }) {
             <div>
                 <span>Currently selected node: {selectedNode && selectedNode.name}</span>
                 <Stack spacing={2}>
-                    {links && links.map(x => <LinkItem item={x} />)}
+                    {links && links.map(x => <LinkItem link={x} />)}
                 </Stack>
                 <Button variant="contained" onClick={() => setMode('new')}>Add New</Button>
                 <span>List of Links</span>

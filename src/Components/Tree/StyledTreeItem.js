@@ -17,7 +17,7 @@ function StyledTreeItem({ element, treeLabelClick, ...rest }) {
     const [{ isOver }, drop] = useDrop(
         () => ({
             accept: 'treeItem',
-            drop: (e) => console.log(e, element),
+            drop: (e,x) => console.log(e, element, x),
             collect: (monitor) => ({
                 isOver: !!monitor.isOver()
             })
