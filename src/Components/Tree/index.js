@@ -7,6 +7,7 @@ import ContextMenu from './ContextMenu';
 import { useRef, useState } from 'react'
 import AddNodeModal from './AddNodeModal';
 import StyledTreeItem from './StyledTreeItem.js'
+import TreeItem from '@mui/lab/TreeItem';
 
 
 
@@ -18,7 +19,6 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
     // const [selectedNode, setSelectedNode] = useState("1");
 
     const containerRef = useRef(null);
-
 
     const handleModalClose = () => {
         setModalOpen(false);
@@ -109,7 +109,9 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
             // onNodeSelect={nodeSelect}
             // sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
             >
-                {GetNode(structure)}
+                <TreeItem nodeId="2"  label={structure.login} treeLabelClick={treeLabelClick}>
+                    {GetNode(structure)}
+                </TreeItem>
             </TreeView>
 
             <ContextMenu parentRef={containerRef} items={menuItems}></ContextMenu>
