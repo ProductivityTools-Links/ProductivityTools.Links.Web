@@ -109,7 +109,7 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
             // onNodeSelect={nodeSelect}
             // sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
             >
-                <TreeItem nodeId="2"  label={structure.login} treeLabelClick={treeLabelClick}>
+                <TreeItem nodeId="2"  label={structure && structure.login}>
                     {GetNode(structure)}
                 </TreeItem>
             </TreeView>

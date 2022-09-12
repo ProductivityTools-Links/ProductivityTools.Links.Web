@@ -19,6 +19,8 @@ function Home() {
             console.log(r);
             setData(r);
             setFilteredData(r);
+            console.log(r);
+            setSelectedNode(r);
         }
         call();
     }, [])

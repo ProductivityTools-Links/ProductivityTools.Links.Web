@@ -13,10 +13,12 @@ function Links({ selectedNode }) {
 
     useEffect(() => {
         const call = async () => {
-            let r = await service.getLinks(selectedNode.id);
-            console.log("setLinks")
-            setLinks(r);
-            console.log(links);
+            if (selectedNode) {
+                let r = await service.getLinks(selectedNode.id);
+                console.log("setLinks")
+                setLinks(r);
+                console.log(links);
+            }
         }
         call();
     }, [selectedNode])
