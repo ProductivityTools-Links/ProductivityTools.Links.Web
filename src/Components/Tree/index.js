@@ -38,7 +38,7 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
         return (
             n && n.nodes && n.nodes.map(x => {
                 return (
-                    <StyledTreeItem element={x} treeLabelClick={treeLabelClick}>
+                    <StyledTreeItem element={x} key={x.id} treeLabelClick={treeLabelClick}>
                         {GetNode(x)}
                     </StyledTreeItem>
                 )
