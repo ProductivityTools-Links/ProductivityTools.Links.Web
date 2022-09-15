@@ -1,10 +1,18 @@
 import TreeItem from '@mui/lab/TreeItem';
 import { useDrag, useDrop } from 'react-dnd'
 import Box from '@mui/material/Box';
+import service from '../../services/api.js'
 
 
 
 function StyledTreeItem({ element, treeLabelClick, ...rest }) {
+
+    const moveItem = async (id, targetParentId) => {
+
+        console.log("moveItem", id, targetParentId);
+        await service.moveLink(id, targetParentId);
+    }
+
 
     const [{ isDragging }, drag] = useDrag(() => ({
         type: 'treeItem',
@@ -17,7 +25,7 @@ function StyledTreeItem({ element, treeLabelClick, ...rest }) {
     const [{ isOver }, drop] = useDrop(
         () => ({
             accept: 'treeItem',
-            drop: (e,x) => console.log(e, element, x),
+            drop: (e, x) => moveItem(e.id, element.id),
             collect: (monitor) => ({
                 isOver: !!monitor.isOver()
             })
