@@ -1,7 +1,10 @@
 import axios from 'axios'
 import { config } from '../config.js'
 
-
+async function getDate(){
+    const response=await axios.get(`${config.PATH_BASE}/Date`)
+    return response.data;
+}
 
 async function getTree() {
     const response = await axios.get(`${config.PATH_BASE}/Tree`)
@@ -37,6 +40,7 @@ async function moveTreeItem(id, targetParentId) {
 }
 
 const service = {
+    getDate,
     getTree,
     addNode,
     getLinks,
