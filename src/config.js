@@ -3,7 +3,7 @@ const dev = {
 }
 
 const prd = {
-    PATH_BASE:  'http://127.0.0.1:8080'
+    PATH_BASE: 'ptlinksprod.uw.r.appspot.com'
 }
 
 export const config = process.env.NODE_ENV === 'development' ? dev : prd;
