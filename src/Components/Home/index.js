@@ -16,7 +16,6 @@ function Home() {
     useEffect(() => {
         const call = async () => {
             let r = await service.getTree();
-       
             console.log(r);
             setData(r);
             setFilteredData(r);
@@ -42,6 +41,7 @@ function Home() {
 
     const filterData = (filter) => {
         setFilteredData(data);
+        console.log("filter data")
         if (filter != "") {
             let copyData = { ...data };
             copyData.nodes = getFilteredNodes(data.nodes, filter);

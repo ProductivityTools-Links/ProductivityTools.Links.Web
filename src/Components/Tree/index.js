@@ -26,6 +26,7 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
     const handleModalOpen = () => { setModalOpen(true); }
 
     const treeLabelClick = (e, id) => {
+        debugger;
         nodeSelectTree(id);
         e.stopPropagation();
     }
@@ -34,7 +35,7 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
 
     function GetNode(n) {
         // console.log("get node")
-        // console.log(n)
+        console.log(n)
         return (
             n && n.nodes && n.nodes.map(x => {
                 return (
@@ -63,6 +64,7 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
     }
 
     const findNode = (nodes, id) => {
+        debugger;
         for (let i = 0; i < nodes.length; i++) {
             if (nodes[i].id == id) {
                 return nodes[i];
@@ -81,8 +83,14 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
     // }
 
     const nodeSelectTree = (id) => {
-        let node = findNode(structure.nodes, id)
-        setSelectedNode(node);
+        debugger;
+        if (structure.id == id) {
+            setSelectedNode(structure)
+        }
+        else {
+            let node = findNode(structure.nodes, id)
+            setSelectedNode(node);
+        }
     }
 
     const menuItems = [
@@ -96,31 +104,37 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
         }
     ];
 
+    if (structure) {
 
+        return (
+            <div ref={containerRef}>
+                <p>Tree1</p>
+                <p>{selectedNode && selectedNode.id}</p>
+                <TreeView
+                    aria-label="file system navigator"
+                    defaultCollapseIcon={<ExpandMoreIcon />}
+                    defaultExpandIcon={<ChevronRightIcon />}
+                // onNodeSelect={nodeSelect}
+                // sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
+                >
+                    <TreeItem nodeId={structure.id} label={structure.login} contextmenuid={structure.id}>
+                        {GetNode(structure)}
+                    </TreeItem>
+                </TreeView>
 
-    return (
-        <div ref={containerRef}>
-            <p>Tree1</p>
-            <p>{selectedNode && selectedNode.id}</p>
-            <TreeView
-                aria-label="file system navigator"
-                defaultCollapseIcon={<ExpandMoreIcon />}
-                defaultExpandIcon={<ChevronRightIcon />}
-            // onNodeSelect={nodeSelect}
-            // sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
-            >
-                <TreeItem nodeId="2"  label={structure && structure.login}>
-                    {GetNode(structure)}
-                </TreeItem>
-            </TreeView>
+                <ContextMenu parentRef={containerRef} items={menuItems}></ContextMenu>
+                <AddNodeModal open={modalOpen} selectedNode={selectedNode} handleModalClose={handleModalClose} />
 
-            <ContextMenu parentRef={containerRef} items={menuItems}></ContextMenu>
-            <AddNodeModal open={modalOpen} selectedNode={selectedNode} handleModalClose={handleModalClose} />
+                <p>endtree</p>
+                {GetNode2(structure)}
+            </div>
+        )
+    }
+    else
+    {
+        <div>waiting for structure</div>
+    }
 
-            <p>endtree</p>
-            {/* {GetNode2(structure)} */}
-        </div>
-    )
 }
 
 export default Tree

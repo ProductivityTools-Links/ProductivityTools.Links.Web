@@ -33,7 +33,7 @@ function StyledTreeItem({ element, treeLabelClick, ...rest }) {
     )
 
     return (
-        <TreeItem ref={drag} {...rest} nodeId={element.id.toString()} contextmenuId={element.id}
+        <TreeItem ref={drag} {...rest} nodeId={element.id.toString()} contextmenuid={element.id}
             label={<Box ref={drop}>
                 <button onClick={(e) => treeLabelClick(e, element.id)}>{element.name}</button>
                 <span>{isDragging && '😱'}</span>

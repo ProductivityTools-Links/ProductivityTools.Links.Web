@@ -17,7 +17,7 @@ const ContextMenu = ({ parentRef, items }) => {
 
         console.log(parentRef);
 
-        const showMenu = (event,x) => {
+        const showMenu = (event, x) => {
             console.log("event")
             console.log(event);
             console.log(x);
@@ -57,7 +57,7 @@ const ContextMenu = ({ parentRef, items }) => {
             {items.map((item, index) => {
                 return (
                     <div key={index}
-                        onClick={() => item.onclick(selectedTreeId)}
+                        onClick={() => {  item.onclick(selectedTreeId) }}
                         className='context-menuItem'>
                         {item.text}
                     </div>
