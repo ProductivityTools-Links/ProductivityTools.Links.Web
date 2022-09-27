@@ -16,6 +16,7 @@ function Home() {
     useEffect(() => {
         const call = async () => {
             let r = await service.getTree();
+       
             console.log(r);
             setData(r);
             setFilteredData(r);
