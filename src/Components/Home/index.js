@@ -5,6 +5,9 @@ import { StyledEngineProvider } from '@mui/material/styles';
 import Links from '../Links'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
+import { auth } from '../../Session/firebase'
+import Login from '../../Session/login'
+
 
 
 function Home() {
@@ -21,9 +24,12 @@ function Home() {
             setFilteredData(r);
             console.log(r);
             setSelectedNode(r);
+            
         }
-        call();
-    }, [])
+       // call();
+       console.log(auth.currentUser);
+       debugger;
+    }, [auth.currentUser])
 
 
     const getFilteredNodes = (nodes, filter) => {
@@ -49,24 +55,44 @@ function Home() {
         }
     }
 
-    return (
-        <div>
-            <div>pawel</div>
-            <input onChange={(e) => filterData(e.target.value)}></input>
-            {/* <div>{filter}</div> */}
-            <DndProvider backend={HTML5Backend}>
-                <div>selectedNode: {selectedNode && selectedNode.id}</div>
-                <div style={{ width: '200px', float: 'left' }}>
-                    <Tree structure={filteredData} setSelectedNode={setSelectedNode} selectedNode={selectedNode}></Tree>
-                </div>
-                <div style={{ float: 'left' }}>
-                    <Links selectedNode={selectedNode} />
-                </div>
-            </DndProvider>
+    const loginAction = () => {
+        console.log("loginaction")
+
+    }
+
+    const logoutAction = () => {
+        console.log("logoutaction")
+    }
+
+    if (!auth.currentUser) {
+        return(
+            <Login/>
+        )
+    }
+    else {
 
 
-        </div>
-    )
+        return (
+            <div>
+                <div>pawel</div>
+                <div><button onClick={loginAction}>login</button></div>
+                <div><button onClick={logoutAction}>logout</button></div>
+                <input onChange={(e) => filterData(e.target.value)}></input>
+                {/* <div>{filter}</div> */}
+                <DndProvider backend={HTML5Backend}>
+                    <div>selectedNode: {selectedNode && selectedNode.id}</div>
+                    <div style={{ width: '200px', float: 'left' }}>
+                        <Tree structure={filteredData} setSelectedNode={setSelectedNode} selectedNode={selectedNode}></Tree>
+                    </div>
+                    <div style={{ float: 'left' }}>
+                        <Links selectedNode={selectedNode} />
+                    </div>
+                </DndProvider>
+
+
+            </div>
+        )
+    }
 }
 
 export default Home;
