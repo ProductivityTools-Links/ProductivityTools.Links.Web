@@ -5,7 +5,7 @@ import { StyledEngineProvider } from '@mui/material/styles';
 import Links from '../Links'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import { auth } from '../../Session/firebase'
+import { auth, logout } from '../../Session/firebase'
 import Login from '../../Session/login'
 
 
@@ -15,6 +15,7 @@ function Home() {
     const [data, setData] = useState(null)
     const [filteredData, setFilteredData] = useState(null);
     const [selectedNode, setSelectedNode] = useState();
+    const [user,setUser]=useState(null);
     // const [filter, setFilter] = useState();
     useEffect(() => {
         const call = async () => {
@@ -24,12 +25,12 @@ function Home() {
             setFilteredData(r);
             console.log(r);
             setSelectedNode(r);
-            
+
         }
-       // call();
-       console.log(auth.currentUser);
-       debugger;
-    }, [auth.currentUser])
+        // call();
+        console.log(auth.currentUser);
+        debugger;
+    }, [user])
 
 
     const getFilteredNodes = (nodes, filter) => {
@@ -62,11 +63,16 @@ function Home() {
 
     const logoutAction = () => {
         console.log("logoutaction")
+        logout();
+        setUser(null);
     }
 
-    if (!auth.currentUser) {
-        return(
-            <Login/>
+    console.log(auth);
+    console.log(auth.currentUser);
+    debugger;
+    if (!user) {
+        return (
+            <Login setUser={setUser}/>
         )
     }
     else {
