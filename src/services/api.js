@@ -1,14 +1,28 @@
 import axios from 'axios'
 import { config } from '../config.js'
 
-async function getDate(){
-    const response=await axios.get(`${config.PATH_BASE}/Date`)
+
+async function invokeCall(call) {
+    let token = localStorage.getItem('token')
+    console.log("token from localstorage", token)
+    const header = { headers: { Authorization: `Bearer ${token}` } }
+    const response = call(header);
+    return response;
+}
+
+async function getDate() {
+    const response = await axios.get(`${config.PATH_BASE}/Date`)
     return response.data;
 }
 
 async function getTree() {
-    const response = await axios.get(`${config.PATH_BASE}/Tree`)
-    return response.data;
+
+    let call = async (header) => {
+        //const response = await axios.post(`${config.PATH_BASE}pallet`, pallet, header)
+        const response = await axios.get(`${config.PATH_BASE}/Tree`, header)
+        return response.data;
+    }
+    return invokeCall(call);
 }
 
 async function addNode(parentId, name) {

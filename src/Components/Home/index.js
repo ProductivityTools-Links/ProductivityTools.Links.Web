@@ -27,7 +27,7 @@ function Home() {
             setSelectedNode(r);
 
         }
-        // call();
+        call();
         console.log(auth.currentUser);
         debugger;
     }, [user])
