@@ -8,21 +8,21 @@ import {
 } from "firebase/auth";
 
 const devfirebaseConfig = {
-    apiKey: "AIzaSyAxi8kuV5eGHQryz8RTmJrq6LNDk65Gbwk",
-    authDomain: "pttechbricksprod.firebaseapp.com",
-    projectId: "pttechbricksprod",
-    storageBucket: "pttechbricksapi-347809.appspot.com",
-    messagingSenderId: "209178581855",
-    appId: "1:209178581855:web:3b4141de71f0f6634a74ea"
+    apiKey: "AIzaSyAKD7AagdCuXkEtc_IG8MQGwOfhiqLZohw",
+    authDomain: "ptlinksprod.firebaseapp.com",
+    projectId: "ptlinksprod",
+    storageBucket: "ptlinksprod.appspot.com",
+    messagingSenderId: "488456392633",
+    appId: "1:488456392633:web:f2b83882cb3b34a3a9b068"
 };
 
 const prodfirebaseConfig = {
-    apiKey: "AIzaSyAxi8kuV5eGHQryz8RTmJrq6LNDk65Gbwk",
-    authDomain: "pttechbricksprod.firebaseapp.com",
-    projectId: "pttechbricksprod",
-    storageBucket: "pttechbricksprod.appspot.com",
-    messagingSenderId: "211819962172",
-    appId: "1:211819962172:web:b11f994d6d86dec2d2c839"
+    apiKey: "AIzaSyAKD7AagdCuXkEtc_IG8MQGwOfhiqLZohw",
+    authDomain: "ptlinksprod.firebaseapp.com",
+    projectId: "ptlinksprod",
+    storageBucket: "ptlinksprod.appspot.com",
+    messagingSenderId: "488456392633",
+    appId: "1:488456392633:web:f2b83882cb3b34a3a9b068"
 };
 
 
