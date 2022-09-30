@@ -53,6 +53,11 @@ async function moveTreeItem(id, targetParentId) {
     const response = await axios.post(`${config.PATH_BASE}/Relation`, data)
 }
 
+async function getAccounts(){
+    const response=await axios.get(`${config.PATH_BASE}/AccountList`);
+    return response.data;
+}
+
 const service = {
     getDate,
     getTree,
@@ -60,7 +65,8 @@ const service = {
     getLinks,
     addLink,
     moveLink,
-    moveTreeItem
+    moveTreeItem,
+    getAccounts
 }
 
 export default service
