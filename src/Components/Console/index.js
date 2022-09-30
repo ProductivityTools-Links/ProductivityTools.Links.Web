@@ -6,6 +6,8 @@ import Links from '../Links'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { auth, logout, getToken } from '../../Session/firebase'
+import Token from '../Token'
+
 
 
 
@@ -15,7 +17,8 @@ function Console() {
     const [filteredData, setFilteredData] = useState(null);
     const [selectedNode, setSelectedNode] = useState();
 
-    const [token, setToken] = useState();
+    const [date, setDate] = useState(new Date().getTime());
+
 
     // const [filter, setFilter] = useState();
     useEffect(() => {
@@ -28,14 +31,6 @@ function Console() {
             setSelectedNode(r);
         }
         call();
-
-
-        const userToken = async () => {
-            let token = localStorage.getItem('token');
-            setToken(token);
-        }
-
-        userToken();
 
     }, [])
 
@@ -71,15 +66,13 @@ function Console() {
     const logoutAction = () => {
         console.log("logoutaction")
         logout();
-        let token = getToken();
-        setToken(token);
+        setDate(new Date().getTime());
     }
 
     return (
         <div>
             <div>pawel <a href="/">Home</a></div>
-            <div> UserToken: {token}</div>
-            <div><button onClick={loginAction}>login</button></div>
+            <Token date={date} />
             <div><button onClick={logoutAction}>logout</button></div>
             <input onChange={(e) => filterData(e.target.value)}></input>
             {/* <div>{filter}</div> */}
