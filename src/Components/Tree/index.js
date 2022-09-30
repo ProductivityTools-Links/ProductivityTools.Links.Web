@@ -48,20 +48,20 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
         )
     }
 
-    function GetNode2(n) {
-        // console.log("get node")
-        //console.log(n)
-        return (
-            n && n.nodes && n.nodes.map(x => {
-                return (<p>
-                    <p>{x.name}</p>
-                    <p>{GetNode2(x)}</p>
-                </p>
-                )
-            })
+    // function GetNode2(n) {
+    //     // console.log("get node")
+    //     //console.log(n)
+    //     return (
+    //         n && n.nodes && n.nodes.map(x => {
+    //             return (<div>
+    //                 <p>{x.name}</p>
+    //                 <p>{GetNode2(x)}</p>
+    //             </div>
+    //             )
+    //         })
 
-        )
-    }
+    //     )
+    // }
 
     const findNode = (nodes, id) => {
         debugger;
@@ -117,7 +117,7 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
                 // onNodeSelect={nodeSelect}
                 // sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
                 >
-                    <TreeItem nodeId={structure.id} label={structure.login} contextmenuid={structure.id}>
+                    <TreeItem nodeId={structure.id.toString()} label={structure.login} contextmenuid={structure.id}>
                         {GetNode(structure)}
                     </TreeItem>
                 </TreeView>
@@ -126,7 +126,7 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
                 <AddNodeModal open={modalOpen} selectedNode={selectedNode} handleModalClose={handleModalClose} />
 
                 <p>endtree</p>
-                {GetNode2(structure)}
+                {/* {GetNode2(structure)} */}
             </div>
         )
     }

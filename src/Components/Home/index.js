@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import service from "../../services/api";
 import { auth, logout, getToken } from '../../Session/firebase'
 import Login from '../../Session/login'
+import Token from '../Token'
 
 
 
@@ -11,7 +12,7 @@ function Home() {
     const [user, setUser] = useState(null);
 
 
-    const [token, setToken] = useState();
+    const [date, setDate] = useState(new Date().getTime());
 
     useEffect(() => {
 
@@ -22,26 +23,19 @@ function Home() {
         }
 
         call();
-
-        const token = async () => {
-            let token = getToken();
-            setToken(token);
-        }
-
-        token();
-
     }, [])
 
-
-
-    console.log(auth);
-    console.log(auth.currentUser);
+    const logoutAction = () => {
+        console.log("logoutaction")
+        logout();
+        setDate(new Date().getTime());
+    }
 
     if (!user) {
         return (
             <div>
                 <Login setUser={setUser} />
-                <p>Token: {token}</p>
+                <Token />
             </div>
         )
     }
@@ -54,7 +48,8 @@ function Home() {
                         <div key={x.login}><a href={x.login}> {x.login}</a></div>
                     )
                 })}
-                <p>Token: {token}</p>
+                <div><button onClick={logoutAction}>logout</button></div>
+                <Token date={date} />
             </div>
         )
     }
