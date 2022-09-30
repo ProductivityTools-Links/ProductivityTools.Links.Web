@@ -1,12 +1,12 @@
 import { auth, signInWithGoogle } from "./firebase"
 
-export default function Login({ setUser }) {
+export default function Login({ callback }) {
 
 
     const signIn = async () => {
         let user = await signInWithGoogle();
         if (user) {
-            setUser(user);
+            callback(user);
         }
     }
 

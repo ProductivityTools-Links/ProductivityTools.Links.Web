@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import service from "../../services/api";
-import { auth, logout, getToken } from '../../Session/firebase'
+import { auth, logout, tokenExpired } from '../../Session/firebase'
 import Login from '../../Session/login'
 import Token from '../Token'
 
@@ -9,10 +9,8 @@ import Token from '../Token'
 function Home() {
 
     const [accounts, setAccounts] = useState([]);
-    const [user, setUser] = useState(null);
-
-
     const [date, setDate] = useState(new Date().getTime());
+    const [tokenExpiredState, setTokenExpiredState] = useState(true);
 
     useEffect(() => {
 
@@ -23,6 +21,7 @@ function Home() {
         }
 
         call();
+        loginPerformed();
     }, [])
 
     const logoutAction = () => {
@@ -31,11 +30,15 @@ function Home() {
         setDate(new Date().getTime());
     }
 
-    if (!user) {
+    const loginPerformed = () => {
+        setTokenExpiredState(tokenExpired());
+    }
+
+    if (tokenExpiredState) {
         return (
             <div>
-                <Login setUser={setUser} />
-                <Token />
+                <Login callback={loginPerformed} />
+                <Token date={date} />
             </div>
         )
     }

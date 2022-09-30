@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { auth, logout, getToken } from '../../Session/firebase'
+import { auth, logout, getToken, tokenExpired } from '../../Session/firebase'
+
+
 
 
 function Token({ date }) {
@@ -15,10 +17,13 @@ function Token({ date }) {
         token();
     }, [date])
 
+
     return (
         <div>
             <div>TokenXX: {token}</div>
             <div>date: {date}</div>
+
+            <div>isExpired is:{tokenExpired().toString()}</div>
         </div>
     )
 }

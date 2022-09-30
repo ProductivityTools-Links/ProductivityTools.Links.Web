@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { isJwtExpired } from 'jwt-check-expiration';
 
 import {
     GoogleAuthProvider,
@@ -27,7 +28,7 @@ const prodfirebaseConfig = {
 
 
 // Initialize Firebase
-const configName=process.env.NODE_ENV === 'development' ? devfirebaseConfig : prodfirebaseConfig;
+const configName = process.env.NODE_ENV === 'development' ? devfirebaseConfig : prodfirebaseConfig;
 const app = initializeApp(configName);
 const auth = getAuth(app);
 
@@ -53,14 +54,26 @@ const logout = () => {
     localStorage.removeItem("token")
 };
 
-const getToken=()=>{
+const getToken = () => {
     let token = localStorage.getItem('token');
     return token;
+}
+
+const tokenExpired = () => {
+    let token = localStorage.getItem('token');
+    if (token) {
+        let result = isJwtExpired(token)
+        return result;
+    }
+    else {
+        return true;
+    }
 }
 
 export {
     auth,
     signInWithGoogle,
     logout,
-    getToken
+    getToken,
+    tokenExpired
 };
