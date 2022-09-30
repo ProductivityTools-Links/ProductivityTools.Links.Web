@@ -5,8 +5,7 @@ import { StyledEngineProvider } from '@mui/material/styles';
 import Links from '../Links'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import { auth, logout } from '../../Session/firebase'
-import Login from '../../Session/login'
+import { auth, logout, getToken } from '../../Session/firebase'
 
 
 
@@ -15,7 +14,9 @@ function Console() {
     const [data, setData] = useState(null)
     const [filteredData, setFilteredData] = useState(null);
     const [selectedNode, setSelectedNode] = useState();
-    const [user,setUser]=useState(null);
+
+    const [token, setToken] = useState();
+
     // const [filter, setFilter] = useState();
     useEffect(() => {
         const call = async () => {
@@ -25,12 +26,18 @@ function Console() {
             setFilteredData(r);
             console.log(r);
             setSelectedNode(r);
-
         }
         call();
-        console.log(auth.currentUser);
-        debugger;
-    }, [user])
+
+
+        const userToken = async () => {
+            let token = localStorage.getItem('token');
+            setToken(token);
+        }
+
+        userToken();
+
+    }, [])
 
 
     const getFilteredNodes = (nodes, filter) => {
@@ -64,41 +71,32 @@ function Console() {
     const logoutAction = () => {
         console.log("logoutaction")
         logout();
-        setUser(null);
+        let token = getToken();
+        setToken(token);
     }
 
-    console.log(auth);
-    console.log(auth.currentUser);
-    debugger;
-    if (!user) {
-        return (
-            <Login setUser={setUser}/>
-        )
-    }
-    else {
+    return (
+        <div>
+            <div>pawel <a href="/">Home</a></div>
+            <div> UserToken: {token}</div>
+            <div><button onClick={loginAction}>login</button></div>
+            <div><button onClick={logoutAction}>logout</button></div>
+            <input onChange={(e) => filterData(e.target.value)}></input>
+            {/* <div>{filter}</div> */}
+            <DndProvider backend={HTML5Backend}>
+                <div>selectedNode: {selectedNode && selectedNode.id}</div>
+                <div style={{ width: '200px', float: 'left' }}>
+                    <Tree structure={filteredData} setSelectedNode={setSelectedNode} selectedNode={selectedNode}></Tree>
+                </div>
+                <div style={{ float: 'left' }}>
+                    <Links selectedNode={selectedNode} />
+                </div>
+            </DndProvider>
 
 
-        return (
-            <div>
-                <div>pawel</div>
-                <div><button onClick={loginAction}>login</button></div>
-                <div><button onClick={logoutAction}>logout</button></div>
-                <input onChange={(e) => filterData(e.target.value)}></input>
-                {/* <div>{filter}</div> */}
-                <DndProvider backend={HTML5Backend}>
-                    <div>selectedNode: {selectedNode && selectedNode.id}</div>
-                    <div style={{ width: '200px', float: 'left' }}>
-                        <Tree structure={filteredData} setSelectedNode={setSelectedNode} selectedNode={selectedNode}></Tree>
-                    </div>
-                    <div style={{ float: 'left' }}>
-                        <Links selectedNode={selectedNode} />
-                    </div>
-                </DndProvider>
-
-
-            </div>
-        )
-    }
+        </div>
+    )
 }
+
 
 export default Console;

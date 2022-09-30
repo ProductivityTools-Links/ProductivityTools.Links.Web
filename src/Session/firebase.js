@@ -53,9 +53,14 @@ const logout = () => {
     localStorage.removeItem("token")
 };
 
+const getToken=()=>{
+    let token = localStorage.getItem('token');
+    return token;
+}
 
 export {
     auth,
     signInWithGoogle,
     logout,
+    getToken
 };

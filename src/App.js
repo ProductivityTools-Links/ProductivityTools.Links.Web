@@ -16,11 +16,13 @@ function App() {
       <StyledEngineProvider injectFirst>
         <BrowserRouter>
           <Routes>
-            <Route path='/login' element={<Login />} />
-            <Route path='/' element={<Home />} />
+            <Route path='/login' element={<Login />} />     
             <Route path='/Console' element={<Console />} />
             <Route path='/Date' element={<Date />} />
+            <Route path='/' element={<Home />} />
+            <Route path='/:login' element={<Console />} />
           </Routes>
+          
         </BrowserRouter>
       </StyledEngineProvider>
     </div>
