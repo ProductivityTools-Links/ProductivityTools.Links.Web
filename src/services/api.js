@@ -1,6 +1,23 @@
 import axios from 'axios'
 import { config } from '../config.js'
+import { toast } from 'react-toastify';
 
+
+async function invokeCallWithToast(call, pendingMessage, successMessage) {
+    return toast.promise(
+        invokeCall(call),
+        {
+            pending: pendingMessage ? pendingMessage : "Missing pending message",
+            success: successMessage ? successMessage : "Missing sucesss message",
+            error: {
+                render({ data }) {
+                    console.log(data);
+                    return <p>{data.message} [{data.response.data.message}]</p>
+                }
+            }
+        }
+    )
+}
 
 
 async function invokeCall(call) {
@@ -59,7 +76,7 @@ async function getAccounts() {
         const response = await axios.get(`${config.PATH_BASE}/AccountList`, header);
         return response.data;
     }
-    let r = invokeCall(call);
+    let r = invokeCallWithToast(call, "Getting accounts", "Accounts retrieved");
     return r;
 }
 
