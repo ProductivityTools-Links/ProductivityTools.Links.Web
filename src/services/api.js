@@ -2,6 +2,7 @@ import axios from 'axios'
 import { config } from '../config.js'
 
 
+
 async function invokeCall(call) {
     let token = localStorage.getItem('token')
     console.log("token from localstorage", token)
@@ -53,9 +54,13 @@ async function moveTreeItem(id, targetParentId) {
     const response = await axios.post(`${config.PATH_BASE}/Relation`, data)
 }
 
-async function getAccounts(){
-    const response=await axios.get(`${config.PATH_BASE}/AccountList`);
-    return response.data;
+async function getAccounts() {
+    let call = async (header) => {
+        const response = await axios.get(`${config.PATH_BASE}/AccountList`, header);
+        return response.data;
+    }
+    let r = invokeCall(call);
+    return r;
 }
 
 const service = {
