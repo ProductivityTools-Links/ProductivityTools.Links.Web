@@ -25,7 +25,7 @@ function Home() {
 
         call();
         loginPerformed();
-    }, [])
+    }, [tokenExpiredState])
 
     const logoutAction = () => {
         console.log("logoutaction")
