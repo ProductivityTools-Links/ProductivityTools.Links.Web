@@ -26,7 +26,6 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
     const handleModalOpen = () => { setModalOpen(true); }
 
     const treeLabelClick = (e, id) => {
-        debugger;
         nodeSelectTree(id);
         e.stopPropagation();
     }
@@ -64,7 +63,6 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
     // }
 
     const findNode = (nodes, id) => {
-        debugger;
         for (let i = 0; i < nodes.length; i++) {
             if (nodes[i].id == id) {
                 return nodes[i];
@@ -83,7 +81,6 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
     // }
 
     const nodeSelectTree = (id) => {
-        debugger;
         if (structure.id == id) {
             setSelectedNode(structure)
         }

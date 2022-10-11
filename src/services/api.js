@@ -43,6 +43,16 @@ async function getTree() {
     return invokeCall(call);
 }
 
+async function getTreeLinks(login) {
+
+    let call = async (header) => {
+        //const response = await axios.post(`${config.PATH_BASE}pallet`, pallet, header)
+        const response = await axios.get(`${config.PATH_BASE}/TreeLinks/${login}`, header)
+        return response.data;
+    }
+    return invokeCall(call);
+}
+
 async function addNode(parentId, name) {
     console.log("parentId"); console.log(parentId)
     const data = { parentId: parentId, name: name }
@@ -83,6 +93,7 @@ async function getAccounts() {
 const service = {
     getDate,
     getTree,
+    getTreeLinks,
     addNode,
     getLinks,
     addLink,

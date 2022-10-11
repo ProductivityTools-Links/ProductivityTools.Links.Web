@@ -19,6 +19,9 @@ function Console() {
 
     const [date, setDate] = useState(new Date().getTime());
 
+    const [treeLinks,setTreeLinks]=useState(null);
+    const [filteredTreeLinks,setFilteredTreeLinks]=useState(null);
+
 
     // const [filter, setFilter] = useState();
     useEffect(() => {
@@ -33,6 +36,19 @@ function Console() {
         call();
 
     }, [])
+
+        // const [filter, setFilter] = useState();
+        useEffect(() => {
+            const call = async () => {
+                let r = await service.getTreeLinks('pwujczyk1');
+                setTreeLinks(r);
+                setFilteredTreeLinks(r);
+                console.log(r);
+            }
+            call();
+    
+        }, [])
+    
 
 
     const getFilteredNodes = (nodes, filter) => {
@@ -79,10 +95,10 @@ function Console() {
             <DndProvider backend={HTML5Backend}>
                 <div>selectedNode: {selectedNode && selectedNode.id}</div>
                 <div style={{ width: '200px', float: 'left' }}>
-                    <Tree structure={filteredData} setSelectedNode={setSelectedNode} selectedNode={selectedNode}></Tree>
+                    <Tree structure={filteredTreeLinks} setSelectedNode={setSelectedNode} selectedNode={selectedNode}></Tree>
                 </div>
                 <div style={{ float: 'left' }}>
-                    <Links selectedNode={selectedNode} />
+                    <Links selectedNode={selectedNode}  filteredTreeLinks={filteredTreeLinks}/>
                 </div>
             </DndProvider>
 
