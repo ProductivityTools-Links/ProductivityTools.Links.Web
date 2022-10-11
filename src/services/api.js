@@ -33,24 +33,25 @@ async function getDate() {
     return response.data;
 }
 
-async function getTree() {
+// async function getTree() {
 
-    let call = async (header) => {
-        //const response = await axios.post(`${config.PATH_BASE}pallet`, pallet, header)
-        const response = await axios.get(`${config.PATH_BASE}/Tree`, header)
-        return response.data;
-    }
-    return invokeCall(call);
-}
+//     let call = async (header) => {
+//         //const response = await axios.post(`${config.PATH_BASE}pallet`, pallet, header)
+//         const response = await axios.get(`${config.PATH_BASE}/Tree`, header)
+//         return response.data;
+//     }
+//     return invokeCall(call);
+// }
 
 async function getTreeLinks(login) {
-
+    debugger;
+    console.log("getTreeLinks")
     let call = async (header) => {
         //const response = await axios.post(`${config.PATH_BASE}pallet`, pallet, header)
         const response = await axios.get(`${config.PATH_BASE}/TreeLinks/${login}`, header)
         return response.data;
     }
-    return invokeCall(call);
+    return invokeCallWithToast(call, "Getting TreeLinks", "TreeLinks refreshed");
 }
 
 async function addNode(parentId, name) {
@@ -67,8 +68,12 @@ async function getLinks(selectedNodeId) {
 
 async function addLink(parentId, name, url, description) {
     console.log("addLink")
-    const data = { parentId: parentId, name: name, url: url, description: description }
-    const response = await axios.post(`${config.PATH_BASE}/Link`, data)
+    let call = async (header) => {
+        const data = { parentId: parentId, name: name, url: url, description: description }
+        const response = await axios.post(`${config.PATH_BASE}/Link`, data, header)
+        return response.data;
+    }
+    return invokeCallWithToast(call, "Creating new Link", "New link created!")
 }
 
 async function moveLink(id, targetParentId) {
@@ -92,7 +97,7 @@ async function getAccounts() {
 
 const service = {
     getDate,
-    getTree,
+   // getTree,
     getTreeLinks,
     addNode,
     getLinks,

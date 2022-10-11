@@ -6,7 +6,7 @@ import service from '../../services/api';
 import LinkItem from './LinkItem';
 import Stack from '@mui/material/Stack'
 
-function Links({ selectedNode, filteredTreeLinks }) {
+function Links({ selectedNode, filteredTreeLinks, refreshTreeLink }) {
 
     const [mode, setMode] = useState('list')
     const [links, setLinks] = useState([])
@@ -65,7 +65,7 @@ function Links({ selectedNode, filteredTreeLinks }) {
         )
     else {
         return (
-            <NewLink setMode={setMode} selectedNode={selectedNode} />
+            <NewLink setMode={setMode} selectedNode={selectedNode} refreshTreeLink={refreshTreeLink} />
         )
     }
 }

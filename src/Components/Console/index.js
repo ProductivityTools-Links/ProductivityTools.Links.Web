@@ -24,18 +24,18 @@ function Console() {
 
 
     // const [filter, setFilter] = useState();
-    useEffect(() => {
-        const call = async () => {
-            let r = await service.getTree();
-            console.log(r);
-            setData(r);
-            setFilteredData(r);
-            console.log(r);
-            setSelectedNode(r);
-        }
-        call();
+    // useEffect(() => {
+    //     const call = async () => {
+    //         let r = await service.getTree();
+    //         console.log(r);
+    //         setData(r);
+    //         setFilteredData(r);
+    //         console.log(r);
+    //         setSelectedNode(r);
+    //     }
+    //     call();
 
-    }, [])
+    // }, [])
 
         // const [filter, setFilter] = useState();
         useEffect(() => {
@@ -47,7 +47,7 @@ function Console() {
             }
             call();
     
-        }, [])
+        }, [date])
     
 
 
@@ -85,6 +85,10 @@ function Console() {
         setDate(new Date().getTime());
     }
 
+    const refreshTreeLink=()=>{
+        setDate(new Date().getTime());
+    }
+
     return (
         <div>
             <div>pawel <a href="/">Home</a></div>
@@ -98,7 +102,7 @@ function Console() {
                     <Tree structure={filteredTreeLinks} setSelectedNode={setSelectedNode} selectedNode={selectedNode}></Tree>
                 </div>
                 <div style={{ float: 'left' }}>
-                    <Links selectedNode={selectedNode}  filteredTreeLinks={filteredTreeLinks}/>
+                    <Links selectedNode={selectedNode}  filteredTreeLinks={filteredTreeLinks} refreshTreeLink={refreshTreeLink}/>
                 </div>
             </DndProvider>
 

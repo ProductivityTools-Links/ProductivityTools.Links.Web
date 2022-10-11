@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import service from '../../services/api.js'
 
 
-function NewLink({ setMode, selectedNode }) {
+function NewLink({ setMode, selectedNode, refreshTreeLink }) {
 
     const [newLink, setNewLink] = useState({ name: '', url: '', description: '' })
 
@@ -16,8 +16,12 @@ function NewLink({ setMode, selectedNode }) {
         }))
     }
 
-    const createNew = () => {
-        service.addLink(selectedNode.id, newLink.name, newLink.url, newLink.description)
+    const createNew = async () => {
+        let linkId = await service.addLink(selectedNode.id, newLink.name, newLink.url, newLink.description)
+        if (linkId != undefined) {
+            setMode('list')
+            refreshTreeLink();
+        }
     }
 
     return (
