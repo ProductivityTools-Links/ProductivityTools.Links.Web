@@ -1,5 +1,14 @@
 .MuiTreeView-root .MuiTreeItem-label{
     background-color: aqua;
     color: red;
+    width: 200px;
     /* width: auto; */
+}
+.MuiTreeItem-content{
+    color:purple;
+    width: auto;
+}
+
+.linkItem{
+    
 }

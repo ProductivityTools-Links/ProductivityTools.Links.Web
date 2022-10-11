@@ -14,12 +14,12 @@ function LinkItem({ link }) {
     }))
 
     return (
-        <Paper ref={drag}>
-            <span><Tooltip title={link.url}><a href={link.url}>{link.name}</a></Tooltip> </span><br />
-            <span>description: {link.description} </span>
+        <span className="linkItem" ref={drag}>
+            <span><Tooltip title={link.url}><a href={link.url}>{link.name}</a></Tooltip> </span>
+            <span>- {link.description} </span>
             <span>{isDragging && '😱'}</span>
 
-        </Paper>
+        </span>
     )
 }
 

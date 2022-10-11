@@ -44,7 +44,6 @@ async function getDate() {
 // }
 
 async function getTreeLinks(login) {
-    debugger;
     console.log("getTreeLinks")
     let call = async (header) => {
         //const response = await axios.post(`${config.PATH_BASE}pallet`, pallet, header)
