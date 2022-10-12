@@ -5,6 +5,7 @@ import Login from '../../Session/login'
 import Token from '../Token'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Console from "../Console";
 
 
 
@@ -24,7 +25,6 @@ function Home() {
         }
 
         call();
-        loginPerformed();
     }, [tokenExpiredState])
 
     const logoutAction = () => {
@@ -33,8 +33,15 @@ function Home() {
         setDate(new Date().getTime());
     }
 
+    const createAccount = async () => {
+        let r = await service.createAccountIfNotExists();
+        console.log(r);
+    }
+
     const loginPerformed = () => {
+        console.log("Login performed");
         setTokenExpiredState(tokenExpired());
+        createAccount();
     }
 
     if (tokenExpiredState) {

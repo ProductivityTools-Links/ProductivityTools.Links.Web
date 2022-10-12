@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { config } from '../config.js'
 import { toast } from 'react-toastify';
+import { RepeatOneSharp } from '@mui/icons-material';
 
 
 async function invokeCallWithToast(call, pendingMessage, successMessage) {
@@ -94,16 +95,26 @@ async function getAccounts() {
     return r;
 }
 
+async function createAccountIfNotExists() {
+    let call = async (header) => {
+        const response = await axios.get(`${config.PATH_BASE}/Account`, header);
+        return response.data;
+    }
+    let r = invokeCallWithToast(call, "Creating account if not exists", "Creating account done");
+    return r;
+}
+
 const service = {
     getDate,
-   // getTree,
+    // getTree,
     getTreeLinks,
     addNode,
     getLinks,
     addLink,
     moveLink,
     moveTreeItem,
-    getAccounts
+    getAccounts,
+    createAccountIfNotExists
 }
 
 export default service
