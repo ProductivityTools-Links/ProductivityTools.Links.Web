@@ -1,7 +1,7 @@
 import './App.css';
 
 import { StyledEngineProvider } from '@mui/material/styles';
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router , Route, Routes } from 'react-router-dom'
 
 import Date from './Components/Date'
 import Console from './Components/Console';
@@ -19,7 +19,7 @@ function App() {
     <AuthProvider>
       <div className="App">
         <StyledEngineProvider injectFirst>
-          <BrowserRouter>
+          <Router >
             <Routes>
               <Route path='/login' element={<Login />} />
               <Route path='/Console' element={<Console />} />
@@ -28,7 +28,7 @@ function App() {
               <Route path='/:login' element={<Console />} />
             </Routes>
 
-          </BrowserRouter>
+          </Router >
         </StyledEngineProvider>
         <ToastContainer />
       </div>

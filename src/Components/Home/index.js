@@ -15,7 +15,7 @@ function Home() {
     const [accounts, setAccounts] = useState([]);
     const [date, setDate] = useState(new Date().getTime());
     const [tokenExpiredState, setTokenExpiredState] = useState(true);
-
+    
     useEffect(() => {
 
         const call = async () => {
@@ -23,9 +23,9 @@ function Home() {
             setAccounts(r);
             console.log(r);
         }
-
+        setTokenExpiredState(tokenExpired());
         call();
-    }, [tokenExpiredState])
+    }, [tokenExpiredState,date])
 
     const logoutAction = () => {
         console.log("logoutaction")

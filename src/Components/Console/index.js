@@ -1,4 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, } from 'react';
+import {
+    useParams,
+    useNavigate,
+    useLocation,
+  } from "react-router-dom";
 import service from '../../services/api.js'
 import Tree from '../Tree/index.js';
 import { StyledEngineProvider } from '@mui/material/styles';
@@ -11,7 +16,10 @@ import Token from '../Token'
 
 
 
-function Console() {
+function Console(props) {
+    let navigate = useNavigate();
+    let location = useLocation();
+    let params = useParams();
 
     const [data, setData] = useState(null)
     const [filteredData, setFilteredData] = useState(null);
@@ -40,7 +48,10 @@ function Console() {
         // const [filter, setFilter] = useState();
         useEffect(() => {
             const call = async () => {
-                let r = await service.getTreeLinks('pwujczyk1');
+                let x=navigate;
+                let y=location;
+                let z=params;
+                let r = await service.getTreeLinks(params.login);
                 setTreeLinks(r);
                 setFilteredTreeLinks(r);
                 console.log(r);
