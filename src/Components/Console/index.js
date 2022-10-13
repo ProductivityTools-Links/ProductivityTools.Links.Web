@@ -3,7 +3,7 @@ import {
     useParams,
     useNavigate,
     useLocation,
-  } from "react-router-dom";
+} from "react-router-dom";
 import service from '../../services/api.js'
 import Tree from '../Tree/index.js';
 import { StyledEngineProvider } from '@mui/material/styles';
@@ -27,8 +27,8 @@ function Console(props) {
 
     const [date, setDate] = useState(new Date().getTime());
 
-    const [treeLinks,setTreeLinks]=useState(null);
-    const [filteredTreeLinks,setFilteredTreeLinks]=useState(null);
+    const [treeLinks, setTreeLinks] = useState(null);
+    const [filteredTreeLinks, setFilteredTreeLinks] = useState(null);
 
 
     // const [filter, setFilter] = useState();
@@ -45,21 +45,20 @@ function Console(props) {
 
     // }, [])
 
-        // const [filter, setFilter] = useState();
-        useEffect(() => {
-            const call = async () => {
-                let x=navigate;
-                let y=location;
-                let z=params;
-                let r = await service.getTreeLinks(params.login);
-                setTreeLinks(r);
-                setFilteredTreeLinks(r);
-                console.log(r);
-            }
-            call();
-    
-        }, [date])
-    
+    // const [filter, setFilter] = useState();
+    useEffect(() => {
+        const call = async () => {
+            let x = navigate;
+            let y = location;
+            let z = params;
+            let r = await service.getTreeLinks(params.login);
+            setTreeLinks(r);
+            setFilteredTreeLinks(r);
+            console.log(r);
+        }
+        call();
+    }, [date])
+
 
 
     const getFilteredNodes = (nodes, filter) => {
@@ -96,28 +95,27 @@ function Console(props) {
         setDate(new Date().getTime());
     }
 
-    const refreshTreeLink=()=>{
+    const refreshTreeLink = () => {
         setDate(new Date().getTime());
     }
 
     return (
         <div>
-            <div>pawel <a href="/">Home</a></div>
-            <Token date={date} />
-            <div><button onClick={logoutAction}>logout</button></div>
+            <div>{params.login} is in the url. {auth?.currentUser?.email} is logged</div>
+
+            <div><a href="/">Home</a><button onClick={logoutAction}>logout</button></div>
             <input onChange={(e) => filterData(e.target.value)}></input>
             {/* <div>{filter}</div> */}
             <DndProvider backend={HTML5Backend}>
                 <div>selectedNode: {selectedNode && selectedNode.id}</div>
-                <div style={{ width: '200px', float: 'left' }}>
+                <div style={{ width: '230px', float: 'left' }}>
                     <Tree structure={filteredTreeLinks} setSelectedNode={setSelectedNode} selectedNode={selectedNode}></Tree>
                 </div>
                 <div style={{ float: 'left' }}>
-                    <Links selectedNode={selectedNode}  filteredTreeLinks={filteredTreeLinks} refreshTreeLink={refreshTreeLink}/>
+                    <Links selectedNode={selectedNode} filteredTreeLinks={filteredTreeLinks} refreshTreeLink={refreshTreeLink} />
                 </div>
             </DndProvider>
-
-
+            <Token date={date} />
         </div>
     )
 }

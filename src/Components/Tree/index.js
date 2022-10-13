@@ -105,8 +105,7 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
 
         return (
             <div ref={containerRef}>
-                <p>Tree1</p>
-                <p>{selectedNode && selectedNode.id}</p>
+
                 <TreeView
                     aria-label="file system navigator"
                     defaultCollapseIcon={<ExpandMoreIcon />}
@@ -122,7 +121,7 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
                 <ContextMenu parentRef={containerRef} items={menuItems}></ContextMenu>
                 <AddNodeModal open={modalOpen} selectedNode={selectedNode} handleModalClose={handleModalClose} />
 
-                <p>endtree</p>
+                <p>{selectedNode && selectedNode.id}</p>
                 {/* {GetNode2(structure)} */}
             </div>
         )

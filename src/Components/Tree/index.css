@@ -1,7 +1,7 @@
 .MuiTreeView-root .MuiTreeItem-label{
     background-color: aqua;
     color: red;
-    width: 200px;
+    /* width: 430px; */
     /* width: auto; */
 }
 .MuiTreeItem-content{
