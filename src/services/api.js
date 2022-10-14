@@ -25,8 +25,13 @@ async function invokeCall(call) {
     let token = localStorage.getItem('token')
     console.log("token from localstorage", token)
     const header = { headers: { Authorization: `Bearer ${token}` } }
-    const response = call(header);
-    return response;
+    try {
+        const response = call(header);
+        return response;
+    } catch (error) {
+        console.log("Call endpoint");
+        console.log(error);
+    }
 }
 
 async function getDate() {
