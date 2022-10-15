@@ -29,6 +29,7 @@ async function invokeCall(call) {
         const response = call(header);
         return response;
     } catch (error) {
+        debugger;
         console.log("Call endpoint");
         console.log(error);
     }
