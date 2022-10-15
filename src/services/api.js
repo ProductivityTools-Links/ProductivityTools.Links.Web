@@ -26,7 +26,8 @@ async function invokeCall(call) {
     console.log("token from localstorage", token)
     const header = { headers: { Authorization: `Bearer ${token}` } }
     try {
-        const response = call(header);
+        const response = await call(header);
+        debugger;
         return response;
     } catch (error) {
         debugger;
