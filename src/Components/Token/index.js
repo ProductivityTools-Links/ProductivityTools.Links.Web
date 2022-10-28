@@ -20,10 +20,10 @@ function Token({ date }) {
 
     return (
         <div>
-            <div>TokenXX: {token}</div>
-            <div>date: {date}</div>
+            {/* <div>TokenXX: {token}</div> */}
+            {/* <div>date: {date}</div> */}
 
-            <div>isExpired is:{tokenExpired().toString()}</div>
+            <div>Token isExpired is:{tokenExpired().toString()}</div>
         </div>
     )
 }

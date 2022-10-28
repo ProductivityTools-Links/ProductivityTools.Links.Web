@@ -108,11 +108,13 @@ function Console(props) {
             {/* <div>{filter}</div> */}
             <DndProvider backend={HTML5Backend}>
                 <div>selectedNode: {selectedNode && selectedNode.id}</div>
-                <div style={{ width: '230px', float: 'left' }}>
-                    <Tree structure={filteredTreeLinks} setSelectedNode={setSelectedNode} selectedNode={selectedNode}></Tree>
-                </div>
-                <div style={{ float: 'left' }}>
-                    <Links selectedNode={selectedNode} filteredTreeLinks={filteredTreeLinks} refreshTreeLink={refreshTreeLink} />
+                <div style={{display:'flex'}}> 
+                    <div style={{ width: '230px', float: 'left' }}>
+                        <Tree structure={filteredTreeLinks} setSelectedNode={setSelectedNode} selectedNode={selectedNode}></Tree>
+                    </div>
+                    <div style={{ float: 'left' }}>
+                        <Links selectedNode={selectedNode} filteredTreeLinks={filteredTreeLinks} refreshTreeLink={refreshTreeLink} />
+                    </div>
                 </div>
             </DndProvider>
             <Token date={date} />

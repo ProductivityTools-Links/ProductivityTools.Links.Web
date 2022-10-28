@@ -13,7 +13,7 @@ async function invokeCallWithToast(call, pendingMessage, successMessage) {
             error: {
                 render({ data }) {
                     console.log(data);
-                    return <p>{data.message} [{data.response.data.message}]</p>
+                    return <p>{data.message} [{data.response?.data?.message}, {data?.message}]</p>
                 }
             }
         }
@@ -33,6 +33,7 @@ async function invokeCall(call) {
         debugger;
         console.log("Call endpoint");
         console.log(error);
+        throw error;
     }
 }
 
