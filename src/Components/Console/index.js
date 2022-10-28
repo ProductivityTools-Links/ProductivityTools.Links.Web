@@ -101,14 +101,18 @@ function Console(props) {
 
     return (
         <div>
-            <div>{params.login} is in the url. {auth?.currentUser?.email} is logged</div>
 
-            <div><a href="/">Home</a><button onClick={logoutAction}>logout</button></div>
-            <input onChange={(e) => filterData(e.target.value)}></input>
+            <div>
+                <a href="/">Home</a>
+                <button onClick={logoutAction}>logout</button>
+                <input onChange={(e) => filterData(e.target.value)}></input>
+                <span>selectedNode: {selectedNode && selectedNode.id}</span>
+            </div>
+            <hr/>
+
             {/* <div>{filter}</div> */}
             <DndProvider backend={HTML5Backend}>
-                <div>selectedNode: {selectedNode && selectedNode.id}</div>
-                <div style={{display:'flex'}}> 
+                <div style={{ display: 'flex' }}>
                     <div style={{ width: '230px', float: 'left' }}>
                         <Tree structure={filteredTreeLinks} setSelectedNode={setSelectedNode} selectedNode={selectedNode}></Tree>
                     </div>
@@ -118,6 +122,8 @@ function Console(props) {
                 </div>
             </DndProvider>
             <Token date={date} />
+            <div className='debug'>{params.login} is in the url. {auth?.currentUser?.email} is logged</div>
+
         </div>
     )
 }

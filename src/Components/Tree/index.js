@@ -113,7 +113,7 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
                 // onNodeSelect={nodeSelect}
                 // sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
                 >
-                    <TreeItem nodeId={structure.id.toString()} label={structure.login} contextmenuid={structure.id}>
+                    <TreeItem nodeId={structure.id.toString()} label={<span className='treeLoginItem'>{structure.login}</span>} contextmenuid={structure.id}>
                         {GetNode(structure)}
                     </TreeItem>
                 </TreeView>
@@ -121,7 +121,7 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
                 <ContextMenu parentRef={containerRef} items={menuItems}></ContextMenu>
                 <AddNodeModal open={modalOpen} selectedNode={selectedNode} handleModalClose={handleModalClose} />
 
-                <p>{selectedNode && selectedNode.id}</p>
+                {/* <p className='debug'>{selectedNode && selectedNode.id}</p> */}
                 {/* {GetNode2(structure)} */}
             </div>
         )

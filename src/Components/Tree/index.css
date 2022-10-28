@@ -10,6 +10,19 @@
     width: auto;
 }
 
+.treeLoginItem
+{
+    background: none !important;
+    border: none;
+    padding: 0 !important;
+    /*optional*/
+    font-family: arial, sans-serif;
+    /*input has OS specific font-family*/
+    color: #069;
+    cursor: pointer;
+    font-size: small;
+}
+
 .treebutton {
     background: none !important;
     border: none;
@@ -21,4 +34,22 @@
     cursor: pointer;
 }
 
-.linkItem {}
+linkItem {
+     background: none !important;
+    border: none;
+    padding: 0 !important;
+    /*optional*/
+    font-family: arial, sans-serif;
+    /*input has OS specific font-family*/
+    color: #069;
+    cursor: pointer;
+}
+.linkItem a:hover, a:visited, a:link, a:active
+{
+    text-decoration: none;
+    color: #069;
+}
+
+.debug{
+    color:gainsboro;
+}

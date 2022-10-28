@@ -23,7 +23,7 @@ function Token({ date }) {
             {/* <div>TokenXX: {token}</div> */}
             {/* <div>date: {date}</div> */}
 
-            <div>Token isExpired is:{tokenExpired().toString()}</div>
+            <div className="debug">Token isExpired is:{tokenExpired().toString()}</div>
         </div>
     )
 }
