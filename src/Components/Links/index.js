@@ -10,6 +10,7 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink }) {
 
     const [mode, setMode] = useState('list')
     const [links, setLinks] = useState([])
+    const [selectedLink,setSelectedLink]=useState(null)
 
     useEffect(() => {
         // const call = async () => {
@@ -51,21 +52,33 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink }) {
         }
     }, [filteredTreeLinks, selectedNode])
 
+    const editLink=(link)=>{
+        console.log(link);
+        setSelectedLink(link);
+        setMode('new')
+    }
+
+    const newLink=()=>
+    {
+        setSelectedLink(null);
+        setMode('new')
+    }
+
     if (mode == 'list')
         return (
 
             <div>
                 <span>Currently selected node: {selectedNode && selectedNode.name}</span>
                 <Stack spacing={2}>
-                    {links && links.map(x => <LinkItem key={x.id} link={x} />)}
-                </Stack>
-                <Button variant="contained" onClick={() => setMode('new')}>Add New</Button>
+                    {links && links.map(x => <LinkItem key={x.id} link={x} editLink={editLink} />)}
+                </Stack> 
+                <Button variant="contained" onClick={newLink}>Add New</Button>
                 <span>List of Links</span>
             </div>
         )
     else {
         return (
-            <NewLink setMode={setMode} selectedNode={selectedNode} refreshTreeLink={refreshTreeLink} />
+            <NewLink setMode={setMode} selectedNode={selectedNode} link={selectedLink} refreshTreeLink={refreshTreeLink} />
         )
     }
 }
