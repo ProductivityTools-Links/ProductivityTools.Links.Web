@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import NewLink from './NewLink.js'
+import EditLink from './EditLink.js'
 import service from '../../services/api';
 import LinkItem from './LinkItem';
 import Stack from '@mui/material/Stack'
@@ -78,7 +78,7 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink }) {
         )
     else {
         return (
-            <NewLink setMode={setMode} selectedNode={selectedNode} link={selectedLink} refreshTreeLink={refreshTreeLink} />
+            <EditLink setMode={setMode} selectedNode={selectedNode} link={selectedLink} refreshTreeLink={refreshTreeLink} />
         )
     }
 }
