@@ -26,8 +26,8 @@ const ContextMenu = ({ parentRef, items }) => {
             setX(event.clientX);
             setY(event.clientY);
             console.log('show');
-            console.log(event.path)
-            let elementId = event.path.find(e => e.nodeName === 'LI').getAttribute('contextmenuid');
+            console.log(event.composedPath())
+            let elementId = event.composedPath().find(e => e.nodeName === 'LI').getAttribute('contextmenuid');
             setSelectedTreeId(parseInt(elementId));
             console.log("selectet tree id")
             console.log(elementId);
