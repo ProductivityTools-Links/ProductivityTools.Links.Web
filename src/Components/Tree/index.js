@@ -81,6 +81,7 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
     // }
 
     const nodeSelectTree = (id) => {
+        debugger;
         if (structure.id == id) {
             setSelectedNode(structure)
         }
