@@ -33,27 +33,26 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink }) {
                     });
                 }
             }
-
             if (filteredTreeLinks.nodes != undefined) {
                 filteredTreeLinks.nodes.forEach(node => {
                     flatLinkList(node, addLinks || node.id == selectedNode.id)
                 });
             }
         }
-
+        console.log("selectedNode", selectedNode);
+        console.log("filteredTreeLinks", filteredTreeLinks);
         if (selectedNode != null && filteredTreeLinks != null) {
-            console.log("linkd2s");
-            console.log(filteredTreeLinks);
-            console.log(selectedNode);
+            console.log("linkd2s");            
             console.log(selectedNode?.id == filteredTreeLinks?.id);
             flatLinkList(filteredTreeLinks, selectedNode.id == filteredTreeLinks.id);
-            console.log(links)
+            console.log("oldlinks",links)
+            console.log("newLinksList",newLinksList)
             setLinks(newLinksList);
         }
     }, [filteredTreeLinks, selectedNode])
 
     const editLink=(link)=>{
-        console.log(link);
+        //console.log(link);
         setSelectedLink(link);
         setMode('new')
     }

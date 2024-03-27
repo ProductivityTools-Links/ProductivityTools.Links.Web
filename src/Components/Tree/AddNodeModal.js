@@ -4,8 +4,8 @@ import service from '../../services/api.js'
 
 export default function AddNodeModal({handleModalClose,selectedNode,...props}) {
 
-    console.log(props);
-    console.log("iner props")
+    // console.log(props);
+    // console.log("iner props")
     const [treeName, setTreeeName] = useState('new');
 
     const addNewItem = function () {

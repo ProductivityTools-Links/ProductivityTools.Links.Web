@@ -34,7 +34,7 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
 
     function GetNode(n) {
         // console.log("get node")
-        console.log(n)
+        //console.log(n)
         return (
             n && n.nodes && n.nodes.map(x => {
                 return (
@@ -81,7 +81,6 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
     // }
 
     const nodeSelectTree = (id) => {
-        debugger;
         if (structure.id == id) {
             setSelectedNode(structure)
         }

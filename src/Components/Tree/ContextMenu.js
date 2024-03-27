@@ -15,7 +15,7 @@ const ContextMenu = ({ parentRef, items }) => {
             return;
         }
 
-        console.log(parentRef);
+        //console.log(parentRef);
 
         const showMenu = (event, x) => {
             console.log("event")
