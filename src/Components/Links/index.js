@@ -28,8 +28,9 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink }) {
             if (addLinks) {
                 if (filteredTreeLinks.links != undefined) {
                     filteredTreeLinks.links.forEach(link => {
-
                         newLinksList.push(link)
+                        console.log("addLinks",addLinks)
+                        console.log("newLinksListiteration",newLinksList)
                     });
                 }
             }
