@@ -10,7 +10,7 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink }) {
 
     const [mode, setMode] = useState('list')
     const [links, setLinks] = useState([])
-    const [selectedLink,setSelectedLink]=useState(null)
+    const [selectedLink, setSelectedLink] = useState(null)
 
     useEffect(() => {
         // const call = async () => {
@@ -23,43 +23,57 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink }) {
         // }
         // call();
         let newLinksList = [];
-        const flatLinkList = (filteredTreeLinks, addLinks) => {
+        // const flatLinkList = (filteredTreeLinks, addLinks) => {
 
-            if (addLinks) {
-                if (filteredTreeLinks.links != undefined) {
-                    filteredTreeLinks.links.forEach(link => {
-                        newLinksList.push(link)
-                        console.log("addLinks",addLinks)
-                        console.log("newLinksListiteration",newLinksList)
-                    });
-                }
+        //     if (addLinks) {
+        //         if (filteredTreeLinks.links != undefined) {
+        //             filteredTreeLinks.links.forEach(link => {
+        //                 newLinksList.push(link)
+        //                 console.log("addLinks",addLinks)
+        //                 console.log("newLinksListiteration",newLinksList)
+        //             });
+        //         }
+        //     }
+        //     if (filteredTreeLinks.nodes != undefined) {
+        //         filteredTreeLinks.nodes.forEach(node => {
+        //             flatLinkList(node, addLinks || node.id == selectedNode.id)
+        //         });
+        //     }
+        // }
+        const flatLinkList = (selectedNode) => {
+
+            if (selectedNode.links != undefined) {
+                selectedNode.links.forEach(link => {
+                    newLinksList.push(link)
+                    console.log("newLinksListiteration", newLinksList)
+                });
             }
-            if (filteredTreeLinks.nodes != undefined) {
-                filteredTreeLinks.nodes.forEach(node => {
-                    flatLinkList(node, addLinks || node.id == selectedNode.id)
+
+            if (selectedNode.nodes != undefined) {
+                selectedNode.nodes.forEach(node => {
+                    flatLinkList(node)
                 });
             }
         }
         console.log("selectedNode", selectedNode);
         console.log("filteredTreeLinks", filteredTreeLinks);
         if (selectedNode != null && filteredTreeLinks != null) {
-            console.log("linkd2s");            
+            console.log("linkd2s");
             console.log(selectedNode?.id == filteredTreeLinks?.id);
-            flatLinkList(filteredTreeLinks, selectedNode.id == filteredTreeLinks.id);
-            console.log("oldlinks",links)
-            console.log("newLinksList",newLinksList)
+            flatLinkList(selectedNode);
+            console.log("oldlinks", links)
+            console.log("newLinksList", newLinksList)
             setLinks(newLinksList);
         }
     }, [filteredTreeLinks, selectedNode])
 
-    const editLink=(link)=>{
+    const editLink = (link) => {
         //console.log(link);
         setSelectedLink(link);
         setMode('new')
     }
 
-    const newLink=()=>
-    {
+    const newLink = () => {
         setSelectedLink(null);
         setMode('new')
     }
@@ -71,7 +85,7 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink }) {
                 <span>Currently selected node: {selectedNode && selectedNode.name}</span>
                 <Stack spacing={2}>
                     {links && links.map(x => <LinkItem key={x.id} link={x} editLink={editLink} />)}
-                </Stack> 
+                </Stack>
                 <Button variant="contained" onClick={newLink}>Add New</Button>
                 <span>List of Links</span>
             </div>
