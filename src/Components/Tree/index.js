@@ -36,7 +36,9 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
         // console.log("get node")
         //console.log(n)
         return (
-            n && n.nodes && n.nodes.map(x => {
+            n && n.nodes && (n.nodes).sort((a, b) => a.name < b.name ? -1 : 1).map(x => {
+                console.log("X", x);
+                console.log("wholelist", n);
                 return (
                     <StyledTreeItem element={x} key={x.id} treeLabelClick={treeLabelClick}>
                         {GetNode(x)}
@@ -126,8 +128,7 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
             </div>
         )
     }
-    else
-    {
+    else {
         <div>waiting for structure</div>
     }
 
