@@ -3,8 +3,8 @@ const dev = {
 }
 
 const prd = {
-    //PATH_BASE: 'https://ptlinksprod.uw.r.appspot.com'
-    PATH_BASE: 'https://ptlinkstemp.uc.r.appspot.com'
+    PATH_BASE: 'https://ptlinksprod.uw.r.appspot.com'
+    //PATH_BASE: 'https://ptlinkstemp.uc.r.appspot.com'
 }
 
 export const config=prd;
