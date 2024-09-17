@@ -25,7 +25,7 @@ function StyledTreeItem({ element, treeLabelClick, ...rest }) {
     const [{ isOver }, drop] = useDrop(
         () => ({
             accept: 'treeItem',
-            drop: (e, x) => moveItem(e.id, element.id),
+            drop: (e, x) => moveItem(e._id, element._id),
             collect: (monitor) => ({
                 isOver: !!monitor.isOver()
             })
@@ -33,9 +33,9 @@ function StyledTreeItem({ element, treeLabelClick, ...rest }) {
     )
 
     return (
-        <TreeItem ref={drag} {...rest} nodeId={element.id.toString()} contextmenuid={element.id}
+        <TreeItem ref={drag} {...rest} nodeId={element._id.toString()} contextmenuid={element._id}
             label={<Box ref={drop}>
-                <button className='treebutton' onClick={(e) => treeLabelClick(e, element.id)}>{element.name}</button>
+                <button className='treebutton' onClick={(e) => treeLabelClick(e, element._id)}>{element.name}</button>
                 <span>{isDragging && '😱'}</span>
                 <span> {isOver && <span>Drop Here!</span>}</span>
             </Box>} >

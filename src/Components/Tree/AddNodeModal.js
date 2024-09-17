@@ -9,7 +9,6 @@ export default function AddNodeModal({handleModalClose,selectedNode,...props}) {
     const [treeName, setTreeeName] = useState('new');
 
     const addNewItem = function () {
-        debugger;
         service.addNode(selectedNode.id, treeName)
         // apiService.addTreeNode(Number(props.selectedTreeNode), treeName);
         handleModalClose();

@@ -106,7 +106,7 @@ function Console(props) {
                 <a href="/">Home1</a>
                 <button onClick={logoutAction}>logout</button>
                 <input onChange={(e) => filterData(e.target.value)}></input>
-                <span>selectedNode: {selectedNode && selectedNode.id}</span>
+                <span>selectedNode: {selectedNode && selectedNode._id}</span>
             </div>
             <hr/>
 

@@ -36,14 +36,19 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
         // console.log("get node")
         //console.log(n)
         return (
-            n && n.nodes && (n.nodes).sort((a, b) => a.name < b.name ? -1 : 1).map(x => {
-                console.log("X", x);
-                console.log("wholelist", n);
-                return (
-                    <StyledTreeItem element={x} key={x.id} treeLabelClick={treeLabelClick}>
-                        {GetNode(x)}
-                    </StyledTreeItem>
-                )
+            n && n.child && (n.child).sort((a, b) => a.name < b.name ? -1 : 1).map(x => {
+
+                if (x._type == 'Node') {
+                    console.log("X", x);
+                    console.log("wholelist", n);
+                    return (
+                        <StyledTreeItem element={x} key={x._id} treeLabelClick={treeLabelClick}>
+
+                            {GetNode(x)}
+                        </StyledTreeItem>
+
+                    )
+                }
             })
 
         )
@@ -65,14 +70,16 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
     // }
 
     const findNode = (nodes, id) => {
-        for (let i = 0; i < nodes.length; i++) {
-            if (nodes[i].id == id) {
-                return nodes[i];
-            }
-            else {
-                let subresult = findNode(nodes[i].nodes, id)
-                if (subresult != null) {
-                    return subresult;
+        if (nodes) {
+            for (let i = 0; i < nodes.length; i++) {
+                if (nodes[i]._id == id) {
+                    return nodes[i];
+                }
+                else {
+                    let subresult = findNode(nodes[i].child, id)
+                    if (subresult != null) {
+                        return subresult;
+                    }
                 }
             }
         }
@@ -83,11 +90,11 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
     // }
 
     const nodeSelectTree = (id) => {
-        if (structure.id == id) {
+        if (structure._id == id) {
             setSelectedNode(structure)
         }
         else {
-            let node = findNode(structure.nodes, id)
+            let node = findNode(structure.child, id)
             setSelectedNode(node);
         }
     }
@@ -104,7 +111,8 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
     ];
 
     if (structure) {
-
+        console.log("XXXX")
+        console.log(structure);
         return (
             <div ref={containerRef}>
 
@@ -115,7 +123,7 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
                 // onNodeSelect={nodeSelect}
                 // sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
                 >
-                    <TreeItem nodeId={structure.id.toString()} label={<span className='treeLoginItem'>{structure.login}</span>} contextmenuid={structure.id}>
+                    <TreeItem nodeId={structure._id.toString()} label={<span className='treeLoginItem'>{structure.login}</span>} contextmenuid={structure.id}>
                         {GetNode(structure)}
                     </TreeItem>
                 </TreeView>
