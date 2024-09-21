@@ -30,7 +30,6 @@ async function invokeCall(call) {
      //   debugger;
         return response;
     } catch (error) {
-        debugger;
         console.log("Call endpoint");
         console.log(error);
         throw error;
