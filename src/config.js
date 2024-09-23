@@ -7,5 +7,5 @@ const prd = {
     //PATH_BASE: 'https://ptlinkstemp.uc.r.appspot.com'
 }
 
-export const config=prd;
+export const config=dev;
 //export const config = process.env.NODE_ENV === 'development' ? dev : prd;

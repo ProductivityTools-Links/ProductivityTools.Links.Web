@@ -114,7 +114,7 @@ function Console(props) {
             <DndProvider backend={HTML5Backend}>
                 <div style={{ display: 'flex' }}>
                     <div style={{ width: '230px', float: 'left' }}>
-                        <Tree structure={treeLinks} setSelectedNode={setSelectedNode} selectedNode={selectedNode}></Tree>
+                        <Tree structure={treeLinks} setSelectedNode={setSelectedNode} selectedNode={selectedNode} refreshTreeLink={refreshTreeLink}></Tree>
                     </div>
                     <div style={{ float: 'left' }}>
                         <Links selectedNode={selectedNode} filteredTreeLinks={treeLinks} refreshTreeLink={refreshTreeLink} />

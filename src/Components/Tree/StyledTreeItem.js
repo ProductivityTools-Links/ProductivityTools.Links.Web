@@ -5,12 +5,13 @@ import service from '../../services/api.js'
 
 
 
-function StyledTreeItem({ element, treeLabelClick, ...rest }) {
+function StyledTreeItem({ element, treeLabelClick, refreshTreeLink, ...rest }) {
 
     const moveItem = async (id, targetParentId) => {
 
         console.log("moveItem", id, targetParentId);
         await service.moveLink(id, targetParentId);
+        refreshTreeLink();
     }
 
 

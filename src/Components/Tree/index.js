@@ -12,7 +12,7 @@ import TreeItem from '@mui/lab/TreeItem';
 
 
 
-function Tree({ structure, setSelectedNode, selectedNode }) {
+function Tree({ structure, setSelectedNode, selectedNode, refreshTreeLink }) {
     //console.log('props')
     //console.log(structure);
     const [modalOpen, setModalOpen] = useState(false);
@@ -42,7 +42,7 @@ function Tree({ structure, setSelectedNode, selectedNode }) {
                     console.log("X", x);
                     console.log("wholelist", n);
                     return (
-                        <StyledTreeItem element={x} key={x._id} treeLabelClick={treeLabelClick}>
+                        <StyledTreeItem element={x} key={x._id} treeLabelClick={treeLabelClick} refreshTreeLink={refreshTreeLink}>
 
                             {GetNode(x)}
                         </StyledTreeItem>

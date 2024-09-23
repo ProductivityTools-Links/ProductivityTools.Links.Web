@@ -27,7 +27,7 @@ async function invokeCall(call) {
     const header = { headers: { Authorization: `Bearer ${token}` } }
     try {
         const response = await call(header);
-     //   debugger;
+        //   debugger;
         return response;
     } catch (error) {
         console.log("Call endpoint");
@@ -76,7 +76,7 @@ async function getLinks(selectedNodeId) {
 async function updateLink(id, parentId, name, url, description) {
     console.log("updateLink")
     let call = async (header) => {
-        const data = { id:id, parentId: parentId, name: name, url: url, description: description }
+        const data = { id: id, parentId: parentId, name: name, url: url, description: description }
         const response = await axios.post(`${config.PATH_BASE}/Link`, data, header)
         return response.data;
     }
@@ -84,13 +84,21 @@ async function updateLink(id, parentId, name, url, description) {
 }
 
 async function moveLink(id, targetParentId) {
-    const data = { id: id, targetParentId: targetParentId }
-    const response = await axios.post(`${config.PATH_BASE}/Relation`, data)
+    let call = async (header) => {
+        const data = { id: id, targetParentId: targetParentId }
+        const response = await axios.post(`${config.PATH_BASE}/Relation`, data, header)
+        return response.data;
+    }
+    return invokeCallWithToast(call, "Move link", "Link moved")
 }
 
 async function moveTreeItem(id, targetParentId) {
-    const data = { id: id, targetParentId: targetParentId }
-    const response = await axios.post(`${config.PATH_BASE}/Relation`, data)
+    let call = async (header) => {
+        const data = { id: id, targetParentId: targetParentId }
+        const response = await axios.post(`${config.PATH_BASE}/Relation`, data)
+        return response.data;
+    }
+    return invokeCallWithToast(call, "Move TreeItem", "Tree item moved");
 }
 
 async function getAccounts() {
