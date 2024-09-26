@@ -23,7 +23,7 @@ function LinkItem({ link, editLink }) {
         <span className="linkItem" ref={drag}>
 
             <span><Tooltip title={link.url}><a href={link.url}>{link.name}</a></Tooltip> </span>
-            <span>- {link.description} </span>
+            {link.description && <span>- {link.description}</span>}
             <span>{isDragging && '😱'}</span>
             <button className='editLink' onClick={edit}></button>
         </span>
