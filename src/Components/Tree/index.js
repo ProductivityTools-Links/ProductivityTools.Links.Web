@@ -35,23 +35,28 @@ function Tree({ structure, setSelectedNode, selectedNode, refreshTreeLink }) {
     function GetNode(n) {
         // console.log("get node")
         //console.log(n)
-        return (
-            n && n.child && (n.child).sort((a, b) => a.name < b.name ? -1 : 1).map(x => {
+     
+            return (
+                n && n.child && (n.child).filter((x)=>x._type=="Node").sort((a, b) => a.name < b.name ? -1 : 1).map(x => {
 
-                if (x._type == 'Node') {
-                    console.log("X", x);
-                    console.log("wholelist", n);
-                    return (
-                        <StyledTreeItem element={x} key={x._id} treeLabelClick={treeLabelClick} refreshTreeLink={refreshTreeLink}>
+                    if (x._type == 'Node') {
+                        console.log("X", x);
+                        console.log("wholelist", n);
+                        return (
+                            <StyledTreeItem element={x} key={x._id} treeLabelClick={treeLabelClick} refreshTreeLink={refreshTreeLink}>
+                                {GetNode(x)}
+                            </StyledTreeItem>
 
-                            {GetNode(x)}
-                        </StyledTreeItem>
+                        )
+                    }
+                    else
+                    {
+                        return undefined;
+                    }
 
-                    )
-                }
-            })
-
-        )
+                })
+            )
+        
     }
 
     // function GetNode2(n) {
