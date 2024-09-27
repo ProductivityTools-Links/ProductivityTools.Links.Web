@@ -43,14 +43,15 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink }) {
         const flatLinkList = (selectedNode) => {
 
             if (selectedNode.child != undefined) {
-                selectedNode.child.forEach(link => {
+                selectedNode.child.filter((x) => x._type == "Link").forEach(link => {
                     newLinksList.push(link)
+
                     console.log("newLinksListiteration", newLinksList)
                 });
             }
 
-            if (selectedNode.nodes != undefined) {
-                selectedNode.nodes.forEach(node => {
+            if (selectedNode.child != undefined) {
+                selectedNode.child.forEach(node => {
                     flatLinkList(node)
                 });
             }
