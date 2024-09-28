@@ -35,28 +35,27 @@ function Tree({ structure, setSelectedNode, selectedNode, refreshTreeLink }) {
     function GetNode(n) {
         // console.log("get node")
         //console.log(n)
-     
-            return (
-                n && n.child && (n.child).filter((x)=>x._type=="Node").sort((a, b) => a.name < b.name ? -1 : 1).map(x => {
 
-                    if (x._type == 'Node') {
-                        console.log("X", x);
-                        console.log("wholelist", n);
-                        return (
-                            <StyledTreeItem element={x} key={x._id} treeLabelClick={treeLabelClick} refreshTreeLink={refreshTreeLink}>
-                                {GetNode(x)}
-                            </StyledTreeItem>
+        return (
+            n && n.child && (n.child).filter((x) => x._type == "Node").sort((a, b) => a.name < b.name ? -1 : 1).map(x => {
 
-                        )
-                    }
-                    else
-                    {
-                        return undefined;
-                    }
+                if (x._type == 'Node') {
+                    console.log("X", x);
+                    console.log("wholelist", n);
+                    return (
+                        <StyledTreeItem element={x} key={x._id} treeLabelClick={treeLabelClick} refreshTreeLink={refreshTreeLink}>
+                            {GetNode(x)}
+                        </StyledTreeItem>
 
-                })
-            )
-        
+                    )
+                }
+                else {
+                    return undefined;
+                }
+
+            })
+        )
+
     }
 
     // function GetNode2(n) {
@@ -95,6 +94,7 @@ function Tree({ structure, setSelectedNode, selectedNode, refreshTreeLink }) {
     // }
 
     const nodeSelectTree = (id) => {
+        debugger;
         if (structure._id == id) {
             setSelectedNode(structure)
         }
@@ -107,7 +107,8 @@ function Tree({ structure, setSelectedNode, selectedNode, refreshTreeLink }) {
     const menuItems = [
         {
             text: 'Add new tree item',
-            onclick: (id) => { nodeSelectTree(id); handleModalOpen(); }
+            //onclick: (id) => { nodeSelectTree(id); handleModalOpen(); }
+            onclick: (id) => { handleModalOpen(); }
         },
         {
             text: 'Delete',
@@ -128,7 +129,7 @@ function Tree({ structure, setSelectedNode, selectedNode, refreshTreeLink }) {
                 // onNodeSelect={nodeSelect}
                 // sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
                 >
-                    <TreeItem nodeId={structure._id.toString()} label={<span className='treeLoginItem'>{structure.login}</span>} contextmenuid={structure.id}>
+                    <TreeItem nodeId={structure._id.toString()} label=<button className='treebutton' onClick={(e) => treeLabelClick(e, structure._id)}>{structure.login}</button> contextmenuid={structure.id}>
                         {GetNode(structure)}
                     </TreeItem>
                 </TreeView>
