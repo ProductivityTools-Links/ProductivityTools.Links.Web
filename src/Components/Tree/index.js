@@ -116,35 +116,29 @@ function Tree({ structure, setSelectedNode, selectedNode, refreshTreeLink }) {
         }
     ];
 
-    if (structure) {
-        console.log("XXXX")
-        console.log(structure);
-        return (
-            <div ref={containerRef}>
 
-                <TreeView
-                    aria-label="file system navigator"
-                    defaultCollapseIcon={<ExpandMoreIcon />}
-                    defaultExpandIcon={<ChevronRightIcon />}
-                // onNodeSelect={nodeSelect}
-                // sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
-                >
-                    <TreeItem nodeId={structure._id.toString()} label=<button className='treebutton' onClick={(e) => treeLabelClick(e, structure._id)}>{structure.login}</button> contextmenuid={structure.id}>
-                        {GetNode(structure)}
-                    </TreeItem>
-                </TreeView>
+    return (structure &&
+        <div ref={containerRef}>
 
-                <ContextMenu parentRef={containerRef} items={menuItems}></ContextMenu>
-                <AddNodeModal open={modalOpen} selectedNode={selectedNode} handleModalClose={handleModalClose} />
+            <TreeView
+                aria-label="file system navigator"
+                defaultCollapseIcon={<ExpandMoreIcon />}
+                defaultExpandIcon={<ChevronRightIcon />}
+            // onNodeSelect={nodeSelect}
+            // sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
+            >
+                <TreeItem nodeId={structure._id.toString()} label=<button className='treebutton' onClick={(e) => treeLabelClick(e, structure._id)}>{structure.login}</button> contextmenuid={structure.id}>
+                    {GetNode(structure)}
+                </TreeItem>
+            </TreeView>
 
-                {/* <p className='debug'>{selectedNode && selectedNode.id}</p> */}
-                {/* {GetNode2(structure)} */}
-            </div>
-        )
-    }
-    else {
-        <div>waiting for structure</div>
-    }
+            <ContextMenu parentRef={containerRef} items={menuItems}></ContextMenu>
+            <AddNodeModal open={modalOpen} selectedNode={selectedNode} handleModalClose={handleModalClose} refreshTreeLink={refreshTreeLink} />
+
+            {/* <p className='debug'>{selectedNode && selectedNode.id}</p> */}
+            {/* {GetNode2(structure)} */}
+        </div>
+    )
 
 }
 

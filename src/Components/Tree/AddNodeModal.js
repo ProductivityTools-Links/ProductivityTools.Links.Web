@@ -2,15 +2,16 @@ import React, { useState } from 'react'
 import Modal from '@mui/material/Modal';
 import service from '../../services/api.js'
 
-export default function AddNodeModal({handleModalClose,selectedNode,...props}) {
+export default function AddNodeModal({ handleModalClose, selectedNode, refreshTreeLink, ...props }) {
 
     // console.log(props);
     // console.log("iner props")
     const [treeName, setTreeeName] = useState('new');
 
-    const addNewItem = function () {
-        service.addNode(selectedNode._id, treeName)
+    const addNewItem = async function () {
+        var r=await service.addNode(selectedNode._id, treeName)
         // apiService.addTreeNode(Number(props.selectedTreeNode), treeName);
+        refreshTreeLink();
         handleModalClose();
     }
 

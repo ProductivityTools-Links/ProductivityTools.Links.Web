@@ -62,15 +62,21 @@ async function getTreeLinks(login) {
 }
 
 async function addNode(parentId, name) {
-    console.log("parentId"); console.log(parentId)
-    const data = { parentId: parentId, name: name }
-    const response = await axios.post(`${config.PATH_BASE}/Tree`, data)
+    let call = async (header) => {
+        console.log("parentId"); console.log(parentId)
+        const data = { parentId: parentId, name: name }
+        const response = await axios.post(`${config.PATH_BASE}/Tree`, data)
+    }
+    return invokeCallWithToast(call, "New node requested", "New node created")
 }
 
 async function getLinks(selectedNodeId) {
-    console.log("getLinks")
-    const response = await axios.get(`${config.PATH_BASE}/Link/${selectedNodeId}`);
-    return response.data;
+    let call = async (header) => {
+        console.log("getLinks")
+        const response = await axios.get(`${config.PATH_BASE}/Link/${selectedNodeId}`);
+        return response.data;
+    }
+    return invokeCallWithToast(call, "request links", "links returned")
 }
 
 async function updateLink(id, parentId, name, url, description) {
