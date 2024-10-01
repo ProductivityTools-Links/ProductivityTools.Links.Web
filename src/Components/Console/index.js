@@ -53,7 +53,7 @@ function Console(props) {
             let z = params;
             let r = await service.getTreeLinks(params.login);
             setTreeLinks(r);
-            //setFilteredTreeLinks(r);
+            setFilteredData(r);
             console.log(r);
         }
         call();
@@ -65,9 +65,11 @@ function Console(props) {
         let result = [];
         for (var i = 0; i < nodes.length; i += 1) {
             let tempNode = { ...nodes[i] };
-            tempNode.nodes = getFilteredNodes(tempNode.nodes, filter);
+            if (tempNode._type == "Node" && tempNode.child) {
+                tempNode.child = getFilteredNodes(tempNode.child, filter);
+            }
 
-            if (nodes[i].name.indexOf(filter) > -1 || tempNode.nodes.length > 0) {
+            if (nodes[i].name.indexOf(filter) > -1 || tempNode.child && tempNode.child.length > 0) {
                 result.push(tempNode)
             }
         }
@@ -75,12 +77,13 @@ function Console(props) {
     }
 
     const filterData = (filter) => {
-        setFilteredData(data);
         console.log("filter data")
+        console.log(treeLinks);
         if (filter != "") {
-            let copyData = { ...data };
-            copyData.nodes = getFilteredNodes(data.nodes, filter);
+            let copyData = { ...treeLinks };
+            copyData.child = getFilteredNodes(treeLinks.child, filter);
             setFilteredData(copyData);
+            console.log("filtered data", copyData)
         }
     }
 
@@ -108,13 +111,13 @@ function Console(props) {
                 <input onChange={(e) => filterData(e.target.value)}></input>
                 <span>selectedNode: {selectedNode && selectedNode._id}</span>
             </div>
-            <hr/>
+            <hr />
 
             {/* <div>{filter}</div> */}
             <DndProvider backend={HTML5Backend}>
                 <div style={{ display: 'flex' }}>
                     <div style={{ width: '230px', float: 'left' }}>
-                        <Tree structure={treeLinks} setSelectedNode={setSelectedNode} selectedNode={selectedNode} refreshTreeLink={refreshTreeLink}></Tree>
+                        <Tree structure={filteredData} setSelectedNode={setSelectedNode} selectedNode={selectedNode} refreshTreeLink={refreshTreeLink}></Tree>
                     </div>
                     <div style={{ float: 'left' }}>
                         <Links selectedNode={selectedNode} filteredTreeLinks={treeLinks} refreshTreeLink={refreshTreeLink} />
