@@ -69,7 +69,7 @@ function Console(props) {
                 tempNode.child = getFilteredNodes(tempNode.child, filter);
             }
 
-            if (nodes[i].name.indexOf(filter) > -1 || tempNode.child && tempNode.child.length > 0) {
+            if (nodes[i].name.toLowerCase().indexOf(filter.toLowerCase()) > -1 || tempNode.child && tempNode.child.length > 0) {
                 result.push(tempNode)
             }
         }
@@ -81,9 +81,13 @@ function Console(props) {
         console.log(treeLinks);
         if (filter != "") {
             let copyData = { ...treeLinks };
+            debugger;
             copyData.child = getFilteredNodes(treeLinks.child, filter);
             setFilteredData(copyData);
             console.log("filtered data", copyData)
+        }
+        else {
+            setFilteredData(treeLinks)
         }
     }
 
