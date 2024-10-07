@@ -54,12 +54,33 @@ function Console(props) {
             let r = await service.getTreeLinks(params.login);
             setTreeLinks(r);
             setFilteredData(r);
-            console.log(r);
+
+            if (selectedNode) {
+                console.log("findNode", r, selectedNode);
+                var updatedSelected = findNodeById(r, selectedNode._id)
+                console.log("updatedSelected", updatedSelected)
+                setSelectedNode(updatedSelected);
+            }
+            console.log("getTreeLinks", r);
         }
         call();
     }, [date])
 
-
+    const findNodeById = (node, id) => {
+        if (node._id == id) {
+            return node;
+        }
+        else {
+            if (node.child) {
+                for (var i = 0; i < node.child.length; i += 1) {
+                    var result = findNodeById(node.child[i], id);
+                    if (result) {
+                        return result;
+                    }
+                }
+            }
+        }
+    }
 
     const getFilteredNodes = (nodes, filter) => {
         let result = [];
@@ -81,7 +102,6 @@ function Console(props) {
         console.log(treeLinks);
         if (filter != "") {
             let copyData = { ...treeLinks };
-            debugger;
             copyData.child = getFilteredNodes(treeLinks.child, filter);
             setFilteredData(copyData);
             console.log("filtered data", copyData)

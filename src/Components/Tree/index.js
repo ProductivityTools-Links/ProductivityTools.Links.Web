@@ -90,7 +90,6 @@ function Tree({ structure, setSelectedNode, selectedNode, refreshTreeLink }) {
     // }
 
     const nodeSelectTree = (id) => {
-        debugger;
         if (structure._id == id) {
             setSelectedNode(structure)
         }
