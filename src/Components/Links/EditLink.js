@@ -24,7 +24,8 @@ function EditLink({ setMode, selectedNode, refreshTreeLink, link }) {
     }
 
     const createNew = async () => {
-        let linkId = await service.updateLink(editLink.id, selectedNode._id, editLink.name, editLink.url, editLink.description)
+        let authors = editLink.authors.split(",");
+        let linkId = await service.updateLink(editLink.id, selectedNode._id, editLink.name, editLink.url, editLink.description, authors)
         if (linkId != undefined) {
             setMode('list')
             refreshTreeLink();
@@ -37,6 +38,7 @@ function EditLink({ setMode, selectedNode, refreshTreeLink, link }) {
             <TextField id="linkName" name="name" label="Name" fullWidth variant="standard" value={editLink.name} onChange={updateLink} /><br />
             <TextField id="linkUrl" name="url" label="Url" fullWidth variant="standard" onChange={updateLink} value={editLink.url} /><br />
             <TextField id="linkDescription" name="description" fullWidth label="Description" variant="standard" multiline value={editLink.description || ''} onChange={updateLink} /><br />
+            <TextField id="linkAuthors" name="authors" fullWidth label="Authors" variant="standard" multiline value={editLink.authors || ''} onChange={updateLink} /><br />
             <Button variant="contained" onClick={createNew}>{link ? "Update" : "Add"}</Button>
 
             <Button variant="contained" onClick={() => setMode('list')}>Cancel</Button>
