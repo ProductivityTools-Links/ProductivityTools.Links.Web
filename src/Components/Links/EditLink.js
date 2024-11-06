@@ -24,8 +24,7 @@ function EditLink({ setMode, selectedNode, refreshTreeLink, link }) {
     }
 
     const createNew = async () => {
-        let authors = editLink.authors.split(",");
-        let linkId = await service.updateLink(editLink.id, selectedNode._id, editLink.name, editLink.url, editLink.description, authors)
+        let linkId = await service.updateLink(editLink._id, selectedNode._id, editLink.name, editLink.url, editLink.description, editLink.authors || '')
         if (linkId != undefined) {
             setMode('list')
             refreshTreeLink();
@@ -48,7 +47,7 @@ function EditLink({ setMode, selectedNode, refreshTreeLink, link }) {
 
             <div className='debug'>
                 <span>{editLink.name}</span> <span>{editLink.url}</span> <span>{editLink.description}</span>
-                <span>Parent name: {selectedNode.name} ParentId {selectedNode.id}</span>
+                <span>Parent name: {selectedNode.name} ParentId {selectedNode._id}</span>
             </div>
         </div>
     )

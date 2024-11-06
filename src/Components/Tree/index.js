@@ -122,7 +122,7 @@ function Tree({ structure, setSelectedNode, selectedNode, refreshTreeLink }) {
             // onNodeSelect={nodeSelect}
             // sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
             >
-                <TreeItem nodeId={structure._id.toString()} label=<button className='treebutton' onClick={(e) => treeLabelClick(e, structure._id)}>{structure.login}</button> contextmenuid={structure.id}>
+                <TreeItem nodeId={structure._id.toString()} label=<button className='treebutton' onClick={(e) => treeLabelClick(e, structure._id)}>{structure.login}</button> contextmenuid={structure._id}>
                     {GetNode(structure)}
                 </TreeItem>
             </TreeView>
