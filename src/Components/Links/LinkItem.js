@@ -3,6 +3,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { useDrag } from 'react-dnd'
 import EditIcon from '@mui/icons-material/Edit';
 import { IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 function LinkItem({ link, editLink }) {
@@ -26,7 +27,8 @@ function LinkItem({ link, editLink }) {
             <span><i>*{link.authors}*</i></span>
             {link.description && <span>- {link.description}</span>}
             <span>{isDragging && '😱'}</span>
-            <button className='editLink' onClick={edit}></button>
+            <button className='editLink' onClick={edit}></button><EditIcon><button onClick={edit}></button></EditIcon>
+            <button className='deleteLink' onClick={edit}></button>
         </span>
     )
 }
