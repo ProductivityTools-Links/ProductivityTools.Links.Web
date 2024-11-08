@@ -27,8 +27,9 @@ function LinkItem({ link, editLink }) {
             <span><i>*{link.authors}*</i></span>
             {link.description && <span>- {link.description}</span>}
             <span>{isDragging && '😱'}</span>
-            <button className='editLink' onClick={edit}></button><EditIcon><button onClick={edit}></button></EditIcon>
-            <button className='deleteLink' onClick={edit}></button>
+            {/* <button className='editLink' onClick={edit}></button><EditIcon><button onClick={edit}></button></EditIcon> */}
+            <IconButton onClick={edit}><EditIcon style={{ color: '#D3D3D3' }}></EditIcon></IconButton>
+            <IconButton><DeleteIcon style={{ color: '#D3D3D3' }} ></DeleteIcon></IconButton>
         </span>
     )
 }
