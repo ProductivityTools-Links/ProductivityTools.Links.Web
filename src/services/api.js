@@ -99,6 +99,15 @@ async function moveLink(id, targetParentId) {
     return invokeCallWithToast(call, "Move link", "Link moved")
 }
 
+async function deleteLink(id) {
+    let call = async (header) => {
+        const data = { id: id }
+        const response = await axios.delete(`${config.PATH_BASE}/Link`, { data: data, headers: header.headers })
+        return response.data;
+    }
+    return invokeCallWithToast(call, "Move link", "Link moved")
+}
+
 async function moveTreeItem(id, targetParentId) {
     let call = async (header) => {
         const data = { id: id, targetParentId: targetParentId }
@@ -134,6 +143,7 @@ const service = {
     getLinks,
     updateLink,
     moveLink,
+    deleteLink,
     moveTreeItem,
     getAccounts,
     createAccountIfNotExists

@@ -47,6 +47,7 @@ function EditLink({ setMode, selectedNode, refreshTreeLink, link }) {
 
 
             <div className='debug'>
+            <span>{editLink._id} </span>
                 <span>{editLink.name}</span> <span>{editLink.url}</span> <span>{editLink.description}</span>
                 <span>Parent name: {selectedNode.name} ParentId {selectedNode._id}</span>
             </div>

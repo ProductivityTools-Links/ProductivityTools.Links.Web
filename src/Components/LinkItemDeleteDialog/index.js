@@ -4,16 +4,15 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import service from '../../services/api.js'
 
-function LinkItemDeleteDialog({ open, closeModal }) {
+
+function LinkItemDeleteDialog({ selectedLinkItem, open, closeModal }) {
 
     const handleCloseAndProceed = async () => {
-        console.log("handleCloseAndProceed");
-        // console.log(selectedJournal);
-        // var r = await apiService.deleteTree(selectedJournal.id);
-        // if (r) {
-        //   closeAndRefresh(false);
-        // }
+        console.log("LinkItemDeleteDialog, handleCloseAndProceed", selectedLinkItem);
+         var r = await service.deleteLink(selectedLinkItem._id);
+        
     };
 
     return (
@@ -25,10 +24,10 @@ function LinkItemDeleteDialog({ open, closeModal }) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{"Remove Tree Node?"}</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{"Remove?"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Do you want to remove
+                        Do you want to Link item?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

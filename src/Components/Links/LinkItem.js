@@ -43,9 +43,10 @@ function LinkItem({ link, editLink }) {
                 <IconButton onClick={deleteLinkItem}><DeleteIcon style={{ color: '#D3D3D3' }} ></DeleteIcon></IconButton>
             </span>
             <LinkItemDeleteDialog
+                selectedLinkItem={link}
                 open={deleteModalOpen}
-            // selectedJournal={selectedTreeNode}
-             closeModal={closeModal}
+                // selectedJournal={selectedTreeNode}
+                closeModal={closeModal}
             // closeAndRefresh={closeAndRefresh}
             ></LinkItemDeleteDialog>
         </div>
