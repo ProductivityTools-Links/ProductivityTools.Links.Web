@@ -60,7 +60,7 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink }) {
         console.log("filteredTreeLinks", filteredTreeLinks);
         if (selectedNode != null && filteredTreeLinks != null) {
             console.log("linkd2s");
-            console.log(selectedNode?.id == filteredTreeLinks?.id);
+            console.log(selectedNode?._id == filteredTreeLinks?._id);
             flatLinkList(selectedNode);
             console.log("oldlinks", links)
             console.log("newLinksList", newLinksList)
@@ -85,7 +85,7 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink }) {
             <div>
                 <span>Currently selected node: {selectedNode && selectedNode.name}</span>
                 <Stack spacing={2}>
-                    {links && links.map(x => <LinkItem key={x.id} link={x} editLink={editLink} />)}
+                    {links && links.map(x => <LinkItem key={x._id} link={x} editLink={editLink} refreshTreeLink={refreshTreeLink}  />)}
                 </Stack>
                 <Button variant="contained" onClick={newLink}>Add New</Button>
                 <span>List of Links</span>

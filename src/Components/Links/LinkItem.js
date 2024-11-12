@@ -8,7 +8,7 @@ import LinkItemDeleteDialog from '../LinkItemDeleteDialog'
 import React, { useState } from 'react';
 
 
-function LinkItem({ link, editLink }) {
+function LinkItem({ link, editLink, refreshTreeLink }) {
 
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [{ isDragging }, drag] = useDrag(() => ({
@@ -30,6 +30,12 @@ function LinkItem({ link, editLink }) {
         setDeleteModalOpen(false)
     }
 
+    const closeAndRefresh = () => {
+        closeModal();
+        refreshTreeLink();
+
+    }
+
     return (
         <div>
             <span className="linkItem" ref={drag}>
@@ -47,7 +53,7 @@ function LinkItem({ link, editLink }) {
                 open={deleteModalOpen}
                 // selectedJournal={selectedTreeNode}
                 closeModal={closeModal}
-            // closeAndRefresh={closeAndRefresh}
+                closeAndRefresh={closeAndRefresh}
             ></LinkItemDeleteDialog>
         </div>
     )

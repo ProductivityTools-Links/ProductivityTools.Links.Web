@@ -7,12 +7,12 @@ import DialogTitle from '@mui/material/DialogTitle';
 import service from '../../services/api.js'
 
 
-function LinkItemDeleteDialog({ selectedLinkItem, open, closeModal }) {
+function LinkItemDeleteDialog({ selectedLinkItem, open, closeModal, closeAndRefresh }) {
 
     const handleCloseAndProceed = async () => {
         console.log("LinkItemDeleteDialog, handleCloseAndProceed", selectedLinkItem);
-         var r = await service.deleteLink(selectedLinkItem._id);
-        
+        var r = await service.deleteLink(selectedLinkItem._id);
+        closeAndRefresh()
     };
 
     return (
