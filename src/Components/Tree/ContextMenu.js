@@ -22,15 +22,20 @@ const ContextMenu = ({ parentRef, items }) => {
             console.log(event);
             console.log(x);
             event.preventDefault();
+
             setIsVisible(true);
             setX(event.clientX);
             setY(event.clientY);
             console.log('show');
             console.log(event.composedPath())
             let elementId = event.composedPath().find(e => e.nodeName === 'LI').getAttribute('contextmenuid');
+            var element = event.composedPath().find(e => e.nodeName === 'BUTTON');
+            console.log("element", element);
+            element.click();
             setSelectedTreeId(parseInt(elementId));
             console.log("selectet tree id")
             console.log(elementId);
+
         }
 
         const closeMenu = () => {
@@ -57,7 +62,7 @@ const ContextMenu = ({ parentRef, items }) => {
             {items.map((item, index) => {
                 return (
                     <div key={index}
-                        onClick={() => {  item.onclick(selectedTreeId) }}
+                        onClick={() => { item.onclick(selectedTreeId) }}
                         className='context-menuItem'>
                         {item.text}
                     </div>

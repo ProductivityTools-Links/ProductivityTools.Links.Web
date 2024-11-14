@@ -8,6 +8,7 @@ import { useRef, useState } from 'react'
 import AddNodeModal from './AddNodeModal';
 import StyledTreeItem from './StyledTreeItem.js'
 import TreeItem from '@mui/lab/TreeItem';
+import NodeDeleteDialog from './NodeDeleteDialog.js';
 
 
 
@@ -16,6 +17,7 @@ function Tree({ structure, setSelectedNode, selectedNode, refreshTreeLink }) {
     //console.log('props')
     //console.log(structure);
     const [modalOpen, setModalOpen] = useState(false);
+    const [nodeDeleteDialogOpen, setnNodeDeleteDialogOpen] = useState(false)
     // const [selectedNode, setSelectedNode] = useState("1");
 
     const containerRef = useRef(null);
@@ -29,6 +31,8 @@ function Tree({ structure, setSelectedNode, selectedNode, refreshTreeLink }) {
         nodeSelectTree(id);
         e.stopPropagation();
     }
+
+    const nodeDeleteDialogClose = () => { setnNodeDeleteDialogOpen(true)}
 
 
 
@@ -107,7 +111,7 @@ function Tree({ structure, setSelectedNode, selectedNode, refreshTreeLink }) {
         },
         {
             text: 'Delete',
-            onclick: () => { console.log("hey") }
+            onclick: () => { nodeDeleteDialogClose() }
         }
     ];
 
@@ -129,7 +133,7 @@ function Tree({ structure, setSelectedNode, selectedNode, refreshTreeLink }) {
 
             <ContextMenu parentRef={containerRef} items={menuItems}></ContextMenu>
             <AddNodeModal open={modalOpen} selectedNode={selectedNode} handleModalClose={handleModalClose} refreshTreeLink={refreshTreeLink} />
-
+            <NodeDeleteDialog open={nodeDeleteDialogOpen} selectedNode={selectedNode} handleModalClose={handleModalClose} refreshTreeLink={refreshTreeLink} ></NodeDeleteDialog>
             {/* <p className='debug'>{selectedNode && selectedNode.id}</p> */}
             {/* {GetNode2(structure)} */}
         </div>
