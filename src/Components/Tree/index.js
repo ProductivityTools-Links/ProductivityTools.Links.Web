@@ -32,9 +32,12 @@ function Tree({ structure, setSelectedNode, selectedNode, refreshTreeLink }) {
         e.stopPropagation();
     }
 
-    const nodeDeleteDialogClose = () => { setnNodeDeleteDialogOpen(true)}
+    const nodeDeleteDialogClose = () => { setnNodeDeleteDialogOpen(true) }
 
-
+    const closeAndRefresh = () => {
+        setnNodeDeleteDialogOpen(false);
+        refreshTreeLink();
+    }
 
     function GetNode(n) {
         // console.log("get node")
@@ -133,7 +136,7 @@ function Tree({ structure, setSelectedNode, selectedNode, refreshTreeLink }) {
 
             <ContextMenu parentRef={containerRef} items={menuItems}></ContextMenu>
             <AddNodeModal open={modalOpen} selectedNode={selectedNode} handleModalClose={handleModalClose} refreshTreeLink={refreshTreeLink} />
-            <NodeDeleteDialog open={nodeDeleteDialogOpen} selectedNode={selectedNode} handleModalClose={handleModalClose} refreshTreeLink={refreshTreeLink} ></NodeDeleteDialog>
+            <NodeDeleteDialog open={nodeDeleteDialogOpen} selectedNode={selectedNode} closeAndRefresh={closeAndRefresh} refreshTreeLink={refreshTreeLink} ></NodeDeleteDialog>
             {/* <p className='debug'>{selectedNode && selectedNode.id}</p> */}
             {/* {GetNode2(structure)} */}
         </div>

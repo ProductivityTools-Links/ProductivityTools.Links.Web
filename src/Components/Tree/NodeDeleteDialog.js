@@ -11,9 +11,9 @@ function NodeDeleteDialog({ selectedNode, open, closeModal, closeAndRefresh }) {
 
     const handleCloseAndProceed = async () => {
         console.log(selectedNode);
-        //     console.log("LinkItemDeleteDialog, handleCloseAndProceed", selectedLinkItem);
-        //     var r = await service.deleteLink(selectedLinkItem._id);
-        //     closeAndRefresh()
+        console.log("NodeDeleteDialog, handleCloseAndProceed", selectedNode._id);
+        var r = await service.deleteNode(selectedNode._id);
+        closeAndRefresh()
     };
 
     return (

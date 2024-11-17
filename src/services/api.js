@@ -105,7 +105,16 @@ async function deleteLink(id) {
         const response = await axios.delete(`${config.PATH_BASE}/Link`, { data: data, headers: header.headers })
         return response.data;
     }
-    return invokeCallWithToast(call, "Move link", "Link moved")
+    return invokeCallWithToast(call, "Deleting link", "Link deleted")
+}
+
+async function deleteNode(id) {
+    let call = async (header) => {
+        const data = { id: id }
+        const response = await axios.delete(`${config.PATH_BASE}/Tree`, { data: data, headers: header.headers })
+        return response.data;
+    }
+    return invokeCallWithToast(call, "Deleting Node", "Node deleted")
 }
 
 async function moveTreeItem(id, targetParentId) {
@@ -140,6 +149,7 @@ const service = {
     // getTree,
     getTreeLinks,
     addNode,
+    deleteNode,
     getLinks,
     updateLink,
     moveLink,
