@@ -47,11 +47,55 @@ function Console(props) {
 
     // const [filter, setFilter] = useState();
     useEffect(() => {
+
+        var authors = []
+
+        const findAuthorByName = (authorName) => {
+            for (var i = 0; i < authors.length; i++) {
+                //console.log("findAuthorByNam2e",authorName)
+                if (authors[i].name == authorName) {
+                    debugger;
+                    return authors[i]
+
+                }
+            }
+        }
+
+        const addAuthorLink = (link) => {
+
+            var authorArrayItem = findAuthorByName(link.authors);
+            if (!authorArrayItem) {
+                authorArrayItem = { _type: "authorLink", name: link.authors, id: link.authors, child: [] }
+                authors.push(authorArrayItem);
+            }
+            authorArrayItem.child.push(link);
+
+        }
+
+        const getOwners = (node) => {
+            //console.log("getOwners:", node);
+            if (node._type == "Link" && node.authors) {
+                //console.log("LinkAudthors:", node.authors);
+                addAuthorLink(node);
+                //console.log("getOwners,authors", authors)
+            }
+
+            if (node.child) {
+                for (var i = 0; i < node.child.length; i++) {
+                    //console.log(node.child[i].name)
+                    getOwners(node.child[i])
+
+                }
+            }
+        }
+
         const call = async () => {
             let x = navigate;
             let y = location;
             let z = params;
             let r = await service.getTreeLinks(params.login);
+            getOwners(r);
+            console.log("getOwners,authors2", authors)
             setTreeLinks(r);
             setFilteredData(r);
 
