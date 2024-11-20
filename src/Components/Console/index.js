@@ -54,7 +54,6 @@ function Console(props) {
             for (var i = 0; i < authors.length; i++) {
                 //console.log("findAuthorByNam2e",authorName)
                 if (authors[i].name == authorName) {
-                    debugger;
                     return authors[i]
 
                 }
@@ -65,7 +64,7 @@ function Console(props) {
 
             var authorArrayItem = findAuthorByName(link.authors);
             if (!authorArrayItem) {
-                authorArrayItem = { _type: "authorLink", name: link.authors, id: link.authors, child: [] }
+                authorArrayItem = { _type: "Node", name: link.authors, _id: link.authors, child: [] }
                 authors.push(authorArrayItem);
             }
             authorArrayItem.child.push(link);
@@ -93,19 +92,22 @@ function Console(props) {
             let x = navigate;
             let y = location;
             let z = params;
-            let r = await service.getTreeLinks(params.login);
-            getOwners(r);
+            let treeStructure = await service.getTreeLinks(params.login);
+            getOwners(treeStructure);
             console.log("getOwners,authors2", authors)
-            setTreeLinks(r);
-            setFilteredData(r);
+            let authorsNode={ _type: "Node", name: "Authors", _id: "authors", child: authors }
+            treeStructure.child.push(authorsNode)
+            console.log("treeStructure.child.push(authors)",treeStructure)
+            setTreeLinks(treeStructure);
+            setFilteredData(treeStructure);
 
             if (selectedNode) {
-                console.log("findNode", r, selectedNode);
-                var updatedSelected = findNodeById(r, selectedNode._id)
+                console.log("findNode", treeStructure, selectedNode);
+                var updatedSelected = findNodeById(treeStructure, selectedNode._id)
                 console.log("updatedSelected", updatedSelected)
                 setSelectedNode(updatedSelected);
             }
-            console.log("getTreeLinks", r);
+            console.log("getTreeLinks", treeStructure);
         }
         call();
     }, [date])
