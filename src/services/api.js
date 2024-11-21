@@ -65,7 +65,7 @@ async function addNode(parentId, name) {
     let call = async (header) => {
         console.log("parentId"); console.log(parentId)
         const data = { parentId: parentId, name: name }
-        const response = await axios.post(`${config.PATH_BASE}/Tree`, data)
+        const response = await axios.post(`${config.PATH_BASE}/Tree`, data, header)
     }
     return invokeCallWithToast(call, "New node requested", "New node created")
 }
