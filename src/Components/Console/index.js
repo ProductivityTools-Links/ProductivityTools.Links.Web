@@ -136,10 +136,13 @@ function Console(props) {
                 tempNode.child = getFilteredNodes(tempNode.child, filter);
             }
 
+            //this put the whole node with all the childs and links if the name is find in the tree
             if (nodes[i].name.toLowerCase().indexOf(filter.toLowerCase()) > -1) {
                 let fullNode = { ...nodes[i] }
                 result.push(fullNode)
+            
             } else if (tempNode.child && tempNode.child.length > 0) {
+                //this line adds only the links
                 result.push(tempNode)
             }
         }
