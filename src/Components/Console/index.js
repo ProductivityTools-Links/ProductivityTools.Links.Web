@@ -95,9 +95,9 @@ function Console(props) {
             let treeStructure = await service.getTreeLinks(params.login);
             getOwners(treeStructure);
             console.log("getOwners,authors2", authors)
-            let authorsNode={ _type: "Node", name: "Authors", _id: "authors", child: authors }
+            let authorsNode = { _type: "Node", name: "Authors", _id: "authors", child: authors }
             treeStructure.child.push(authorsNode)
-            console.log("treeStructure.child.push(authors)",treeStructure)
+            console.log("treeStructure.child.push(authors)", treeStructure)
             setTreeLinks(treeStructure);
             setFilteredData(treeStructure);
 
@@ -136,7 +136,10 @@ function Console(props) {
                 tempNode.child = getFilteredNodes(tempNode.child, filter);
             }
 
-            if (nodes[i].name.toLowerCase().indexOf(filter.toLowerCase()) > -1 || tempNode.child && tempNode.child.length > 0) {
+            if (nodes[i].name.toLowerCase().indexOf(filter.toLowerCase()) > -1) {
+                let fullNode = { ...nodes[i] }
+                result.push(fullNode)
+            } else if (tempNode.child && tempNode.child.length > 0) {
                 result.push(tempNode)
             }
         }
@@ -172,13 +175,17 @@ function Console(props) {
         setDate(new Date().getTime());
     }
 
+    const clearFilterBox = () => {
+
+    }
+
     return (
         <div>
 
             <div>
                 <a href="/">Home1</a>
                 <button onClick={logoutAction}>logout</button>
-                <input onChange={(e) => filterData(e.target.value)}></input>
+                <input id="filerField" onChange={(e) => filterData(e.target.value)}></input><button onClick={() => { document.getElementById("filerField").value = ""; filterData("") }}>Clear</button>
                 <span>selectedNode: {selectedNode && selectedNode._id}</span>
             </div>
             <hr />
