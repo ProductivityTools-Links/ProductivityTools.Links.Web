@@ -20,6 +20,6 @@ Application stores links and allow to add description to it
 # Firebase
 
 ```
-npm install -g firebase-tools
+npm install -g firebase-tools 
 firebase init 
 ```
