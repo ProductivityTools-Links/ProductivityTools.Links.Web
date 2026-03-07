@@ -15,3 +15,11 @@
 Application stores links and allow to add description to it
 
 ![](Images/2022-10-19-12-39-43.png)
+
+
+# Firebase
+
+```
+npm install -g firebase-tools
+firebase init
+```
