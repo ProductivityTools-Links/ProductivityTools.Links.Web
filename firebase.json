@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site":"pt-links",
     "public": "public",
     "ignore": [
       "firebase.json",
