@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site":"pt-habits",
+    "site":"pt-links",
     "public": "public",
     "ignore": [
       "firebase.json",
