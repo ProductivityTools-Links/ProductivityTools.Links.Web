@@ -8,28 +8,18 @@ import {
     signOut,
 } from "firebase/auth";
 
-const devfirebaseConfig = {
-    apiKey: "AIzaSyAKD7AagdCuXkEtc_IG8MQGwOfhiqLZohw",
-    authDomain: "ptlinksprod.firebaseapp.com",
-    projectId: "ptlinksprod",
-    storageBucket: "ptlinksprod.appspot.com",
-    messagingSenderId: "488456392633",
-    appId: "1:488456392633:web:f2b83882cb3b34a3a9b068"
-};
-
-const prodfirebaseConfig = {
-    apiKey: "AIzaSyAKD7AagdCuXkEtc_IG8MQGwOfhiqLZohw",
-    authDomain: "ptlinksprod.firebaseapp.com",
-    projectId: "ptlinksprod",
-    storageBucket: "ptlinksprod.appspot.com",
-    messagingSenderId: "488456392633",
-    appId: "1:488456392633:web:f2b83882cb3b34a3a9b068"
+const firebaseConfig = {
+  apiKey: "AIzaSyBxY4oT4SZd5r-nZiM1eFFnUCcC3UxgYr4",
+  authDomain: "ptprojectsweb.firebaseapp.com",
+  projectId: "ptprojectsweb",
+  storageBucket: "ptprojectsweb.firebasestorage.app",
+  messagingSenderId: "93484780890",
+  appId: "1:93484780890:web:71461d0f467963039ff763"
 };
 
 
 // Initialize Firebase
-const configName = process.env.NODE_ENV === 'development' ? devfirebaseConfig : prodfirebaseConfig;
-const app = initializeApp(configName);
+const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const googleProvider = new GoogleAuthProvider();
