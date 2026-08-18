@@ -9,6 +9,7 @@ import AddNodeModal from './AddNodeModal';
 import StyledTreeItem from './StyledTreeItem.js'
 import TreeItem from '@mui/lab/TreeItem';
 import NodeDeleteDialog from './NodeDeleteDialog.js';
+import NodeRenameDialog from './NodeRenameDialog.js';
 
 
 
@@ -18,6 +19,7 @@ function Tree({ structure, setSelectedNode, selectedNode, refreshTreeLink }) {
     //console.log(structure);
     const [modalOpen, setModalOpen] = useState(false);
     const [nodeDeleteDialogOpen, setnNodeDeleteDialogOpen] = useState(false)
+    const [nodeRenameDialogOpen, setNodeRenameDialogOpen] = useState(false)
     // const [selectedNode, setSelectedNode] = useState("1");
 
     const containerRef = useRef(null);
@@ -33,9 +35,12 @@ function Tree({ structure, setSelectedNode, selectedNode, refreshTreeLink }) {
     }
 
     const nodeDeleteDialogClose = () => { setnNodeDeleteDialogOpen(true) }
+    const handleNodeRenameOpen = () => { setNodeRenameDialogOpen(true); }
+    const handleNodeRenameClose = () => { setNodeRenameDialogOpen(false); }
 
     const closeAndRefresh = () => {
         setnNodeDeleteDialogOpen(false);
+        setNodeRenameDialogOpen(false);
         refreshTreeLink();
     }
 
@@ -113,6 +118,10 @@ function Tree({ structure, setSelectedNode, selectedNode, refreshTreeLink }) {
             onclick: (id) => { handleModalOpen(); }
         },
         {
+            text: 'Rename',
+            onclick: () => { handleNodeRenameOpen(); }
+        },
+        {
             text: 'Delete',
             onclick: () => { nodeDeleteDialogClose() }
         }
@@ -136,7 +145,8 @@ function Tree({ structure, setSelectedNode, selectedNode, refreshTreeLink }) {
 
             <ContextMenu parentRef={containerRef} items={menuItems}></ContextMenu>
             <AddNodeModal open={modalOpen} selectedNode={selectedNode} handleModalClose={handleModalClose} refreshTreeLink={refreshTreeLink} />
-            <NodeDeleteDialog open={nodeDeleteDialogOpen} selectedNode={selectedNode} closeAndRefresh={closeAndRefresh} refreshTreeLink={refreshTreeLink} ></NodeDeleteDialog>
+            <NodeRenameDialog open={nodeRenameDialogOpen} selectedNode={selectedNode} closeModal={handleNodeRenameClose} closeAndRefresh={closeAndRefresh} refreshTreeLink={refreshTreeLink} />
+            <NodeDeleteDialog open={nodeDeleteDialogOpen} selectedNode={selectedNode} closeModal={() => setnNodeDeleteDialogOpen(false)} closeAndRefresh={closeAndRefresh} refreshTreeLink={refreshTreeLink} ></NodeDeleteDialog>
             {/* <p className='debug'>{selectedNode && selectedNode.id}</p> */}
             {/* {GetNode2(structure)} */}
         </div>

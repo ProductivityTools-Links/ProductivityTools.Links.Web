@@ -144,11 +144,21 @@ async function createAccountIfNotExists() {
     return r;
 }
 
+async function updateNode(id, name) {
+    let call = async (header) => {
+        const data = { id: id, name: name }
+        const response = await axios.post(`${config.PATH_BASE}/Tree`, data, header)
+        return response.data;
+    }
+    return invokeCallWithToast(call, "Renaming tree item", "Tree item renamed")
+}
+
 const service = {
     getDate,
     // getTree,
     getTreeLinks,
     addNode,
+    updateNode,
     deleteNode,
     getLinks,
     updateLink,
