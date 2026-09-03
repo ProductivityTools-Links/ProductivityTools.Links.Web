@@ -4,7 +4,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 import './index.css'
 import ContextMenu from './ContextMenu';
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import AddNodeModal from './AddNodeModal';
 import StyledTreeItem from './StyledTreeItem.js'
 import TreeItem from '@mui/lab/TreeItem';
@@ -14,13 +14,65 @@ import NodeRenameDialog from './NodeRenameDialog.js';
 
 
 
-function Tree({ structure, setSelectedNode, selectedNode, refreshTreeLink }) {
+function Tree({ structure, filter, setSelectedNode, selectedNode, refreshTreeLink }) {
     //console.log('props')
     //console.log(structure);
     const [modalOpen, setModalOpen] = useState(false);
     const [nodeDeleteDialogOpen, setnNodeDeleteDialogOpen] = useState(false)
     const [nodeRenameDialogOpen, setNodeRenameDialogOpen] = useState(false)
     // const [selectedNode, setSelectedNode] = useState("1");
+    const [expanded, setExpanded] = useState([]);
+    const prevExpandedRef = useRef([]);
+    const isFilteringRef = useRef(false);
+    const initialExpandedDoneRef = useRef(false);
+
+    const getAllNodeIds = (node) => {
+        let ids = [];
+        if (!node) return ids;
+        if (node._id !== undefined && node._id !== null) {
+            ids.push(node._id.toString());
+        }
+        if (node.child && Array.isArray(node.child)) {
+            node.child.forEach((c) => {
+                if (c._type === 'Node' || (c.child && c._type !== 'Link')) {
+                    ids = ids.concat(getAllNodeIds(c));
+                }
+            });
+        }
+        return ids;
+    };
+
+    useEffect(() => {
+        if (!structure) return;
+
+        if (!initialExpandedDoneRef.current && structure._id) {
+            initialExpandedDoneRef.current = true;
+            setExpanded([structure._id.toString()]);
+        }
+    }, [structure]);
+
+    useEffect(() => {
+        if (!structure) return;
+
+        if (filter && filter.trim() !== '') {
+            if (!isFilteringRef.current) {
+                prevExpandedRef.current = expanded;
+                isFilteringRef.current = true;
+            }
+            const allIds = getAllNodeIds(structure);
+            setExpanded(Array.from(new Set(allIds)));
+        } else if (isFilteringRef.current) {
+            isFilteringRef.current = false;
+            const toRestore = prevExpandedRef.current.length > 0
+                ? prevExpandedRef.current
+                : (structure._id ? [structure._id.toString()] : []);
+            setExpanded(toRestore);
+        }
+    }, [filter, structure]);
+
+    const handleNodeToggle = (event, nodeIds) => {
+        setExpanded(nodeIds);
+    };
 
     const containerRef = useRef(null);
 
@@ -135,6 +187,8 @@ function Tree({ structure, setSelectedNode, selectedNode, refreshTreeLink }) {
                 aria-label="file system navigator"
                 defaultCollapseIcon={<ExpandMoreIcon />}
                 defaultExpandIcon={<ChevronRightIcon />}
+                expanded={expanded}
+                onNodeToggle={handleNodeToggle}
             // onNodeSelect={nodeSelect}
             // sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
             >

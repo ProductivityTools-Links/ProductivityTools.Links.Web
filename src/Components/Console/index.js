@@ -29,9 +29,7 @@ function Console(props) {
 
     const [treeLinks, setTreeLinks] = useState(null);
     const [filteredTreeLinks, setFilteredTreeLinks] = useState(null);
-
-
-    // const [filter, setFilter] = useState();
+    const [filter, setFilter] = useState('');
     // useEffect(() => {
     //     const call = async () => {
     //         let r = await service.getTree();
@@ -99,7 +97,13 @@ function Console(props) {
             treeStructure.child.push(authorsNode)
             console.log("treeStructure.child.push(authors)", treeStructure)
             setTreeLinks(treeStructure);
-            setFilteredData(treeStructure);
+            if (filter) {
+                let copyData = { ...treeStructure };
+                copyData.child = getFilteredNodes(treeStructure.child, filter);
+                setFilteredData(copyData);
+            } else {
+                setFilteredData(treeStructure);
+            }
 
             if (selectedNode) {
                 console.log("findNode", treeStructure, selectedNode);
@@ -137,7 +141,7 @@ function Console(props) {
             }
 
             //this put the whole node with all the childs and links if the name is find in the tree
-            if (nodes[i].name.toLowerCase().indexOf(filter.toLowerCase()) > -1) {
+            if (nodes[i].name && nodes[i].name.toLowerCase().indexOf(filter.toLowerCase()) > -1) {
                 let fullNode = { ...nodes[i] }
                 result.push(fullNode)
             
@@ -149,12 +153,12 @@ function Console(props) {
         return result;
     }
 
-    const filterData = (filter) => {
-        console.log("filter data")
-        console.log(treeLinks);
-        if (filter != "") {
+    const filterData = (filterValue) => {
+        console.log("filter data", filterValue);
+        setFilter(filterValue);
+        if (filterValue !== "" && treeLinks) {
             let copyData = { ...treeLinks };
-            copyData.child = getFilteredNodes(treeLinks.child, filter);
+            copyData.child = getFilteredNodes(treeLinks.child, filterValue);
             setFilteredData(copyData);
             console.log("filtered data", copyData)
         }
@@ -188,7 +192,7 @@ function Console(props) {
             <div>
                 <a href="/">Home1</a>
                 <button onClick={logoutAction}>logout</button>
-                <input id="filerField" onChange={(e) => filterData(e.target.value)}></input><button onClick={() => { document.getElementById("filerField").value = ""; filterData("") }}>Clear</button>
+                <input id="filerField" value={filter} onChange={(e) => filterData(e.target.value)}></input><button onClick={() => { document.getElementById("filerField").value = ""; filterData("") }}>Clear</button>
                 <span>selectedNode: {selectedNode && selectedNode._id}</span>
             </div>
             <hr />
@@ -197,7 +201,7 @@ function Console(props) {
             <DndProvider backend={HTML5Backend}>
                 <div style={{ display: 'flex' }}>
                     <div style={{ width: '230px', float: 'left' }}>
-                        <Tree structure={filteredData} setSelectedNode={setSelectedNode} selectedNode={selectedNode} refreshTreeLink={refreshTreeLink}></Tree>
+                        <Tree structure={filteredData} filter={filter} setSelectedNode={setSelectedNode} selectedNode={selectedNode} refreshTreeLink={refreshTreeLink}></Tree>
                     </div>
                     <div style={{ float: 'left' }}>
                         <Links selectedNode={selectedNode} filteredTreeLinks={treeLinks} refreshTreeLink={refreshTreeLink} />
