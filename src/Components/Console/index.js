@@ -101,15 +101,20 @@ function Console(props) {
                 let copyData = { ...treeStructure };
                 copyData.child = getFilteredNodes(treeStructure.child, filter);
                 setFilteredData(copyData);
+                if (selectedNode && selectedNode._id !== treeStructure._id) {
+                    var updatedSelected = findNodeById(copyData, selectedNode._id);
+                    setSelectedNode(updatedSelected || copyData);
+                } else {
+                    setSelectedNode(copyData);
+                }
             } else {
                 setFilteredData(treeStructure);
-            }
-
-            if (selectedNode) {
-                console.log("findNode", treeStructure, selectedNode);
-                var updatedSelected = findNodeById(treeStructure, selectedNode._id)
-                console.log("updatedSelected", updatedSelected)
-                setSelectedNode(updatedSelected);
+                if (selectedNode && selectedNode._id !== treeStructure._id) {
+                    var updatedSelected = findNodeById(treeStructure, selectedNode._id);
+                    setSelectedNode(updatedSelected || treeStructure);
+                } else {
+                    setSelectedNode(treeStructure);
+                }
             }
             console.log("getTreeLinks", treeStructure);
         }
@@ -140,8 +145,14 @@ function Console(props) {
                 tempNode.child = getFilteredNodes(tempNode.child, filter);
             }
 
+            const nameMatch = nodes[i].name && nodes[i].name.toLowerCase().indexOf(filter.toLowerCase()) > -1;
+            const linkMatch = nodes[i]._type === "Link" && (
+                (nodes[i].description && nodes[i].description.toLowerCase().indexOf(filter.toLowerCase()) > -1) ||
+                (nodes[i].url && nodes[i].url.toLowerCase().indexOf(filter.toLowerCase()) > -1)
+            );
+
             //this put the whole node with all the childs and links if the name is find in the tree
-            if (nodes[i].name && nodes[i].name.toLowerCase().indexOf(filter.toLowerCase()) > -1) {
+            if (nameMatch || linkMatch) {
                 let fullNode = { ...nodes[i] }
                 result.push(fullNode)
             
@@ -160,10 +171,12 @@ function Console(props) {
             let copyData = { ...treeLinks };
             copyData.child = getFilteredNodes(treeLinks.child, filterValue);
             setFilteredData(copyData);
+            setSelectedNode(copyData);
             console.log("filtered data", copyData)
         }
         else {
-            setFilteredData(treeLinks)
+            setFilteredData(treeLinks);
+            setSelectedNode(treeLinks);
         }
     }
 
@@ -192,7 +205,17 @@ function Console(props) {
             <div>
                 <a href="/">Home1</a>
                 <button onClick={logoutAction}>logout</button>
-                <input id="filerField" value={filter} onChange={(e) => filterData(e.target.value)}></input><button onClick={() => { document.getElementById("filerField").value = ""; filterData("") }}>Clear</button>
+                <input
+                    id="filerField"
+                    value={filter}
+                    onFocus={() => {
+                        if (!filter && treeLinks) {
+                            setSelectedNode(treeLinks);
+                        }
+                    }}
+                    onChange={(e) => filterData(e.target.value)}
+                />
+                <button onClick={() => { filterData(""); }}>Clear</button>
                 <span>selectedNode: {selectedNode && selectedNode._id}</span>
             </div>
             <hr />
@@ -204,7 +227,7 @@ function Console(props) {
                         <Tree structure={filteredData} filter={filter} setSelectedNode={setSelectedNode} selectedNode={selectedNode} refreshTreeLink={refreshTreeLink}></Tree>
                     </div>
                     <div style={{ float: 'left' }}>
-                        <Links selectedNode={selectedNode} filteredTreeLinks={treeLinks} refreshTreeLink={refreshTreeLink} />
+                        <Links selectedNode={selectedNode} filteredTreeLinks={filteredData} refreshTreeLink={refreshTreeLink} />
                     </div>
                 </div>
             </DndProvider>

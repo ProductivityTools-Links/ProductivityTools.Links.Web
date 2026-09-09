@@ -23,48 +23,31 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink }) {
         // }
         // call();
         let newLinksList = [];
-        // const flatLinkList = (filteredTreeLinks, addLinks) => {
+        const flatLinkList = (currNode) => {
+            if (!currNode || !currNode.child) return;
 
-        //     if (addLinks) {
-        //         if (filteredTreeLinks.links != undefined) {
-        //             filteredTreeLinks.links.forEach(link => {
-        //                 newLinksList.push(link)
-        //                 console.log("addLinks",addLinks)
-        //                 console.log("newLinksListiteration",newLinksList)
-        //             });
-        //         }
-        //     }
-        //     if (filteredTreeLinks.nodes != undefined) {
-        //         filteredTreeLinks.nodes.forEach(node => {
-        //             flatLinkList(node, addLinks || node.id == selectedNode.id)
-        //         });
-        //     }
-        // }
-        const flatLinkList = (selectedNode) => {
+            currNode.child.filter((x) => x._type === "Link").forEach(link => {
+                if (!newLinksList.some(item => item._id === link._id)) {
+                    newLinksList.push(link);
+                }
+            });
 
-            if (selectedNode.child != undefined) {
-                selectedNode.child.filter((x) => x._type == "Link").forEach(link => {
-                    newLinksList.push(link)
-
-                    console.log("newLinksListiteration", newLinksList)
-                });
-            }
-
-            if (selectedNode.child != undefined) {
-                selectedNode.child.forEach(node => {
-                    flatLinkList(node)
-                });
-            }
+            currNode.child.filter((x) => x._type === "Node").forEach(childNode => {
+                if (currNode === targetNode && (childNode._id === "authors" || childNode.name === "Authors")) {
+                    return;
+                }
+                flatLinkList(childNode);
+            });
         }
+
         console.log("selectedNode", selectedNode);
         console.log("filteredTreeLinks", filteredTreeLinks);
-        if (selectedNode != null && filteredTreeLinks != null) {
-            console.log("linkd2s");
-            console.log(selectedNode?._id == filteredTreeLinks?._id);
-            flatLinkList(selectedNode);
-            console.log("oldlinks", links)
-            console.log("newLinksList", newLinksList)
+        const targetNode = selectedNode || filteredTreeLinks;
+        if (targetNode != null) {
+            flatLinkList(targetNode);
             setLinks(newLinksList);
+        } else {
+            setLinks([]);
         }
     }, [filteredTreeLinks, selectedNode])
 
@@ -83,7 +66,7 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink }) {
         return (
 
             <div>
-                <span>Currently selected node: {selectedNode && selectedNode.name}</span>
+                <span>Currently selected node: {selectedNode && (selectedNode.name || selectedNode.login)}</span>
                 <Stack spacing={2}>
                     {links && links.map(x => <LinkItem key={x._id} link={x} editLink={editLink} refreshTreeLink={refreshTreeLink}  />)}
                 </Stack>
