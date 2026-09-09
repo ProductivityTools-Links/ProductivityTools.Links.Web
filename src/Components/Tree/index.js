@@ -26,20 +26,20 @@ function Tree({ structure, filter, setSelectedNode, selectedNode, refreshTreeLin
     const isFilteringRef = useRef(false);
     const initialExpandedDoneRef = useRef(false);
 
-    const getAllNodeIds = (node) => {
-        let ids = [];
-        if (!node) return ids;
+    const getAllNodeIds = (node, acc = new Set()) => {
+        if (!node) return acc;
         if (node._id !== undefined && node._id !== null) {
-            ids.push(node._id.toString());
+            acc.add(node._id.toString());
         }
         if (node.child && Array.isArray(node.child)) {
-            node.child.forEach((c) => {
-                if (c._type === 'Node' || (c.child && c._type !== 'Link')) {
-                    ids = ids.concat(getAllNodeIds(c));
+            for (let i = 0; i < node.child.length; i++) {
+                const c = node.child[i];
+                if (c && (c._type === 'Node' || (c.child && c._type !== 'Link'))) {
+                    getAllNodeIds(c, acc);
                 }
-            });
+            }
         }
-        return ids;
+        return acc;
     };
 
     useEffect(() => {

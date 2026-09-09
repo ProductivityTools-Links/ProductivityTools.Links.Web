@@ -29,6 +29,7 @@ function Console(props) {
 
     const [treeLinks, setTreeLinks] = useState(null);
     const [filteredTreeLinks, setFilteredTreeLinks] = useState(null);
+    const [filterInput, setFilterInput] = useState('');
     const [filter, setFilter] = useState('');
     // useEffect(() => {
     //     const call = async () => {
@@ -97,9 +98,9 @@ function Console(props) {
             treeStructure.child.push(authorsNode)
             console.log("treeStructure.child.push(authors)", treeStructure)
             setTreeLinks(treeStructure);
-            if (filter) {
+            if (filterInput && filterInput.trim() !== '') {
                 let copyData = { ...treeStructure };
-                copyData.child = getFilteredNodes(treeStructure.child, filter);
+                copyData.child = getFilteredNodes(treeStructure.child, filterInput.trim());
                 setFilteredData(copyData);
                 if (selectedNode && selectedNode._id !== treeStructure._id) {
                     var updatedSelected = findNodeById(copyData, selectedNode._id);
@@ -137,44 +138,72 @@ function Console(props) {
         }
     }
 
-    const getFilteredNodes = (nodes, filter) => {
-        let result = [];
-        for (var i = 0; i < nodes.length; i += 1) {
-            let tempNode = { ...nodes[i] };
-            if (tempNode._type == "Node" && tempNode.child) {
-                tempNode.child = getFilteredNodes(tempNode.child, filter);
-            }
+    const getFilteredNodes = (nodes, filterText) => {
+        if (!nodes || !filterText) return [];
+        const lowerFilter = filterText.toLowerCase();
 
-            const nameMatch = nodes[i].name && nodes[i].name.toLowerCase().indexOf(filter.toLowerCase()) > -1;
-            const linkMatch = nodes[i]._type === "Link" && (
-                (nodes[i].description && nodes[i].description.toLowerCase().indexOf(filter.toLowerCase()) > -1) ||
-                (nodes[i].url && nodes[i].url.toLowerCase().indexOf(filter.toLowerCase()) > -1)
-            );
+        const filterHelper = (list) => {
+            let result = [];
+            for (let i = 0; i < list.length; i++) {
+                const item = list[i];
+                if (!item) continue;
 
-            //this put the whole node with all the childs and links if the name is find in the tree
-            if (nameMatch || linkMatch) {
-                let fullNode = { ...nodes[i] }
-                result.push(fullNode)
-            
-            } else if (tempNode.child && tempNode.child.length > 0) {
-                //this line adds only the links
-                result.push(tempNode)
+                // Skip the virtual "Authors" branch during tree filtering
+                if (item._id === "authors" || item.name === "Authors") continue;
+
+                const nameMatch = item.name && item.name.toLowerCase().includes(lowerFilter);
+
+                if (item._type === "Node") {
+                    if (nameMatch) {
+                        // Matching node: keep full node with all its children/links
+                        result.push(item);
+                    } else if (item.child && item.child.length > 0) {
+                        const filteredChildren = filterHelper(item.child);
+                        if (filteredChildren.length > 0) {
+                            result.push({ ...item, child: filteredChildren });
+                        }
+                    }
+                } else if (item._type === "Link") {
+                    const linkMatch = nameMatch ||
+                        (item.description && item.description.toLowerCase().includes(lowerFilter)) ||
+                        (item.url && item.url.toLowerCase().includes(lowerFilter));
+                    if (linkMatch) {
+                        result.push(item);
+                    }
+                }
             }
-        }
-        return result;
+            return result;
+        };
+
+        return filterHelper(nodes);
     }
 
-    const filterData = (filterValue) => {
-        console.log("filter data", filterValue);
-        setFilter(filterValue);
-        if (filterValue !== "" && treeLinks) {
+    const applyFilter = (filterValue) => {
+        const trimmed = filterValue ? filterValue.trim() : '';
+        setFilter(trimmed);
+        if (trimmed !== "" && treeLinks) {
             let copyData = { ...treeLinks };
-            copyData.child = getFilteredNodes(treeLinks.child, filterValue);
+            copyData.child = getFilteredNodes(treeLinks.child, trimmed);
             setFilteredData(copyData);
             setSelectedNode(copyData);
-            console.log("filtered data", copyData)
         }
-        else {
+        else if (treeLinks) {
+            setFilteredData(treeLinks);
+            setSelectedNode(treeLinks);
+        }
+    }
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            applyFilter(filterInput);
+        }, 200);
+        return () => clearTimeout(timer);
+    }, [filterInput, treeLinks]);
+
+    const clearFilter = () => {
+        setFilterInput('');
+        setFilter('');
+        if (treeLinks) {
             setFilteredData(treeLinks);
             setSelectedNode(treeLinks);
         }
@@ -207,15 +236,16 @@ function Console(props) {
                 <button onClick={logoutAction}>logout</button>
                 <input
                     id="filerField"
-                    value={filter}
+                    value={filterInput}
+                    placeholder="Filter..."
                     onFocus={() => {
-                        if (!filter && treeLinks) {
+                        if (!filterInput && treeLinks) {
                             setSelectedNode(treeLinks);
                         }
                     }}
-                    onChange={(e) => filterData(e.target.value)}
+                    onChange={(e) => setFilterInput(e.target.value)}
                 />
-                <button onClick={() => { filterData(""); }}>Clear</button>
+                <button onClick={clearFilter}>Clear</button>
                 <span>selectedNode: {selectedNode && selectedNode._id}</span>
             </div>
             <hr />

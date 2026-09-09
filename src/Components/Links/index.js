@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import EditLink from './EditLink.js'
@@ -13,35 +13,30 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink }) {
     const [selectedLink, setSelectedLink] = useState(null)
 
     useEffect(() => {
-        // const call = async () => {
-        //     if (selectedNode) {
-        //         let r = await service.getLinks(selectedNode.id);
-        //         console.log("setLinks")
-        //         setLinks(r);
-        //         console.log(links);
-        //     }
-        // }
-        // call();
         let newLinksList = [];
+        const seenIds = new Set();
+
         const flatLinkList = (currNode) => {
             if (!currNode || !currNode.child) return;
 
-            currNode.child.filter((x) => x._type === "Link").forEach(link => {
-                if (!newLinksList.some(item => item._id === link._id)) {
-                    newLinksList.push(link);
+            const children = currNode.child;
+            for (let i = 0; i < children.length; i++) {
+                const item = children[i];
+                if (!item) continue;
+                if (item._type === "Link") {
+                    if (!seenIds.has(item._id)) {
+                        seenIds.add(item._id);
+                        newLinksList.push(item);
+                    }
+                } else if (item._type === "Node") {
+                    if (currNode === targetNode && (item._id === "authors" || item.name === "Authors")) {
+                        continue;
+                    }
+                    flatLinkList(item);
                 }
-            });
+            }
+        };
 
-            currNode.child.filter((x) => x._type === "Node").forEach(childNode => {
-                if (currNode === targetNode && (childNode._id === "authors" || childNode.name === "Authors")) {
-                    return;
-                }
-                flatLinkList(childNode);
-            });
-        }
-
-        console.log("selectedNode", selectedNode);
-        console.log("filteredTreeLinks", filteredTreeLinks);
         const targetNode = selectedNode || filteredTreeLinks;
         if (targetNode != null) {
             flatLinkList(targetNode);
@@ -51,11 +46,11 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink }) {
         }
     }, [filteredTreeLinks, selectedNode])
 
-    const editLink = (link) => {
+    const editLink = useCallback((link) => {
         //console.log(link);
         setSelectedLink(link);
-        setMode('new')
-    }
+        setMode('new');
+    }, []);
 
     const newLink = () => {
         setSelectedLink(null);

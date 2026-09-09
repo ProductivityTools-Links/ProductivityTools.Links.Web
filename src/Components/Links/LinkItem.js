@@ -48,15 +48,17 @@ function LinkItem({ link, editLink, refreshTreeLink }) {
                 <IconButton onClick={editLinkItem}><EditIcon style={{ color: '#D3D3D3' }}></EditIcon></IconButton>
                 <IconButton onClick={deleteLinkItem}><DeleteIcon style={{ color: '#D3D3D3' }} ></DeleteIcon></IconButton>
             </span>
-            <LinkItemDeleteDialog
-                selectedLinkItem={link}
-                open={deleteModalOpen}
-                // selectedJournal={selectedTreeNode}
-                closeModal={closeModal}
-                closeAndRefresh={closeAndRefresh}
-            ></LinkItemDeleteDialog>
+            {deleteModalOpen && (
+                <LinkItemDeleteDialog
+                    selectedLinkItem={link}
+                    open={deleteModalOpen}
+                    // selectedJournal={selectedTreeNode}
+                    closeModal={closeModal}
+                    closeAndRefresh={closeAndRefresh}
+                />
+            )}
         </div>
     )
 }
 
-export default LinkItem;
+export default React.memo(LinkItem);
