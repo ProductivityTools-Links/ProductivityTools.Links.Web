@@ -97,6 +97,18 @@
   color: #0f172a;
 }
 
+.console-btn-primary {
+  background-color: #1976d2;
+  border-color: #1976d2;
+  color: #ffffff;
+}
+
+.console-btn-primary:hover {
+  background-color: #1565c0;
+  border-color: #1565c0;
+  color: #ffffff;
+}
+
 .console-topbar-right {
   display: flex;
   align-items: center;

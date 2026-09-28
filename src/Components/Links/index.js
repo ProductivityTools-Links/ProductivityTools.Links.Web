@@ -6,11 +6,9 @@ import service from '../../services/api';
 import LinkItem from './LinkItem';
 import Stack from '@mui/material/Stack'
 
-function Links({ selectedNode, filteredTreeLinks, refreshTreeLink }) {
+function Links({ selectedNode, filteredTreeLinks, refreshTreeLink, mode = 'list', setMode, selectedLink, setSelectedLink }) {
 
-    const [mode, setMode] = useState('list')
     const [links, setLinks] = useState([])
-    const [selectedLink, setSelectedLink] = useState(null)
 
     useEffect(() => {
         let newLinksList = [];
@@ -50,12 +48,7 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink }) {
         //console.log(link);
         setSelectedLink(link);
         setMode('new');
-    }, []);
-
-    const newLink = () => {
-        setSelectedLink(null);
-        setMode('new')
-    }
+    }, [setMode, setSelectedLink]);
 
     if (mode == 'list')
         return (
@@ -63,9 +56,8 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink }) {
             <div>
                 <span>Currently selected node: {selectedNode && (selectedNode.name || selectedNode.login)}</span>
                 <Stack spacing={2}>
-                    {links && links.map(x => <LinkItem key={x._id} link={x} editLink={editLink} refreshTreeLink={refreshTreeLink}  />)}
+                    {links && links.map(x => <LinkItem key={x._id} link={x} editLink={editLink} refreshTreeLink={refreshTreeLink} />)}
                 </Stack>
-                <Button variant="contained" onClick={newLink}>Add New</Button>
                 <span>List of Links</span>
             </div>
         )

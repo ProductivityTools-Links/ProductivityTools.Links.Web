@@ -32,6 +32,8 @@ function Console(props) {
     const [filteredTreeLinks, setFilteredTreeLinks] = useState(null);
     const [filterInput, setFilterInput] = useState('');
     const [filter, setFilter] = useState('');
+    const [linkMode, setLinkMode] = useState('list');
+    const [selectedLink, setSelectedLink] = useState(null);
     // useEffect(() => {
     //     const call = async () => {
     //         let r = await service.getTree();
@@ -253,6 +255,15 @@ function Console(props) {
                         />
                     </div>
                     <button className="console-btn" onClick={clearFilter}>Clear</button>
+                    <button
+                        className="console-btn console-btn-primary"
+                        onClick={() => {
+                            setSelectedLink(null);
+                            setLinkMode('new');
+                        }}
+                    >
+                        Add New
+                    </button>
                 </div>
 
                 <div className="console-topbar-right">
@@ -267,7 +278,15 @@ function Console(props) {
                         <Tree structure={filteredData} filter={filter} setSelectedNode={setSelectedNode} selectedNode={selectedNode} refreshTreeLink={refreshTreeLink}></Tree>
                     </aside>
                     <main className="console-main">
-                        <Links selectedNode={selectedNode} filteredTreeLinks={filteredData} refreshTreeLink={refreshTreeLink} />
+                        <Links
+                            selectedNode={selectedNode}
+                            filteredTreeLinks={filteredData}
+                            refreshTreeLink={refreshTreeLink}
+                            mode={linkMode}
+                            setMode={setLinkMode}
+                            selectedLink={selectedLink}
+                            setSelectedLink={setSelectedLink}
+                        />
                     </main>
                 </div>
             </DndProvider>
