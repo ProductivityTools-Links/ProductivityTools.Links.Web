@@ -233,7 +233,7 @@ function Console(props) {
         <div className="console-layout">
             <header className="console-topbar">
                 <a href="/" className="console-brand">
-                    <span className="console-brand-badge">🔗</span>
+                    <img src="/Links.png" alt="ProductivityTools.Links" className="console-brand-logo" />
                     <span>ProductivityTools.Links</span>
                 </a>
 
