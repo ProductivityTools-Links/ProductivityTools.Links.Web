@@ -1,16 +1,16 @@
-import { useEffect, useState, useCallback } from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import EditLink from './EditLink.js'
-import service from '../../services/api';
 import LinkItem from './LinkItem';
 import './index.css';
 
+const PAGE_SIZE = 100;
+
 function Links({ selectedNode, filteredTreeLinks, refreshTreeLink, mode = 'list', setMode, selectedLink, setSelectedLink }) {
+    const targetNode = selectedNode || filteredTreeLinks;
 
-    const [links, setLinks] = useState([])
+    const links = useMemo(() => {
+        if (!targetNode) return [];
 
-    useEffect(() => {
         let newLinksList = [];
         const seenIds = new Set();
 
@@ -35,17 +35,46 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink, mode = 'list'
             }
         };
 
-        const targetNode = selectedNode || filteredTreeLinks;
-        if (targetNode != null) {
-            flatLinkList(targetNode);
-            setLinks(newLinksList);
-        } else {
-            setLinks([]);
-        }
-    }, [filteredTreeLinks, selectedNode])
+        flatLinkList(targetNode);
+        return newLinksList;
+    }, [targetNode]);
+
+    const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+    const prevTargetRef = useRef(targetNode);
+    const loadMoreRef = useRef(null);
+
+    let effectiveVisibleCount = visibleCount;
+    if (prevTargetRef.current !== targetNode) {
+        prevTargetRef.current = targetNode;
+        effectiveVisibleCount = PAGE_SIZE;
+    }
+
+    useEffect(() => {
+        setVisibleCount(PAGE_SIZE);
+    }, [targetNode]);
+
+    useEffect(() => {
+        const sentinel = loadMoreRef.current;
+        if (!sentinel || effectiveVisibleCount >= links.length) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0]?.isIntersecting) {
+                    setVisibleCount((prev) => Math.min(prev + PAGE_SIZE, links.length));
+                }
+            },
+            { rootMargin: '400px' }
+        );
+        observer.observe(sentinel);
+        return () => observer.disconnect();
+    }, [effectiveVisibleCount, links.length, mode]);
+
+    const visibleLinks = useMemo(
+        () => (links.length > effectiveVisibleCount ? links.slice(0, effectiveVisibleCount) : links),
+        [links, effectiveVisibleCount]
+    );
 
     const editLink = useCallback((link) => {
-        //console.log(link);
         setSelectedLink(link);
         setMode('new');
     }, [setMode, setSelectedLink]);
@@ -57,7 +86,10 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink, mode = 'list'
                     Currently selected node: {selectedNode && (selectedNode.name || selectedNode.login)}
                 </span>
                 <div className="links-list-card">
-                    {links && links.map(x => <LinkItem key={x._id} link={x} editLink={editLink} refreshTreeLink={refreshTreeLink} />)}
+                    {visibleLinks.map(x => <LinkItem key={x._id} link={x} editLink={editLink} refreshTreeLink={refreshTreeLink} />)}
+                    {effectiveVisibleCount < links.length && (
+                        <div ref={loadMoreRef} style={{ height: '1px' }} />
+                    )}
                 </div>
             </div>
         )
@@ -68,4 +100,4 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink, mode = 'list'
     }
 }
 
-export default Links;
+export default React.memo(Links);

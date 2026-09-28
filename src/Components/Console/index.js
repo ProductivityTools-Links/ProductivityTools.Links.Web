@@ -1,4 +1,4 @@
-import { useEffect, useState, } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import {
     useParams,
     useNavigate,
@@ -181,7 +181,9 @@ function Console(props) {
         return filterHelper(nodes);
     }
 
-    const applyFilter = (filterValue) => {
+    const prevFilterInputRef = useRef('');
+
+    const applyFilter = useCallback((filterValue) => {
         const trimmed = filterValue ? filterValue.trim() : '';
         setFilter(trimmed);
         if (trimmed !== "" && treeLinks) {
@@ -194,23 +196,27 @@ function Console(props) {
             setFilteredData(treeLinks);
             setSelectedNode(treeLinks);
         }
-    }
+    }, [treeLinks]);
 
     useEffect(() => {
+        if (!treeLinks) return;
+        if (prevFilterInputRef.current === filterInput) return;
+        prevFilterInputRef.current = filterInput;
         const timer = setTimeout(() => {
             applyFilter(filterInput);
-        }, 200);
+        }, 120);
         return () => clearTimeout(timer);
-    }, [filterInput, treeLinks]);
+    }, [filterInput, treeLinks, applyFilter]);
 
-    const clearFilter = () => {
+    const clearFilter = useCallback(() => {
+        prevFilterInputRef.current = '';
         setFilterInput('');
         setFilter('');
         if (treeLinks) {
             setFilteredData(treeLinks);
             setSelectedNode(treeLinks);
         }
-    }
+    }, [treeLinks]);
 
     const loginAction = () => {
         console.log("loginaction")
@@ -223,9 +229,9 @@ function Console(props) {
         setDate(new Date().getTime());
     }
 
-    const refreshTreeLink = () => {
+    const refreshTreeLink = useCallback(() => {
         setDate(new Date().getTime());
-    }
+    }, []);
 
     const clearFilterBox = () => {
 
@@ -246,11 +252,6 @@ function Console(props) {
                             className="console-search-input"
                             value={filterInput}
                             placeholder="Filter..."
-                            onFocus={() => {
-                                if (!filterInput && treeLinks) {
-                                    setSelectedNode(treeLinks);
-                                }
-                            }}
                             onChange={(e) => setFilterInput(e.target.value)}
                         />
                     </div>

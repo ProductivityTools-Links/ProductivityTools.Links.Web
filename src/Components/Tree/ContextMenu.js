@@ -47,9 +47,9 @@ const ContextMenu = ({ parentRef, items }) => {
 
         return function cleanup() {
             parent.removeEventListener('contextmenu', showMenu);
-            parent.removeEventListener('click', closeMenu);
+            window.removeEventListener('click', closeMenu);
         }
-    })
+    }, [parentRef])
 
     const style = {
         top: y,
