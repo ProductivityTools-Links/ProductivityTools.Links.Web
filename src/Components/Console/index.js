@@ -12,6 +12,7 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { auth, logout, getToken } from '../../Session/firebase'
 import Token from '../Token'
+import './index.css'
 
 
 
@@ -229,41 +230,52 @@ function Console(props) {
     }
 
     return (
-        <div>
+        <div className="console-layout">
+            <header className="console-topbar">
+                <a href="/" className="console-brand">
+                    <span className="console-brand-badge">🔗</span>
+                    <span>ProductivityTools.Links</span>
+                </a>
 
-            <div>
-                <a href="/">Home1</a>
-                <button onClick={logoutAction}>logout</button>
-                <input
-                    id="filerField"
-                    value={filterInput}
-                    placeholder="Filter..."
-                    onFocus={() => {
-                        if (!filterInput && treeLinks) {
-                            setSelectedNode(treeLinks);
-                        }
-                    }}
-                    onChange={(e) => setFilterInput(e.target.value)}
-                />
-                <button onClick={clearFilter}>Clear</button>
-                <span>selectedNode: {selectedNode && selectedNode._id}</span>
-            </div>
-            <hr />
+                <div className="console-search-bar">
+                    <div className="console-search-input-wrapper">
+                        <input
+                            id="filerField"
+                            className="console-search-input"
+                            value={filterInput}
+                            placeholder="Filter..."
+                            onFocus={() => {
+                                if (!filterInput && treeLinks) {
+                                    setSelectedNode(treeLinks);
+                                }
+                            }}
+                            onChange={(e) => setFilterInput(e.target.value)}
+                        />
+                    </div>
+                    <button className="console-btn" onClick={clearFilter}>Clear</button>
+                </div>
 
-            {/* <div>{filter}</div> */}
+                <div className="console-topbar-right">
+                    <span className="console-node-indicator">selectedNode: {selectedNode && selectedNode._id}</span>
+                    <button className="console-btn" onClick={logoutAction}>Logout</button>
+                </div>
+            </header>
+
             <DndProvider backend={HTML5Backend}>
-                <div style={{ display: 'flex' }}>
-                    <div style={{ minWidth: '250px', flexShrink: 0, float: 'left' }}>
+                <div className="console-workspace">
+                    <aside className="console-sidebar">
                         <Tree structure={filteredData} filter={filter} setSelectedNode={setSelectedNode} selectedNode={selectedNode} refreshTreeLink={refreshTreeLink}></Tree>
-                    </div>
-                    <div style={{ float: 'left', flex: 1 }}>
+                    </aside>
+                    <main className="console-main">
                         <Links selectedNode={selectedNode} filteredTreeLinks={filteredData} refreshTreeLink={refreshTreeLink} />
-                    </div>
+                    </main>
                 </div>
             </DndProvider>
-            <Token date={date} />
-            <div className='debug'>{params.login} is in the url. {auth?.currentUser?.email} is logged</div>
 
+            <footer className="console-statusbar">
+                <Token date={date} />
+                <div className='debug'>{params.login} is in the url. {auth?.currentUser?.email} is logged</div>
+            </footer>
         </div>
     )
 }
