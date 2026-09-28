@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import EditLink from './EditLink.js'
 import service from '../../services/api';
 import LinkItem from './LinkItem';
-import Stack from '@mui/material/Stack'
+import './index.css';
 
 function Links({ selectedNode, filteredTreeLinks, refreshTreeLink, mode = 'list', setMode, selectedLink, setSelectedLink }) {
 
@@ -52,13 +52,13 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink, mode = 'list'
 
     if (mode == 'list')
         return (
-
             <div>
-                <span>Currently selected node: {selectedNode && (selectedNode.name || selectedNode.login)}</span>
-                <Stack spacing={2}>
+                <span className="links-selected-label">
+                    Currently selected node: {selectedNode && (selectedNode.name || selectedNode.login)}
+                </span>
+                <div className="links-list-card">
                     {links && links.map(x => <LinkItem key={x._id} link={x} editLink={editLink} refreshTreeLink={refreshTreeLink} />)}
-                </Stack>
-                <span>List of Links</span>
+                </div>
             </div>
         )
     else {
