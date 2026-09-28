@@ -21,6 +21,7 @@
     color: #069;
     cursor: pointer;
     font-size: small;
+    text-align: left;
 }
 
 .treebutton {
@@ -32,6 +33,8 @@
     /*input has OS specific font-family*/
     color: #069;
     cursor: pointer;
+    text-align: left;
+    white-space: nowrap;
 }
 
 linkItem {

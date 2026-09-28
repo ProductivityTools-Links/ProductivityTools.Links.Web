@@ -3,9 +3,9 @@ const dev = {
 }
 
 const prd = {
-    PATH_BASE: 'https://links-api.productivitytools.top'
-    //PATH_BASE: 'https://ptlinkstemp.uc.r.appspot.com'
+    //PATH_BASE: 'https://links-api.productivitytools.top'
+    PATH_BASE: 'https://links-api.productivitytools.top/'
 }
 
 //export const config=prd;
-export const config = process.env.NODE_ENV === 'development' ? dev : prd;
+export const config = process.env.NODE_ENV === 'development' ? prd : prd;

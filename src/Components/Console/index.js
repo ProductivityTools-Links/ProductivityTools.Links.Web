@@ -253,10 +253,10 @@ function Console(props) {
             {/* <div>{filter}</div> */}
             <DndProvider backend={HTML5Backend}>
                 <div style={{ display: 'flex' }}>
-                    <div style={{ width: '230px', float: 'left' }}>
+                    <div style={{ minWidth: '250px', flexShrink: 0, float: 'left' }}>
                         <Tree structure={filteredData} filter={filter} setSelectedNode={setSelectedNode} selectedNode={selectedNode} refreshTreeLink={refreshTreeLink}></Tree>
                     </div>
-                    <div style={{ float: 'left' }}>
+                    <div style={{ float: 'left', flex: 1 }}>
                         <Links selectedNode={selectedNode} filteredTreeLinks={filteredData} refreshTreeLink={refreshTreeLink} />
                     </div>
                 </div>

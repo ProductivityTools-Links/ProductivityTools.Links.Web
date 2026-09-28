@@ -97,25 +97,15 @@ function Tree({ structure, filter, setSelectedNode, selectedNode, refreshTreeLin
     }
 
     function GetNode(n) {
-        // console.log("get node")
-        //console.log(n)
+        if (!n || !n.child) return null;
+        const childNodes = n.child.filter((x) => x._type == "Node").sort((a, b) => a.name < b.name ? -1 : 1);
+        if (childNodes.length === 0) return null;
 
-        return (
-            n && n.child && (n.child).filter((x) => x._type == "Node").sort((a, b) => a.name < b.name ? -1 : 1).map(x => {
-
-                if (x._type == 'Node') {
-                    return (
-                        <StyledTreeItem element={x} key={x._id} treeLabelClick={treeLabelClick} refreshTreeLink={refreshTreeLink}>
-                            {GetNode(x)}
-                        </StyledTreeItem>
-                    )
-                }
-                else {
-                    return undefined;
-                }
-            })
-        )
-
+        return childNodes.map(x => (
+            <StyledTreeItem element={x} key={x._id} treeLabelClick={treeLabelClick} refreshTreeLink={refreshTreeLink}>
+                {GetNode(x)}
+            </StyledTreeItem>
+        ));
     }
 
     // function GetNode2(n) {

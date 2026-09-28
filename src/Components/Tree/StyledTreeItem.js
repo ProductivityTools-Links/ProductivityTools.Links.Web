@@ -5,7 +5,7 @@ import service from '../../services/api.js'
 
 
 
-function StyledTreeItem({ element, treeLabelClick, refreshTreeLink, ...rest }) {
+function StyledTreeItem({ element, treeLabelClick, refreshTreeLink, children, ...rest }) {
 
     const moveItem = async (id, targetParentId) => {
 
@@ -40,6 +40,7 @@ function StyledTreeItem({ element, treeLabelClick, refreshTreeLink, ...rest }) {
                 <span>{isDragging && '😱'}</span>
                 <span> {isOver && <span>Drop Here!</span>}</span>
             </Box>} >
+            {children}
         </TreeItem >
     )
 }
