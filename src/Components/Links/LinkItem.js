@@ -2,6 +2,7 @@ import { useDrag } from 'react-dnd';
 import LinkItemDeleteDialog from '../LinkItemDeleteDialog';
 import React, { useState } from 'react';
 import { parseAuthors } from './authorsUtils.js';
+import LinkTypeIcon, { normalizeLinkType } from './LinkTypeIcon.js';
 
 function LinkItem({ link, editLink, refreshTreeLink }) {
 
@@ -41,10 +42,12 @@ function LinkItem({ link, editLink, refreshTreeLink }) {
 
     const authorsList = parseAuthors(link.authors);
     const hasDescription = link.description && link.description.trim() !== '';
+    const linkType = normalizeLinkType(link.type, link.url);
 
     return (
         <div className="link-row" ref={drag}>
             <div className="link-row-main">
+                <LinkTypeIcon type={linkType} size={18} />
                 <a className="link-title" href={link.url} title={link.url || ''}>{link.name}</a>
                 {authorsList.map((author) => (
                     <span key={author} className="link-author-badge">@{author}</span>

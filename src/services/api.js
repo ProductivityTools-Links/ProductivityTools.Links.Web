@@ -81,10 +81,10 @@ async function getLinks(selectedNodeId) {
     return invokeCallWithToast(call, "request links", "links returned")
 }
 
-async function updateLink(id, parentId, name, url, description, authors) {
+async function updateLink(id, parentId, name, url, description, authors, type = 'Undefined') {
     console.log("updateLink")
     let call = async (header) => {
-        const data = { id: id, parentId: parentId, name: name, url: url, description: description, authors: authors }
+        const data = { id: id, parentId: parentId, name: name, url: url, description: description, authors: authors, type: type || 'Undefined' }
         debugger;
         const response = await axios.post(`${config.PATH_BASE}/Link`, data, header)
         return response.data;

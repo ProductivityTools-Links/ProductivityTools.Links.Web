@@ -34,11 +34,19 @@
 
 .link-row-main {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   flex-wrap: wrap;
   gap: 8px;
   min-width: 0;
   flex: 1;
+}
+
+.link-type-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
 }
 
 .link-title {

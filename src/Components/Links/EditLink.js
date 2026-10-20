@@ -3,23 +3,33 @@ import { useState, useEffect } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
+import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import service from '../../services/api.js';
 import { parseAuthors } from './authorsUtils.js';
+import LinkTypeIcon, { LINK_TYPES, normalizeLinkType, inferLinkTypeFromUrl } from './LinkTypeIcon.js';
 
 function EditLink({ setMode, selectedNode, existingAuthors = [], refreshTreeLink, link }) {
-    const [editLink, seteditLink] = useState({ name: '', url: '', description: '' });
+    const [editLink, seteditLink] = useState({
+        name: '',
+        url: '',
+        description: '',
+        type: normalizeLinkType(link?.type, link?.url),
+    });
     const [authors, setAuthors] = useState(() => parseAuthors(link?.authors));
     const [authorInput, setAuthorInput] = useState('');
 
     useEffect(() => {
         console.log("UseEffect", link);
         if (link != undefined) {
-            seteditLink(link);
+            seteditLink({
+                ...link,
+                type: normalizeLinkType(link.type, link.url),
+            });
             setAuthors(parseAuthors(link.authors));
             setAuthorInput('');
         } else {
-            seteditLink({ name: '', url: '', description: '' });
+            seteditLink({ name: '', url: '', description: '', type: 'Undefined' });
             setAuthors([]);
             setAuthorInput('');
         }
@@ -27,9 +37,16 @@ function EditLink({ setMode, selectedNode, existingAuthors = [], refreshTreeLink
 
     const updateLink = (e) => {
         const { name, value } = e.target;
-        seteditLink(prevState => ({
-            ...prevState, [name]: value
-        }));
+        seteditLink(prevState => {
+            const nextState = { ...prevState, [name]: value };
+            if (name === 'url') {
+                const inferred = inferLinkTypeFromUrl(value);
+                if (inferred) {
+                    nextState.type = inferred;
+                }
+            }
+            return nextState;
+        });
     };
 
     const handleAuthorsChange = (event, newValue) => {
@@ -66,7 +83,8 @@ function EditLink({ setMode, selectedNode, existingAuthors = [], refreshTreeLink
             editLink.name,
             editLink.url,
             editLink.description,
-            finalAuthors
+            finalAuthors,
+            editLink.type || 'Undefined'
         );
         if (linkId != undefined) {
             setMode('list');
@@ -79,6 +97,25 @@ function EditLink({ setMode, selectedNode, existingAuthors = [], refreshTreeLink
 
             <TextField id="linkName" name="name" label="Name" fullWidth variant="standard" value={editLink.name} onChange={updateLink} /><br />
             <TextField id="linkUrl" name="url" label="Url" fullWidth variant="standard" onChange={updateLink} value={editLink.url} /><br />
+            <TextField
+                id="linkType"
+                name="type"
+                label="Type"
+                select
+                fullWidth
+                variant="standard"
+                value={normalizeLinkType(editLink.type, editLink.url)}
+                onChange={updateLink}
+            >
+                {LINK_TYPES.map((typeOption) => (
+                    <MenuItem key={typeOption} value={typeOption}>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                            <LinkTypeIcon type={typeOption} size={18} />
+                            <span>{typeOption}</span>
+                        </span>
+                    </MenuItem>
+                ))}
+            </TextField><br />
             <TextField id="linkDescription" name="description" fullWidth label="Description" variant="standard" multiline value={editLink.description || ''} onChange={updateLink} /><br />
             <Autocomplete
                 multiple
