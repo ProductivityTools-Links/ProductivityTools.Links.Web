@@ -67,7 +67,7 @@ function Console(props) {
 
             var authorArrayItem = findAuthorByName(link.authors);
             if (!authorArrayItem) {
-                authorArrayItem = { _type: "Node", name: link.authors, _id: link.authors, child: [] }
+                authorArrayItem = { _type: "Node", name: link.authors, _id: link.authors, isVirtual: true, child: [] }
                 authors.push(authorArrayItem);
             }
             authorArrayItem.child.push(link);
@@ -98,7 +98,7 @@ function Console(props) {
             let treeStructure = await service.getTreeLinks(params.login, includeArchived);
             getOwners(treeStructure);
             console.log("getOwners,authors2", authors)
-            let authorsNode = { _type: "Node", name: "Authors", _id: "authors", child: authors }
+            let authorsNode = { _type: "Node", name: "Authors", _id: "authors", isVirtual: true, child: authors }
             treeStructure.child.push(authorsNode)
             console.log("treeStructure.child.push(authors)", treeStructure)
             setTreeLinks(treeStructure);

@@ -1,10 +1,11 @@
 import './index.css';
 import ContextMenu from './ContextMenu';
 import React, { useRef, useState, useEffect, useMemo, useCallback } from 'react';
+import { useDrop } from 'react-dnd';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import AddNodeModal from './AddNodeModal';
-import StyledTreeItem from './StyledTreeItem.js';
+import StyledTreeItem, { canMoveItemToTarget, performMoveTreeOrLinkItem } from './StyledTreeItem.js';
 import NodeDeleteDialog from './NodeDeleteDialog.js';
 import NodeRenameDialog from './NodeRenameDialog.js';
 import service from '../../services/api.js';
@@ -215,6 +216,23 @@ function Tree({ structure, filter, setSelectedNode, selectedNode, refreshTreeLin
         }
     ];
 
+    const [{ isRootOver }, rootDrop] = useDrop(
+        () => ({
+            accept: 'treeItem',
+            canDrop: (draggedItem) => Boolean(structure && canMoveItemToTarget(draggedItem, structure)),
+            drop: (draggedItem, monitor) => {
+                if (monitor.didDrop()) {
+                    return;
+                }
+                performMoveTreeOrLinkItem(draggedItem, structure, refreshTreeLink);
+            },
+            collect: (monitor) => ({
+                isRootOver: Boolean(monitor.isOver({ shallow: true }) && monitor.canDrop()),
+            }),
+        }),
+        [structure, refreshTreeLink]
+    );
+
     if (!structure) return null;
 
     const rootId = structure._id.toString();
@@ -249,6 +267,7 @@ function Tree({ structure, filter, setSelectedNode, selectedNode, refreshTreeLin
             <ul className="MuiTreeView-root" role="tree" aria-label="file system navigator">
                 <li className="MuiTreeItem-root" role="treeitem" contextmenuid={structure._id}>
                     <div
+                        ref={rootDrop}
                         className="MuiTreeItem-content"
                         onClick={() => rootHasChildren && toggleNode(rootId)}
                     >
@@ -267,12 +286,14 @@ function Tree({ structure, filter, setSelectedNode, selectedNode, refreshTreeLin
                         </div>
                         <div className="MuiTreeItem-label">
                             <button
+                                type="button"
                                 className="treebutton"
                                 style={structure.archived ? { color: 'gray' } : undefined}
                                 onClick={(e) => treeLabelClick(e, structure)}
                             >
                                 {structure.login}
                             </button>
+                            {isRootOver && <span> Drop Here!</span>}
                         </div>
                     </div>
                     {rootExpanded && rootHasChildren && (

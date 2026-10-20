@@ -1,19 +1,69 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import service from '../../services/api.js';
 
+export const isRealDbId = (id) => {
+    if (id === undefined || id === null || id === 'authors') return false;
+    if (typeof id === 'number') return Number.isInteger(id) && id >= 0;
+    if (typeof id === 'string' && /^\d+$/.test(id.trim())) return true;
+    return false;
+};
+
+export const isVirtualNode = (node) => {
+    if (!node) return true;
+    if (node.isVirtual || node._id === 'authors') return true;
+    return !isRealDbId(node._id);
+};
+
+export const containsNodeId = (node, targetId) => {
+    if (!node || targetId === undefined || targetId === null) return false;
+    if (String(node._id) === String(targetId)) return true;
+    if (Array.isArray(node.child)) {
+        for (let i = 0; i < node.child.length; i++) {
+            const child = node.child[i];
+            if (child && child._type === 'Node' && containsNodeId(child, targetId)) {
+                return true;
+            }
+        }
+    }
+    return false;
+};
+
+export const canMoveItemToTarget = (draggedItem, targetNode) => {
+    if (!draggedItem || !targetNode) return false;
+    if (isVirtualNode(draggedItem) || isVirtualNode(targetNode)) return false;
+    if (String(draggedItem._id) === String(targetNode._id)) return false;
+    if (draggedItem._type === 'Node' && containsNodeId(draggedItem, targetNode._id)) {
+        return false;
+    }
+    return true;
+};
+
+export const performMoveTreeOrLinkItem = async (draggedItem, targetNode, refreshTreeLink) => {
+    if (!canMoveItemToTarget(draggedItem, targetNode)) {
+        return;
+    }
+    const itemId = Number(draggedItem._id);
+    const targetParentId = Number(targetNode._id);
+    console.log("moveItem", itemId, targetParentId);
+    if (draggedItem._type === 'Node') {
+        await service.moveTreeItem(itemId, targetParentId);
+    } else {
+        await service.moveLink(itemId, targetParentId);
+    }
+    if (refreshTreeLink) {
+        refreshTreeLink();
+    }
+};
+
 function StyledTreeItem({ element, isExpanded, hasChildren, onToggle, treeLabelClick, refreshTreeLink, children }) {
     const nodeId = element._id.toString();
-
-    const moveItem = async (id, targetParentId) => {
-        console.log("moveItem", id, targetParentId);
-        await service.moveLink(id, targetParentId);
-        refreshTreeLink();
-    };
+    const isVirtual = isVirtualNode(element);
 
     const [{ isDragging }, drag] = useDrag(() => ({
         type: 'treeItem',
         item: element,
+        canDrag: () => !isVirtualNode(element),
         collect: monitor => ({
             isDragging: !!monitor.isDragging(),
         }),
@@ -22,17 +72,28 @@ function StyledTreeItem({ element, isExpanded, hasChildren, onToggle, treeLabelC
     const [{ isOver }, drop] = useDrop(
         () => ({
             accept: 'treeItem',
-            drop: (e) => moveItem(e._id, element._id),
+            canDrop: (draggedItem) => canMoveItemToTarget(draggedItem, element),
+            drop: (draggedItem, monitor) => {
+                if (monitor.didDrop()) {
+                    return;
+                }
+                performMoveTreeOrLinkItem(draggedItem, element, refreshTreeLink);
+            },
             collect: (monitor) => ({
-                isOver: !!monitor.isOver()
+                isOver: Boolean(monitor.isOver({ shallow: true }) && monitor.canDrop()),
             })
         }),
-        [element._id, refreshTreeLink]
+        [element, refreshTreeLink]
     );
 
+    const setRowRef = useCallback((node) => {
+        drag(drop(node));
+    }, [drag, drop]);
+
     return (
-        <li ref={drag} className="MuiTreeItem-root" role="treeitem" contextmenuid={element._id}>
+        <li className="MuiTreeItem-root" role="treeitem" contextmenuid={element._id}>
             <div
+                ref={setRowRef}
                 className="MuiTreeItem-content"
                 onClick={() => hasChildren && onToggle(nodeId)}
             >
@@ -49,8 +110,10 @@ function StyledTreeItem({ element, isExpanded, hasChildren, onToggle, treeLabelC
                         )
                     )}
                 </div>
-                <div className="MuiTreeItem-label" ref={drop}>
+                <div className="MuiTreeItem-label">
                     <button
+                        type="button"
+                        draggable={!isVirtual}
                         className="treebutton"
                         style={element.archived ? { color: 'gray' } : undefined}
                         onClick={(e) => treeLabelClick(e, element)}

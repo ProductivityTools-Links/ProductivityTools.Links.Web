@@ -91,7 +91,7 @@ async function updateLink(id, parentId, name, url, description, authors) {
 
 async function moveLink(id, targetParentId) {
     let call = async (header) => {
-        const data = { id: id, targetParentId: targetParentId }
+        const data = { id: Number(id), targetParentId: Number(targetParentId) }
         const response = await axios.post(`${config.PATH_BASE}/Relation`, data, header)
         return response.data;
     }
@@ -118,8 +118,8 @@ async function deleteNode(id) {
 
 async function moveTreeItem(id, targetParentId) {
     let call = async (header) => {
-        const data = { id: id, targetParentId: targetParentId }
-        const response = await axios.post(`${config.PATH_BASE}/Relation`, data)
+        const data = { id: Number(id), targetParentId: Number(targetParentId) }
+        const response = await axios.post(`${config.PATH_BASE}/Relation`, data, header)
         return response.data;
     }
     return invokeCallWithToast(call, "Move TreeItem", "Tree item moved");
