@@ -244,6 +244,7 @@ function Console(props) {
                 <a href="/" className="console-brand">
                     <img src="/icons/icon-512.png" alt="ProductivityTools.Links" className="console-brand-logo" />
                     <span>ProductivityTools.Links</span>
+                    <span style={{ fontSize: '11px', color: '#16a34a', backgroundColor: '#dcfce7', padding: '1px 6px', borderRadius: '4px', fontWeight: 600 }}>v2026.10.20-dnd</span>
                 </a>
 
                 <div className="console-search-bar">

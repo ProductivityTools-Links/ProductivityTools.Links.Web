@@ -58,7 +58,6 @@ export const performMoveTreeOrLinkItem = async (draggedItem, targetNode, refresh
 
 function StyledTreeItem({ element, isExpanded, hasChildren, onToggle, treeLabelClick, refreshTreeLink, children }) {
     const nodeId = element._id.toString();
-    const isVirtual = isVirtualNode(element);
 
     const [{ isDragging }, drag] = useDrag(() => ({
         type: 'treeItem',
@@ -113,7 +112,6 @@ function StyledTreeItem({ element, isExpanded, hasChildren, onToggle, treeLabelC
                 <div className="MuiTreeItem-label">
                     <button
                         type="button"
-                        draggable={!isVirtual}
                         className="treebutton"
                         style={element.archived ? { color: 'gray' } : undefined}
                         onClick={(e) => treeLabelClick(e, element)}
