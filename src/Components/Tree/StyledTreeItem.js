@@ -113,7 +113,7 @@ function StyledTreeItem({ element, isExpanded, hasChildren, onToggle, treeLabelC
                     <button
                         type="button"
                         className="treebutton"
-                        style={element.archived ? { color: 'gray' } : undefined}
+                        style={element.archived ? { color: '#9ca3af' } : undefined}
                         onClick={(e) => treeLabelClick(e, element)}
                     >
                         {element.name}

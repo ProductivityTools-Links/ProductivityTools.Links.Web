@@ -288,7 +288,7 @@ function Tree({ structure, filter, setSelectedNode, selectedNode, refreshTreeLin
                             <button
                                 type="button"
                                 className="treebutton"
-                                style={structure.archived ? { color: 'gray' } : undefined}
+                                style={structure.archived ? { color: '#9ca3af' } : undefined}
                                 onClick={(e) => treeLabelClick(e, structure)}
                             >
                                 {structure.login}
