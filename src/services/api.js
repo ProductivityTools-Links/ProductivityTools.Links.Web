@@ -173,6 +173,28 @@ async function unarchiveNode(id) {
     return invokeCallWithToast(call, "Unarchiving tree item", "Tree item unarchived")
 }
 
+async function incrementLinkClicks(id) {
+    let token = localStorage.getItem('token')
+    try {
+        const response = await fetch(`${config.PATH_BASE}/Link/Click`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id: Number(id) }),
+            keepalive: true,
+        })
+        if (response.ok) {
+            const text = await response.text()
+            return Number(text)
+        }
+    } catch (error) {
+        console.error("Error incrementing link clicks:", error)
+    }
+    return null
+}
+
 const service = {
     getDate,
     // getTree,
@@ -184,6 +206,7 @@ const service = {
     unarchiveNode,
     getLinks,
     updateLink,
+    incrementLinkClicks,
     moveLink,
     deleteLink,
     moveTreeItem,

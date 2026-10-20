@@ -3,8 +3,9 @@ import LinkItemDeleteDialog from '../LinkItemDeleteDialog';
 import React, { useState } from 'react';
 import { parseAuthors } from './authorsUtils.js';
 import LinkTypeIcon, { normalizeLinkType } from './LinkTypeIcon.js';
+import service from '../../services/api.js';
 
-function LinkItem({ link, editLink, refreshTreeLink }) {
+function LinkItem({ link, editLink, refreshTreeLink, onLinkClicked }) {
 
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [copied, setCopied] = useState(false);
@@ -40,15 +41,43 @@ function LinkItem({ link, editLink, refreshTreeLink }) {
         refreshTreeLink();
     };
 
+    const recordLinkClick = () => {
+        if (link && link._id != null) {
+            link.clicks = (Number(link.clicks) || 0) + 1;
+            service.incrementLinkClicks(link._id);
+            if (onLinkClicked) {
+                onLinkClicked(link);
+            }
+        }
+    };
+
+    const handleAuxClick = (e) => {
+        if (e.button === 1) {
+            recordLinkClick();
+        }
+    };
+
     const authorsList = parseAuthors(link.authors);
     const hasDescription = link.description && link.description.trim() !== '';
     const linkType = normalizeLinkType(link.type, link.url);
+    const clicksCount = Number(link.clicks) || 0;
 
     return (
         <div className="link-row" ref={drag}>
             <div className="link-row-main">
                 <LinkTypeIcon type={linkType} size={18} />
-                <a className="link-title" href={link.url} title={link.url || ''}>{link.name}</a>
+                <a
+                    className="link-title"
+                    href={link.url}
+                    title={link.url || ''}
+                    onClick={recordLinkClick}
+                    onAuxClick={handleAuxClick}
+                >
+                    {link.name}
+                </a>
+                <span className="link-clicks-badge" title={`Clicks: ${clicksCount}`}>
+                    {clicksCount}
+                </span>
                 {authorsList.map((author) => (
                     <span key={author} className="link-author-badge">@{author}</span>
                 ))}

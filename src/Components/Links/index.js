@@ -7,6 +7,11 @@ const PAGE_SIZE = 100;
 
 function Links({ selectedNode, filteredTreeLinks, existingAuthors, refreshTreeLink, mode = 'list', setMode, selectedLink, setSelectedLink }) {
     const targetNode = selectedNode || filteredTreeLinks;
+    const [clickVersion, setClickVersion] = useState(0);
+
+    const handleLinkClicked = useCallback(() => {
+        setClickVersion((v) => v + 1);
+    }, []);
 
     const resolvedExistingAuthors = useMemo(() => {
         if (Array.isArray(existingAuthors) && existingAuthors.length > 0) {
@@ -51,8 +56,9 @@ function Links({ selectedNode, filteredTreeLinks, existingAuthors, refreshTreeLi
         };
 
         flatLinkList(targetNode);
+        newLinksList.sort((a, b) => (Number(b.clicks) || 0) - (Number(a.clicks) || 0));
         return newLinksList;
-    }, [targetNode]);
+    }, [targetNode, clickVersion]);
 
     const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
     const prevTargetRef = useRef(targetNode);
@@ -101,7 +107,7 @@ function Links({ selectedNode, filteredTreeLinks, existingAuthors, refreshTreeLi
                     Currently selected node: {selectedNode && (selectedNode.name || selectedNode.login)}
                 </span>
                 <div className="links-list-card">
-                    {visibleLinks.map(x => <LinkItem key={x._id} link={x} editLink={editLink} refreshTreeLink={refreshTreeLink} />)}
+                    {visibleLinks.map(x => <LinkItem key={x._id} link={x} editLink={editLink} refreshTreeLink={refreshTreeLink} onLinkClicked={handleLinkClicked} />)}
                     {effectiveVisibleCount < links.length && (
                         <div ref={loadMoreRef} style={{ height: '1px' }} />
                     )}
