@@ -174,25 +174,12 @@ async function unarchiveNode(id) {
 }
 
 async function incrementLinkClicks(id) {
-    let token = localStorage.getItem('token')
-    try {
-        const response = await fetch(`${config.PATH_BASE}/Link/Click`, {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id: Number(id) }),
-            keepalive: true,
-        })
-        if (response.ok) {
-            const text = await response.text()
-            return Number(text)
-        }
-    } catch (error) {
-        console.error("Error incrementing link clicks:", error)
+    let call = async (header) => {
+        const data = { id: Number(id) }
+        const response = await axios.post(`${config.PATH_BASE}/Link/Click`, data, header)
+        return response.data;
     }
-    return null
+    return invokeCallWithToast(call, "Incrementing link clicks", "Link click recorded")
 }
 
 const service = {

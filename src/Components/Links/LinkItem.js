@@ -69,6 +69,8 @@ function LinkItem({ link, editLink, refreshTreeLink, onLinkClicked }) {
                 <a
                     className="link-title"
                     href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     title={link.url || ''}
                     onClick={recordLinkClick}
                     onAuxClick={handleAuxClick}
