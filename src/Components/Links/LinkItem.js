@@ -1,6 +1,7 @@
 import { useDrag } from 'react-dnd';
 import LinkItemDeleteDialog from '../LinkItemDeleteDialog';
 import React, { useState } from 'react';
+import { parseAuthors } from './authorsUtils.js';
 
 function LinkItem({ link, editLink, refreshTreeLink }) {
 
@@ -38,16 +39,16 @@ function LinkItem({ link, editLink, refreshTreeLink }) {
         refreshTreeLink();
     };
 
-    const hasAuthor = link.authors && link.authors.trim() !== '';
+    const authorsList = parseAuthors(link.authors);
     const hasDescription = link.description && link.description.trim() !== '';
 
     return (
         <div className="link-row" ref={drag}>
             <div className="link-row-main">
                 <a className="link-title" href={link.url} title={link.url || ''}>{link.name}</a>
-                {hasAuthor && (
-                    <span className="link-author-badge">@{link.authors.trim()}</span>
-                )}
+                {authorsList.map((author) => (
+                    <span key={author} className="link-author-badge">@{author}</span>
+                ))}
                 {hasDescription && (
                     <span className="link-description">— {link.description}</span>
                 )}

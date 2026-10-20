@@ -8,6 +8,7 @@ import service from '../../services/api.js'
 import Tree from '../Tree/index.js';
 import { StyledEngineProvider } from '@mui/material/styles';
 import Links from '../Links'
+import { parseAuthors } from '../Links/authorsUtils.js'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { auth, logout, getToken } from '../../Session/firebase'
@@ -35,6 +36,7 @@ function Console(props) {
     const [linkMode, setLinkMode] = useState('list');
     const [selectedLink, setSelectedLink] = useState(null);
     const [includeArchived, setIncludeArchived] = useState(false);
+    const [existingAuthors, setExistingAuthors] = useState([]);
     // useEffect(() => {
     //     const call = async () => {
     //         let r = await service.getTree();
@@ -54,9 +56,10 @@ function Console(props) {
         var authors = []
 
         const findAuthorByName = (authorName) => {
+            const lowerName = authorName.toLowerCase();
             for (var i = 0; i < authors.length; i++) {
                 //console.log("findAuthorByNam2e",authorName)
-                if (authors[i].name == authorName) {
+                if (authors[i].name.toLowerCase() === lowerName) {
                     return authors[i]
 
                 }
@@ -64,14 +67,18 @@ function Console(props) {
         }
 
         const addAuthorLink = (link) => {
-
-            var authorArrayItem = findAuthorByName(link.authors);
-            if (!authorArrayItem) {
-                authorArrayItem = { _type: "Node", name: link.authors, _id: link.authors, isVirtual: true, child: [] }
-                authors.push(authorArrayItem);
+            const parsedAuthors = parseAuthors(link.authors);
+            for (let i = 0; i < parsedAuthors.length; i++) {
+                const authorName = parsedAuthors[i];
+                var authorArrayItem = findAuthorByName(authorName);
+                if (!authorArrayItem) {
+                    authorArrayItem = { _type: "Node", name: authorName, _id: authorName, isVirtual: true, child: [] }
+                    authors.push(authorArrayItem);
+                }
+                if (!authorArrayItem.child.some(existing => existing && existing._id === link._id)) {
+                    authorArrayItem.child.push(link);
+                }
             }
-            authorArrayItem.child.push(link);
-
         }
 
         const getOwners = (node) => {
@@ -97,6 +104,8 @@ function Console(props) {
             let z = params;
             let treeStructure = await service.getTreeLinks(params.login, includeArchived);
             getOwners(treeStructure);
+            authors.sort((a, b) => a.name.localeCompare(b.name));
+            setExistingAuthors(authors.map(a => a.name));
             console.log("getOwners,authors2", authors)
             let authorsNode = { _type: "Node", name: "Authors", _id: "authors", isVirtual: true, child: authors }
             treeStructure.child.push(authorsNode)
@@ -168,7 +177,9 @@ function Console(props) {
                         }
                     }
                 } else if (item._type === "Link") {
+                    const authorMatch = parseAuthors(item.authors).some(a => a.toLowerCase().includes(lowerFilter));
                     const linkMatch = nameMatch ||
+                        authorMatch ||
                         (item.description && item.description.toLowerCase().includes(lowerFilter)) ||
                         (item.url && item.url.toLowerCase().includes(lowerFilter));
                     if (linkMatch) {
@@ -244,7 +255,7 @@ function Console(props) {
                 <a href="/" className="console-brand">
                     <img src="/icons/icon-512.png" alt="ProductivityTools.Links" className="console-brand-logo" />
                     <span>ProductivityTools.Links</span>
-                    <span style={{ fontSize: '11px', color: '#16a34a', backgroundColor: '#dcfce7', padding: '1px 6px', borderRadius: '4px', fontWeight: 600 }}>v2026.10.20-black</span>
+                    <span style={{ fontSize: '11px', color: '#16a34a', backgroundColor: '#dcfce7', padding: '1px 6px', borderRadius: '4px', fontWeight: 600 }}>v2026.10.20-authors</span>
                 </a>
 
                 <div className="console-search-bar">
@@ -292,6 +303,7 @@ function Console(props) {
                         <Links
                             selectedNode={selectedNode}
                             filteredTreeLinks={filteredData}
+                            existingAuthors={existingAuthors}
                             refreshTreeLink={refreshTreeLink}
                             mode={linkMode}
                             setMode={setLinkMode}

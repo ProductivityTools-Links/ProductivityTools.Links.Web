@@ -5,8 +5,23 @@ import './index.css';
 
 const PAGE_SIZE = 100;
 
-function Links({ selectedNode, filteredTreeLinks, refreshTreeLink, mode = 'list', setMode, selectedLink, setSelectedLink }) {
+function Links({ selectedNode, filteredTreeLinks, existingAuthors, refreshTreeLink, mode = 'list', setMode, selectedLink, setSelectedLink }) {
     const targetNode = selectedNode || filteredTreeLinks;
+
+    const resolvedExistingAuthors = useMemo(() => {
+        if (Array.isArray(existingAuthors) && existingAuthors.length > 0) {
+            return existingAuthors;
+        }
+        if (filteredTreeLinks && Array.isArray(filteredTreeLinks.child)) {
+            const authorsNode = filteredTreeLinks.child.find(
+                (item) => item && (item._id === 'authors' || item.name === 'Authors')
+            );
+            if (authorsNode && Array.isArray(authorsNode.child)) {
+                return authorsNode.child.map((a) => a && a.name).filter(Boolean);
+            }
+        }
+        return [];
+    }, [existingAuthors, filteredTreeLinks]);
 
     const links = useMemo(() => {
         if (!targetNode) return [];
@@ -95,7 +110,13 @@ function Links({ selectedNode, filteredTreeLinks, refreshTreeLink, mode = 'list'
         )
     else {
         return (
-            <EditLink setMode={setMode} selectedNode={selectedNode} link={selectedLink} refreshTreeLink={refreshTreeLink} />
+            <EditLink
+                setMode={setMode}
+                selectedNode={selectedNode}
+                existingAuthors={resolvedExistingAuthors}
+                link={selectedLink}
+                refreshTreeLink={refreshTreeLink}
+            />
         )
     }
 }
