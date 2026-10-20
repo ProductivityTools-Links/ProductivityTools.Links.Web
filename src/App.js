@@ -9,7 +9,7 @@ import Home from './Components/Home';
 
 import Login from './Session/login'
 import { AuthProvider } from './Session/AuthContext'
-import { ToastContainer } from 'react-toastify';
+import SessionBar from './Session/SessionBar'
 import { ThemeProvider, createMuiTheme, makeStyles } from '@material-ui/core/styles';
 
 const theme = createMuiTheme();
@@ -26,8 +26,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider>
-        <div className="App">
+        <div className="App" style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
           <StyledEngineProvider injectFirst>
+            <SessionBar />
             <Router >
               <Routes>
                 <Route path='/login' element={<Login />} />
@@ -39,7 +40,6 @@ function App() {
 
             </Router >
           </StyledEngineProvider>
-          <ToastContainer />
         </div>
       </AuthProvider>
     </ThemeProvider>

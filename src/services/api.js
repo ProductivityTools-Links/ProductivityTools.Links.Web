@@ -1,23 +1,26 @@
 import axios from 'axios'
 import { config } from '../config.js'
-import { toast } from 'react-toastify';
-import { RepeatOneSharp } from '@mui/icons-material';
+import statusService from './statusService'
 
 
 async function invokeCallWithToast(call, pendingMessage, successMessage) {
-    return toast.promise(
-        invokeCall(call),
-        {
-            pending: pendingMessage ? pendingMessage : "Missing pending message",
-            success: successMessage ? successMessage : "Missing sucesss message",
-            error: {
-                render({ data }) {
-                    console.log(data);
-                    return <p>{data.message} [{data.response?.data?.message}, {data?.message}]</p>
-                }
-            }
-        }
-    )
+    const pending = pendingMessage || "Processing...";
+    const success = successMessage || "Completed";
+    const opId = statusService.start(pending);
+    try {
+        const response = await invokeCall(call);
+        statusService.success(opId, success);
+        return response;
+    } catch (error) {
+        console.error("API call error:", error);
+        const errText =
+            error?.response?.data?.message ||
+            (typeof error?.response?.data === "string" ? error?.response?.data : null) ||
+            error?.message ||
+            "Request failed";
+        statusService.error(opId, errText);
+        throw error;
+    }
 }
 
 

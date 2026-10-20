@@ -3,8 +3,6 @@ import service from "../../services/api";
 import { auth, logout, tokenExpired } from '../../Session/firebase'
 import Login from '../../Session/login'
 import Token from '../Token'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import Console from "../Console";
 
 
@@ -49,7 +47,6 @@ function Home() {
             <div>
                 <Login callback={loginPerformed} />
                 <Token date={date} />
-                <ToastContainer />
             </div>
         )
     }
@@ -64,7 +61,6 @@ function Home() {
                 })}
                 <div><button onClick={logoutAction}>logout</button></div>
                 <Token date={date} />
-                <ToastContainer />
             </div>
         )
     }
