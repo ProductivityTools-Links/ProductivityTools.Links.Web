@@ -147,7 +147,13 @@ function Tree({ structure, filter, setSelectedNode, selectedNode, refreshTreeLin
 
     function GetNode(n) {
         if (!n || !n.child) return null;
-        const childNodes = n.child.filter((x) => x._type == "Node").sort((a, b) => a.name < b.name ? -1 : 1);
+        const childNodes = n.child.filter((x) => x._type == "Node").sort((a, b) => {
+            const aIsAuthors = a._id === "authors" || a.name === "Authors";
+            const bIsAuthors = b._id === "authors" || b.name === "Authors";
+            if (aIsAuthors && !bIsAuthors) return -1;
+            if (!aIsAuthors && bIsAuthors) return 1;
+            return a.name < b.name ? -1 : 1;
+        });
         if (childNodes.length === 0) return null;
 
         return childNodes.map(x => {
