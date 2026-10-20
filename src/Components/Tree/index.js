@@ -1,10 +1,13 @@
 import './index.css';
 import ContextMenu from './ContextMenu';
 import React, { useRef, useState, useEffect, useMemo, useCallback } from 'react';
+import Switch from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import AddNodeModal from './AddNodeModal';
 import StyledTreeItem from './StyledTreeItem.js';
 import NodeDeleteDialog from './NodeDeleteDialog.js';
 import NodeRenameDialog from './NodeRenameDialog.js';
+import service from '../../services/api.js';
 
 const getAllNodeIds = (node, acc = new Set()) => {
     if (!node) return acc;
@@ -22,7 +25,7 @@ const getAllNodeIds = (node, acc = new Set()) => {
     return acc;
 };
 
-function Tree({ structure, filter, setSelectedNode, selectedNode, refreshTreeLink }) {
+function Tree({ structure, filter, setSelectedNode, selectedNode, refreshTreeLink, includeArchived = false, setIncludeArchived }) {
     const [modalOpen, setModalOpen] = useState(false);
     const [nodeDeleteDialogOpen, setnNodeDeleteDialogOpen] = useState(false);
     const [nodeRenameDialogOpen, setNodeRenameDialogOpen] = useState(false);
@@ -166,6 +169,33 @@ function Tree({ structure, filter, setSelectedNode, selectedNode, refreshTreeLin
         });
     }
 
+    const handleToggleArchive = async (treeId) => {
+        let targetNode = selectedNode;
+        if (treeId !== undefined && treeId !== null && structure) {
+            if (structure._id == treeId) {
+                targetNode = structure;
+            } else {
+                const found = findNode(structure.child, treeId);
+                if (found) {
+                    targetNode = found;
+                }
+            }
+        }
+        const idToArchive = targetNode?._id ?? treeId;
+        if (idToArchive === undefined || idToArchive === null || idToArchive === 'authors') {
+            return;
+        }
+        const isArchived = Boolean(targetNode?.archived);
+        if (isArchived) {
+            await service.unarchiveNode(idToArchive);
+        } else {
+            await service.archiveNode(idToArchive);
+        }
+        refreshTreeLink();
+    };
+
+    const isSelectedArchived = Boolean(selectedNode?.archived);
+
     const menuItems = [
         {
             text: 'Add new tree item',
@@ -178,6 +208,10 @@ function Tree({ structure, filter, setSelectedNode, selectedNode, refreshTreeLin
         {
             text: 'Delete',
             onclick: () => { nodeDeleteDialogClose(); }
+        },
+        {
+            text: isSelectedArchived ? 'Unarchive' : 'Archive',
+            onclick: (treeId) => { handleToggleArchive(treeId); }
         }
     ];
 
@@ -189,6 +223,29 @@ function Tree({ structure, filter, setSelectedNode, selectedNode, refreshTreeLin
 
     return (
         <div ref={containerRef}>
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '8px',
+                    gap: '8px',
+                    flexWrap: 'wrap',
+                }}
+            >
+                <FormControlLabel
+                    control={
+                        <Switch
+                            size="small"
+                            checked={Boolean(includeArchived)}
+                            onChange={(e) => setIncludeArchived && setIncludeArchived(e.target.checked)}
+                            color="primary"
+                        />
+                    }
+                    label={<span style={{ fontSize: '0.85rem', color: '#555' }}>Show archived</span>}
+                    style={{ margin: 0, userSelect: 'none' }}
+                />
+            </div>
             <ul className="MuiTreeView-root" role="tree" aria-label="file system navigator">
                 <li className="MuiTreeItem-root" role="treeitem" contextmenuid={structure._id}>
                     <div
@@ -209,7 +266,11 @@ function Tree({ structure, filter, setSelectedNode, selectedNode, refreshTreeLin
                             )}
                         </div>
                         <div className="MuiTreeItem-label">
-                            <button className="treebutton" onClick={(e) => treeLabelClick(e, structure)}>
+                            <button
+                                className="treebutton"
+                                style={structure.archived ? { color: 'gray' } : undefined}
+                                onClick={(e) => treeLabelClick(e, structure)}
+                            >
                                 {structure.login}
                             </button>
                         </div>

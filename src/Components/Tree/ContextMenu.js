@@ -28,11 +28,17 @@ const ContextMenu = ({ parentRef, items }) => {
             setY(event.clientY);
             console.log('show');
             console.log(event.composedPath())
-            let elementId = event.composedPath().find(e => e.nodeName === 'LI').getAttribute('contextmenuid');
-            var element = event.composedPath().find(e => e.nodeName === 'BUTTON');
+            let liElement = event.composedPath().find(e => e.nodeName === 'LI');
+            if (!liElement) {
+                return;
+            }
+            let elementId = liElement.getAttribute('contextmenuid');
+            var element = event.composedPath().find(e => e.nodeName === 'BUTTON') || liElement.querySelector('button.treebutton');
             console.log("element", element);
-            element.click();
-            setSelectedTreeId(parseInt(elementId));
+            if (element) {
+                element.click();
+            }
+            setSelectedTreeId(isNaN(Number(elementId)) ? elementId : parseInt(elementId));
             console.log("selectet tree id")
             console.log(elementId);
 

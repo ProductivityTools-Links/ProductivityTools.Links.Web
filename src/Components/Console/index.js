@@ -34,6 +34,7 @@ function Console(props) {
     const [filter, setFilter] = useState('');
     const [linkMode, setLinkMode] = useState('list');
     const [selectedLink, setSelectedLink] = useState(null);
+    const [includeArchived, setIncludeArchived] = useState(false);
     // useEffect(() => {
     //     const call = async () => {
     //         let r = await service.getTree();
@@ -94,7 +95,7 @@ function Console(props) {
             let x = navigate;
             let y = location;
             let z = params;
-            let treeStructure = await service.getTreeLinks(params.login);
+            let treeStructure = await service.getTreeLinks(params.login, includeArchived);
             getOwners(treeStructure);
             console.log("getOwners,authors2", authors)
             let authorsNode = { _type: "Node", name: "Authors", _id: "authors", child: authors }
@@ -123,7 +124,7 @@ function Console(props) {
             console.log("getTreeLinks", treeStructure);
         }
         call();
-    }, [date])
+    }, [date, includeArchived, params.login])
 
     const findNodeById = (node, id) => {
         if (node._id == id) {
@@ -276,7 +277,15 @@ function Console(props) {
             <DndProvider backend={HTML5Backend}>
                 <div className="console-workspace">
                     <aside className="console-sidebar">
-                        <Tree structure={filteredData} filter={filter} setSelectedNode={setSelectedNode} selectedNode={selectedNode} refreshTreeLink={refreshTreeLink}></Tree>
+                        <Tree
+                            structure={filteredData}
+                            filter={filter}
+                            setSelectedNode={setSelectedNode}
+                            selectedNode={selectedNode}
+                            refreshTreeLink={refreshTreeLink}
+                            includeArchived={includeArchived}
+                            setIncludeArchived={setIncludeArchived}
+                        ></Tree>
                     </aside>
                     <main className="console-main">
                         <Links

@@ -51,11 +51,10 @@ async function getDate() {
 //     return invokeCall(call);
 // }
 
-async function getTreeLinks(login) {
+async function getTreeLinks(login, includeArchived = false) {
     console.log("getTreeLinks")
     let call = async (header) => {
-        //const response = await axios.post(`${config.PATH_BASE}pallet`, pallet, header)
-        const response = await axios.get(`${config.PATH_BASE}/TreeLinks/${login}`, header)
+        const response = await axios.post(`${config.PATH_BASE}/TreeLinks/${login}`, { includeArchived: Boolean(includeArchived) }, header)
         return response.data;
     }
     return invokeCallWithToast(call, "Getting TreeLinks", "TreeLinks refreshed");
@@ -153,6 +152,24 @@ async function updateNode(id, name) {
     return invokeCallWithToast(call, "Renaming tree item", "Tree item renamed")
 }
 
+async function archiveNode(id) {
+    let call = async (header) => {
+        const data = { id: id }
+        const response = await axios.post(`${config.PATH_BASE}/Tree/Archive`, data, header)
+        return response.data;
+    }
+    return invokeCallWithToast(call, "Archiving tree item", "Tree item archived")
+}
+
+async function unarchiveNode(id) {
+    let call = async (header) => {
+        const data = { id: id }
+        const response = await axios.post(`${config.PATH_BASE}/Tree/Unarchive`, data, header)
+        return response.data;
+    }
+    return invokeCallWithToast(call, "Unarchiving tree item", "Tree item unarchived")
+}
+
 const service = {
     getDate,
     // getTree,
@@ -160,6 +177,8 @@ const service = {
     addNode,
     updateNode,
     deleteNode,
+    archiveNode,
+    unarchiveNode,
     getLinks,
     updateLink,
     moveLink,

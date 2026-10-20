@@ -50,7 +50,11 @@ function StyledTreeItem({ element, isExpanded, hasChildren, onToggle, treeLabelC
                     )}
                 </div>
                 <div className="MuiTreeItem-label" ref={drop}>
-                    <button className="treebutton" onClick={(e) => treeLabelClick(e, element)}>
+                    <button
+                        className="treebutton"
+                        style={element.archived ? { color: 'gray' } : undefined}
+                        onClick={(e) => treeLabelClick(e, element)}
+                    >
                         {element.name}
                     </button>
                     {isDragging && <span>😱</span>}
