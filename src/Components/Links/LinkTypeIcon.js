@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const LINK_TYPES = ['Undefined', 'Document', 'Slides', 'Sheets', 'Drawing', 'Page'];
+export const LINK_TYPES = ['Undefined', 'Document', 'Slides', 'Sheets', 'Drawing', 'Page', 'File', 'Application'];
 
 export function inferLinkTypeFromUrl(url) {
     if (!url || typeof url !== 'string') {
@@ -18,6 +18,9 @@ export function inferLinkTypeFromUrl(url) {
     }
     if (lower.includes('docs.google.com/drawings')) {
         return 'Drawing';
+    }
+    if (lower.includes('drive.google.com/file')) {
+        return 'File';
     }
     return null;
 }
@@ -39,6 +42,12 @@ export function normalizeLinkType(type, url) {
         }
         if (cleaned === 'page') {
             return 'Page';
+        }
+        if (cleaned === 'file' || cleaned === 'plik') {
+            return 'File';
+        }
+        if (cleaned === 'application' || cleaned === 'app') {
+            return 'Application';
         }
     }
 
@@ -148,6 +157,49 @@ function PageIcon({ size }) {
     );
 }
 
+function FileIcon({ size }) {
+    return (
+        <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">
+            <path
+                d="M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"
+                fill="#8B5CF6"
+            />
+            <path
+                d="M14 2l6 6h-4.5A1.5 1.5 0 0 1 14 6.5V2z"
+                fill="#6D28D9"
+            />
+            <path
+                d="M12 10.5v5.2m0 0-2.2-2.2m2.2 2.2 2.2-2.2M8.5 18h7"
+                fill="none"
+                stroke="#FFFFFF"
+                strokeWidth="1.7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+        </svg>
+    );
+}
+
+function ApplicationIcon({ size }) {
+    return (
+        <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">
+            <rect x="3" y="4" width="18" height="16" rx="2.5" fill="#0F766E" />
+            <path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h13A2.5 2.5 0 0 1 21 6.5V8H3V6.5z" fill="#115E59" />
+            <circle cx="6" cy="6" r="0.9" fill="#5EEAD4" />
+            <circle cx="8.6" cy="6" r="0.9" fill="#5EEAD4" />
+            <circle cx="11.2" cy="6" r="0.9" fill="#5EEAD4" />
+            <path
+                d="M8 11.5 10.8 14 8 16.5M12.5 16.5H16"
+                fill="none"
+                stroke="#FFFFFF"
+                strokeWidth="1.7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+        </svg>
+    );
+}
+
 function UndefinedIcon({ size }) {
     return (
         <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">
@@ -191,6 +243,12 @@ export default function LinkTypeIcon({ type, url, size = 18 }) {
             break;
         case 'Page':
             icon = <PageIcon size={size} />;
+            break;
+        case 'File':
+            icon = <FileIcon size={size} />;
+            break;
+        case 'Application':
+            icon = <ApplicationIcon size={size} />;
             break;
         case 'Undefined':
         default:
