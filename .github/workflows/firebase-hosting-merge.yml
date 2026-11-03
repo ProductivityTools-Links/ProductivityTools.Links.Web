@@ -23,3 +23,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_PTPROJECTSWEB }}
           channelId: live
           projectId: ptprojectsweb
+          firebaseToolsVersion: '15.34.0'
