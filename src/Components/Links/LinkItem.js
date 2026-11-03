@@ -5,7 +5,7 @@ import { parseAuthors } from './authorsUtils.js';
 import LinkTypeIcon, { normalizeLinkType } from './LinkTypeIcon.js';
 import service from '../../services/api.js';
 
-function LinkItem({ link, editLink, refreshTreeLink, onLinkClicked }) {
+function LinkItem({ link, editLink, refreshTreeLink, onLinkClicked, onAuthorClick, selectedAuthor }) {
 
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [copied, setCopied] = useState(false);
@@ -80,9 +80,22 @@ function LinkItem({ link, editLink, refreshTreeLink, onLinkClicked }) {
                 <span className="link-clicks-badge" title={`Clicks: ${clicksCount}`}>
                     {clicksCount}
                 </span>
-                {authorsList.map((author) => (
-                    <span key={author} className="link-author-badge">@{author}</span>
-                ))}
+                {authorsList.map((author) => {
+                    const isSelected = Boolean(
+                        selectedAuthor && selectedAuthor.toLowerCase() === author.toLowerCase()
+                    );
+                    return (
+                        <span
+                            key={author}
+                            className={`link-author-badge ${isSelected ? 'active' : ''}`}
+                            onClick={onAuthorClick ? () => onAuthorClick(author) : undefined}
+                            style={onAuthorClick ? { cursor: 'pointer' } : undefined}
+                            title={onAuthorClick ? `Filter by @${author}` : undefined}
+                        >
+                            @{author}
+                        </span>
+                    );
+                })}
                 {hasDescription && (
                     <span className="link-description">— {link.description}</span>
                 )}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import EditLink from './EditLink.js'
 import LinkItem from './LinkItem';
+import { parseAuthors } from './authorsUtils.js';
 import './index.css';
 
 const PAGE_SIZE = 100;
@@ -8,6 +9,7 @@ const PAGE_SIZE = 100;
 function Links({ selectedNode, filteredTreeLinks, existingAuthors, refreshTreeLink, mode = 'list', setMode, selectedLink, setSelectedLink }) {
     const targetNode = selectedNode || filteredTreeLinks;
     const [clickVersion, setClickVersion] = useState(0);
+    const [selectedAuthor, setSelectedAuthor] = useState(null);
 
     const handleLinkClicked = useCallback(() => {
         setClickVersion((v) => v + 1);
@@ -28,7 +30,7 @@ function Links({ selectedNode, filteredTreeLinks, existingAuthors, refreshTreeLi
         return [];
     }, [existingAuthors, filteredTreeLinks]);
 
-    const links = useMemo(() => {
+    const nodeLinks = useMemo(() => {
         if (!targetNode) return [];
 
         let newLinksList = [];
@@ -60,19 +62,52 @@ function Links({ selectedNode, filteredTreeLinks, existingAuthors, refreshTreeLi
         return newLinksList;
     }, [targetNode, clickVersion]);
 
+    const displayedAuthors = useMemo(() => {
+        const authorsMap = new Map();
+        for (let i = 0; i < nodeLinks.length; i++) {
+            const parsed = parseAuthors(nodeLinks[i].authors);
+            for (let j = 0; j < parsed.length; j++) {
+                const name = parsed[j];
+                const key = name.toLowerCase();
+                if (!authorsMap.has(key)) {
+                    authorsMap.set(key, name);
+                }
+            }
+        }
+        return Array.from(authorsMap.values()).sort((a, b) => a.localeCompare(b));
+    }, [nodeLinks]);
+
     const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
     const prevTargetRef = useRef(targetNode);
     const loadMoreRef = useRef(null);
 
     let effectiveVisibleCount = visibleCount;
+    let activeAuthor = selectedAuthor;
     if (prevTargetRef.current !== targetNode) {
         prevTargetRef.current = targetNode;
         effectiveVisibleCount = PAGE_SIZE;
+        activeAuthor = null;
     }
 
     useEffect(() => {
         setVisibleCount(PAGE_SIZE);
+        setSelectedAuthor(null);
     }, [targetNode]);
+
+    const links = useMemo(() => {
+        if (!activeAuthor) return nodeLinks;
+        const lowerAuthor = activeAuthor.toLowerCase();
+        return nodeLinks.filter((link) =>
+            parseAuthors(link.authors).some((a) => a.toLowerCase() === lowerAuthor)
+        );
+    }, [nodeLinks, activeAuthor]);
+
+    const handleAuthorToggle = useCallback((author) => {
+        setVisibleCount(PAGE_SIZE);
+        setSelectedAuthor((prev) =>
+            prev && author && prev.toLowerCase() === author.toLowerCase() ? null : author
+        );
+    }, []);
 
     useEffect(() => {
         const sentinel = loadMoreRef.current;
@@ -103,11 +138,49 @@ function Links({ selectedNode, filteredTreeLinks, existingAuthors, refreshTreeLi
     if (mode == 'list')
         return (
             <div>
-                <span className="links-selected-label">
-                    Currently selected node: {selectedNode && (selectedNode.name || selectedNode.login)}
-                </span>
+                <div className="links-header">
+                    <span className="links-selected-label">
+                        Currently selected node: {selectedNode && (selectedNode.name || selectedNode.login)}
+                    </span>
+                    {displayedAuthors.length > 0 && (
+                        <div className="links-authors-filter">
+                            <button
+                                type="button"
+                                className={`links-author-chip ${!activeAuthor ? 'active' : ''}`}
+                                onClick={() => handleAuthorToggle(null)}
+                            >
+                                All
+                            </button>
+                            {displayedAuthors.map((author) => {
+                                const isSelected = Boolean(
+                                    activeAuthor && activeAuthor.toLowerCase() === author.toLowerCase()
+                                );
+                                return (
+                                    <button
+                                        type="button"
+                                        key={author}
+                                        className={`links-author-chip ${isSelected ? 'active' : ''}`}
+                                        onClick={() => handleAuthorToggle(author)}
+                                    >
+                                        @{author}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
                 <div className="links-list-card">
-                    {visibleLinks.map(x => <LinkItem key={x._id} link={x} editLink={editLink} refreshTreeLink={refreshTreeLink} onLinkClicked={handleLinkClicked} />)}
+                    {visibleLinks.map(x => (
+                        <LinkItem
+                            key={x._id}
+                            link={x}
+                            editLink={editLink}
+                            refreshTreeLink={refreshTreeLink}
+                            onLinkClicked={handleLinkClicked}
+                            onAuthorClick={handleAuthorToggle}
+                            selectedAuthor={activeAuthor}
+                        />
+                    ))}
                     {effectiveVisibleCount < links.length && (
                         <div ref={loadMoreRef} style={{ height: '1px' }} />
                     )}
