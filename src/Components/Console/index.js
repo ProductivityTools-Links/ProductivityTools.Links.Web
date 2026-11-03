@@ -106,10 +106,6 @@ function Console(props) {
             getOwners(treeStructure);
             authors.sort((a, b) => a.name.localeCompare(b.name));
             setExistingAuthors(authors.map(a => a.name));
-            console.log("getOwners,authors2", authors)
-            let authorsNode = { _type: "Node", name: "Authors", _id: "authors", isVirtual: true, child: authors }
-            treeStructure.child.push(authorsNode)
-            console.log("treeStructure.child.push(authors)", treeStructure)
             setTreeLinks(treeStructure);
             if (filterInput && filterInput.trim() !== '') {
                 let copyData = { ...treeStructure };

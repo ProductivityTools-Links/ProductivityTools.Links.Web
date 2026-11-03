@@ -10,6 +10,7 @@ function Links({ selectedNode, filteredTreeLinks, existingAuthors, refreshTreeLi
     const targetNode = selectedNode || filteredTreeLinks;
     const [clickVersion, setClickVersion] = useState(0);
     const [selectedAuthor, setSelectedAuthor] = useState(null);
+    const [authorsCollapsed, setAuthorsCollapsed] = useState(false);
 
     const handleLinkClicked = useCallback(() => {
         setClickVersion((v) => v + 1);
@@ -139,10 +140,37 @@ function Links({ selectedNode, filteredTreeLinks, existingAuthors, refreshTreeLi
         return (
             <div>
                 <div className="links-header">
-                    <span className="links-selected-label">
-                        Currently selected node: {selectedNode && (selectedNode.name || selectedNode.login)}
-                    </span>
-                    {displayedAuthors.length > 0 && (
+                    <div className="links-header-top">
+                        <span className="links-selected-label">
+                            Currently selected node: {selectedNode && (selectedNode.name || selectedNode.login)}
+                        </span>
+                        {displayedAuthors.length > 0 && (
+                            <button
+                                type="button"
+                                className="links-authors-toggle"
+                                onClick={() => setAuthorsCollapsed((prev) => !prev)}
+                                title={authorsCollapsed ? 'Expand authors list' : 'Collapse authors list'}
+                            >
+                                <span>
+                                    Authors ({displayedAuthors.length}){activeAuthor ? `: @${activeAuthor}` : ''}
+                                </span>
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    aria-hidden="true"
+                                    style={{
+                                        transform: authorsCollapsed ? 'rotate(180deg)' : 'rotate(0deg)',
+                                        transition: 'transform 0.15s ease',
+                                    }}
+                                >
+                                    <path d="M7.41 15.41 12 10.83l4.59 4.58L18 14l-6-6-6 6z" />
+                                </svg>
+                            </button>
+                        )}
+                    </div>
+                    {displayedAuthors.length > 0 && !authorsCollapsed && (
                         <div className="links-authors-filter">
                             <button
                                 type="button"
